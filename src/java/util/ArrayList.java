@@ -161,6 +161,8 @@ public class ArrayList<E> extends AbstractList<E>
 
     /**
      * Constructs an empty list with an initial capacity of ten.
+     * 构造一个空的list，初始容量为10（说明：10是在调用add方法时才有的）
+     * {@link #calculateCapacity(Object[], int)} 该方法的if判断返回的10
      */
     public ArrayList() {
         this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;
@@ -459,8 +461,14 @@ public class ArrayList<E> extends AbstractList<E>
      * @return <tt>true</tt> (as specified by {@link Collection#add})
      */
     public boolean add(E e) {
+        // 确定内部容量（modCount记录了size的变更次数）
         ensureCapacityInternal(size + 1);  // Increments modCount!!
+        // size表示list的元素个数，elementData在索引为size的位置放入元素e，然后对size加1
         elementData[size++] = e;
+        // 上面其实是：
+        // elementData[size] = e;
+        // size++;
+        // 的简写形式
         return true;
     }
 
