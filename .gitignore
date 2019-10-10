@@ -16,6 +16,10 @@
 *.iml
 *.ipr
 /out/
+/scripts/jdk_debug/
+/scripts/*.jar
+/scripts/filelist.txt
+/scripts/log.txt
 
 ### NetBeans ###
 /nbproject/private/
