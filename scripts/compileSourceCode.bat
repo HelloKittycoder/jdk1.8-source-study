@@ -36,10 +36,10 @@ rem 临时存放路径的变量
 set "my_path="
 setlocal EnableDelayedExpansion
 for %%i in (%LIB_PATH%) do (
-setlocal
+rem setlocal
 call:getFileName "%%i"
 if not exist "!my_path!" copy /y "%%i" "%CURRENT_DIR%"
-endlocal
+rem endlocal
 )
 setlocal DisableDelayedExpansion
 
