@@ -19,4 +19,15 @@ public class ArrayListTest {
         stringList.add("33");
         System.out.println(stringList);
     }
+
+    // 给指定位置添加index
+    @Test
+    public void addIndex() {
+        List<String> stringList = new ArrayList<>();
+        stringList.add("11");
+        stringList.add("22");
+        stringList.add("33");
+        stringList.add(1, "444");
+        System.out.println(stringList);
+    }
 }

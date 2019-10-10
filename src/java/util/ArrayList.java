@@ -482,12 +482,17 @@ public class ArrayList<E> extends AbstractList<E>
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     public void add(int index, E element) {
+        // 检查要插入的位置是否符合要求（index范围：[0,size]）
         rangeCheckForAdd(index);
 
+        // 确保数组有足够的容量
         ensureCapacityInternal(size + 1);  // Increments modCount!!
+        // 将elementData数组中索引从index至index+(size-index)=size的所有元素统一向后挪动一个位置
         System.arraycopy(elementData, index, elementData, index + 1,
                          size - index);
+        // 在腾出的索引index位置放入元素element
         elementData[index] = element;
+        // 同时list中元素的数量加1
         size++;
     }
 
