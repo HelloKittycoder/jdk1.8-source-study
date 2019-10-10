@@ -41,7 +41,7 @@ call:getFileName "%%i"
 if not exist "!my_path!" copy /y "%%i" "%CURRENT_DIR%"
 endlocal
 )
-::setlocal DisableDelayedExpansion
+setlocal DisableDelayedExpansion
 
 javac -encoding UTF-8 -J-Xms16m -J-Xmx1024m -sourcepath %SOURCE_DIR% -cp rt.jar;tools.jar -d %RT_DEBUG_DIR% -g @filelist.txt >> log.txt 2>&1
 
