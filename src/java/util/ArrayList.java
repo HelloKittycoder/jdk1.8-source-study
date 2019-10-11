@@ -511,21 +511,35 @@ public class ArrayList<E> extends AbstractList<E>
      * Shifts any subsequent elements to the left (subtracts one from their
      * indices).
      *
+     * 移除list中指定位置的元素
+     *
      * @param index the index of the element to be removed
      * @return the element that was removed from the list
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     public E remove(int index) {
+        // 检查要移除的元素的索引是否符合要求（index范围：[0,size)即[0,size-1]）
         rangeCheck(index);
 
+        // size变更次数加1
         modCount++;
+        // 先取出索引为index的元素，用于返回
         E oldValue = elementData(index);
 
+        // 如果要移除一个元素，则需要把该元素的空位让后面的元素补上，
+        // 索引为index之后的所有元素（数量为size-1）都要向前移动一位
+        // 计算需要移动的元素数量：size-1-index
         int numMoved = size - index - 1;
+        // 将elementData数组中索引从index+1至index+numMoved=size-1的所有元素统一向前移动一个位置
         if (numMoved > 0)
             System.arraycopy(elementData, index+1, elementData, index,
                              numMoved);
+        // 将索引为size-1的元素置为null，等待GC进行回收；同时对size减1
         elementData[--size] = null; // clear to let GC do its work
+        // 上面其实是：
+        // --size;
+        // elementData[size]=null;
+        // 的简写形式
 
         return oldValue;
     }
@@ -540,19 +554,24 @@ public class ArrayList<E> extends AbstractList<E>
      * contained the specified element (or equivalently, if this list
      * changed as a result of the call).
      *
+     * 移除list中的指定元素（只会移除在list中第一次出现的位置对应的元素）
+     *
      * @param o element to be removed from this list, if present
      * @return <tt>true</tt> if this list contained the specified element
      */
     public boolean remove(Object o) {
         if (o == null) {
+            // 要移除的元素为null
             for (int index = 0; index < size; index++)
                 if (elementData[index] == null) {
                     fastRemove(index);
                     return true;
                 }
         } else {
+            // 要移除的元素不为null
             for (int index = 0; index < size; index++)
                 if (o.equals(elementData[index])) {
+                    // 采用快速移除
                     fastRemove(index);
                     return true;
                 }
@@ -563,6 +582,10 @@ public class ArrayList<E> extends AbstractList<E>
     /*
      * Private remove method that skips bounds checking and does not
      * return the value removed.
+     *
+     * 快速移除，和{@link #remove(int)}相比，少了rangeCheck和返回被移除的值
+     * 原因：fastRemove是被{@link #remove(Object)}调用的，外面循环时传入的index一定是符合要求的，
+     * 无需检查；remove传入的Object就是要移除的值，这个是调用者本来就知道的，无需返回
      */
     private void fastRemove(int index) {
         modCount++;
