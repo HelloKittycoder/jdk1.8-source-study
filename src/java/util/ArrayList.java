@@ -427,11 +427,14 @@ public class ArrayList<E> extends AbstractList<E>
     /**
      * Returns the element at the specified position in this list.
      *
+     * 返回list中指定位置的元素
+     *
      * @param  index index of the element to return
      * @return the element at the specified position in this list
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     public E get(int index) {
+        // 检查索引是否符合要求（index范围：[0,size)即[0,size-1]）
         rangeCheck(index);
 
         return elementData(index);
@@ -441,15 +444,22 @@ public class ArrayList<E> extends AbstractList<E>
      * Replaces the element at the specified position in this list with
      * the specified element.
      *
+     * 将list指定位置的元素用element替换掉
+     *
      * @param index index of the element to replace
      * @param element element to be stored at the specified position
      * @return the element previously at the specified position
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     public E set(int index, E element) {
+        // 检查索引是否符合要求（index范围：[0,size)即[0,size-1]）
+        // rangeCheck只检查是否小于size，并没有检查是否大于等于0
+        // （这个是直接留给调用elementData[index]的时候来报错）
         rangeCheck(index);
 
+        // 先取出索引为index的元素，用于返回
         E oldValue = elementData(index);
+        // 将索引为index的元素设置成element
         elementData[index] = element;
         return oldValue;
     }

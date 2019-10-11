@@ -30,4 +30,17 @@ public class ArrayListTest {
         stringList.add(1, "444");
         System.out.println(stringList);
     }
+
+    // 测试set和get方法
+    @Test
+    public void testSetGet() {
+        List<String> stringList = new ArrayList<>();
+        stringList.add("11");
+        stringList.add("22");
+        stringList.add("33");
+        String oldValue = stringList.set(1, "set后的值");
+        System.out.println("index为1的旧元素为：" + oldValue);
+        System.out.println("index为1的新元素为：" + stringList.get(1));
+        // System.out.println(stringList.get(-1));
+    }
 }
