@@ -500,7 +500,6 @@ public class ArrayList<E> extends AbstractList<E>
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     public void add(int index, E element) {
-        // 检查要插入的位置是否符合要求（index范围：[0,size]）
         rangeCheckForAdd(index);
 
         // 确保数组有足够的容量
@@ -657,6 +656,8 @@ public class ArrayList<E> extends AbstractList<E>
      * in the list in the order that they are returned by the
      * specified collection's iterator.
      *
+     * 将传入的Colllection里的所有元素添加到list中的指定位置
+     *
      * @param index index at which to insert the first element from the
      *              specified collection
      * @param c collection containing elements to be added to this list
@@ -667,17 +668,28 @@ public class ArrayList<E> extends AbstractList<E>
     public boolean addAll(int index, Collection<? extends E> c) {
         rangeCheckForAdd(index);
 
+        // 将传入的集合c转换为数组
         Object[] a = c.toArray();
+        // 计算需要添加的元素数量
         int numNew = a.length;
+        // 确保数组有足够的容量
         ensureCapacityInternal(size + numNew);  // Increments modCount
 
+        // 确定需要向后挪动位置的元素个数（从索引index到size-1的元素都要移动）
+        // 个数为(size-1)-index+1=size-index
+        // 因为需要新进来numNew个元素，所以要向后移动numNew个位置
         int numMoved = size - index;
         if (numMoved > 0)
+            // 将数组elementData中索引从index至size-1的所有元素复制到新的起始位置index+numNew，
+            // 移动的元素个数为numMoved
             System.arraycopy(elementData, index, elementData, index + numNew,
                              numMoved);
 
+        // 将数组a中的所有元素复制到elementData中，复制到element的起始位置为index
         System.arraycopy(a, 0, elementData, index, numNew);
+        // size加上新增的元素个数（numNew）
         size += numNew;
+        // 如果numNew != 0，说明添加过元素；否则说明没添加任何元素
         return numNew != 0;
     }
 
@@ -724,6 +736,7 @@ public class ArrayList<E> extends AbstractList<E>
      * A version of rangeCheck used by add and addAll.
      */
     private void rangeCheckForAdd(int index) {
+        // 检查要插入的位置是否符合要求（index范围：[0,size]）
         if (index > size || index < 0)
             throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
     }

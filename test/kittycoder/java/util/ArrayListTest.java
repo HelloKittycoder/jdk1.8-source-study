@@ -73,6 +73,20 @@ public class ArrayListTest {
                 + "，新的stringList为" + stringList);
     }
 
+    // 测试addAll(int, Collection)方法
+    @Test
+    public void testIndexAddAll() {
+        stringList = generateList();
+        List<String> strList2 = new ArrayList<>();
+        strList2.add("44");
+        strList2.add("55");
+        strList2.add("66");
+        System.out.println("旧的stringList为" + stringList);
+        boolean isAdded = stringList.addAll(1, strList2);
+        System.out.println("strList2" + strList2 + "添加" + (isAdded ? "成功" : "失败")
+                + "，新的stringList为" + stringList);
+    }
+
     private List<String> generateList() {
         List<String> strList = new ArrayList<>();
         strList.add("11");
