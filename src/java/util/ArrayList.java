@@ -627,16 +627,25 @@ public class ArrayList<E> extends AbstractList<E>
      * undefined if the specified collection is this list, and this
      * list is nonempty.)
      *
+     * 将传入的Collection里的所有元素添加到list末尾
+     *
      * @param c collection containing elements to be added to this list
      * @return <tt>true</tt> if this list changed as a result of the call
      * @throws NullPointerException if the specified collection is null
      */
     public boolean addAll(Collection<? extends E> c) {
+        // 将传入的集合c转换为数组
         Object[] a = c.toArray();
+        // 计算需要添加的元素数量
         int numNew = a.length;
+        // 确保数组有足够的容量
         ensureCapacityInternal(size + numNew);  // Increments modCount
+        // 将c对应数组中索引从0至(0+numNew)=a.length=c.size的所有元素全部复制到elementData数组，从索引size开始放元素
+        // 也就是说，将c对应数组中所有元素复制到elementData数组中，放到elementData数组末尾
         System.arraycopy(a, 0, elementData, size, numNew);
+        // size加上新增的元素个数（numNew）
         size += numNew;
+        // 如果numNew != 0，说明添加过元素；否则说明没添加任何元素
         return numNew != 0;
     }
 

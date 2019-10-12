@@ -37,6 +37,7 @@ public class ArrayListTest {
         // System.out.println(stringList.get(-1));
     }
 
+    // 测试remove(int)和remove(Object)方法
     @Test
     public void testRemove() {
         stringList = generateList();
@@ -47,6 +48,7 @@ public class ArrayListTest {
                             + "，当前list为" + stringList);
     }
 
+    // 测试indexOf和lastIndexOf方法
     @Test
     public void testIndex() {
         stringList = generateList2();
@@ -55,6 +57,20 @@ public class ArrayListTest {
         System.out.println("元素11首次出现的索引为：" + index); // 1
         index = stringList.lastIndexOf("11");
         System.out.println("元素11最后一次出现的索引为：" + index); // 5
+    }
+
+    // 测试addAll(Collection)方法
+    @Test
+    public void testAddAll() {
+        stringList = generateList();
+        List<String> strList2 = new ArrayList<>();
+        strList2.add("44");
+        strList2.add("55");
+        strList2.add("66");
+        System.out.println("旧的stringList为" + stringList);
+        boolean isAdded = stringList.addAll(strList2);
+        System.out.println("strList2" + strList2 + "添加" + (isAdded ? "成功" : "失败")
+                + "，新的stringList为" + stringList);
     }
 
     private List<String> generateList() {
