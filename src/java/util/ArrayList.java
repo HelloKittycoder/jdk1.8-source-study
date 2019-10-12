@@ -754,6 +754,8 @@ public class ArrayList<E> extends AbstractList<E>
      * Removes from this list all of its elements that are contained in the
      * specified collection.
      *
+     * 把所有在指定集合c中出现的元素从当前list里移除掉
+     *
      * @param c collection containing elements to be removed from this list
      * @return {@code true} if this list changed as a result of the call
      * @throws ClassCastException if the class of an element of this list
@@ -774,6 +776,8 @@ public class ArrayList<E> extends AbstractList<E>
      * Retains only the elements in this list that are contained in the
      * specified collection.  In other words, removes from this list all
      * of its elements that are not contained in the specified collection.
+     *
+     * 只保留当前list里所有在指定集合c中出现过的元素
      *
      * @param c collection containing elements to be retained in this list
      * @return {@code true} if this list changed as a result of the call
@@ -796,6 +800,12 @@ public class ArrayList<E> extends AbstractList<E>
         int r = 0, w = 0;
         boolean modified = false;
         try {
+            // 先看complement为false（对应：从当前list中移除c中出现过的元素）
+            // 下面的判断条件变成 c.contains(elementData[r]) == false
+            // 当读到的第r个元素是c中没有的时候，就用元素r来覆盖list已有元素（索引记为w，从索引0开始，依次向后递增）
+            // 可以知道，r>=w且r<=size（当for循环正常结束时，r=size）
+
+            // complement为true的情况类似
             for (; r < size; r++)
                 if (c.contains(elementData[r]) == complement)
                     elementData[w++] = elementData[r];
@@ -808,12 +818,17 @@ public class ArrayList<E> extends AbstractList<E>
                                  size - r);
                 w += size - r;
             }
+            // 如果并非所有元素被覆盖（覆盖掉的元素索引范围为[0,w-1]），
+            // 则把剩余未覆盖的元素（[w,size)）设置为null（等待GC回收）
             if (w != size) {
                 // clear to let GC do its work
                 for (int i = w; i < size; i++)
                     elementData[i] = null;
+                // size变更次数加上(size-1)-w+1=size-w
                 modCount += size - w;
+                // size更改成w
                 size = w;
+                // 标记修改成功
                 modified = true;
             }
         }

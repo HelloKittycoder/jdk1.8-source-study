@@ -87,6 +87,28 @@ public class ArrayListTest {
                 + "，新的stringList为" + stringList);
     }
 
+    // 测试removeAll方法
+    @Test
+    public void testRemoveAll() {
+        stringList = generateList2();
+        List<String> specList = generateList();
+        System.out.println("旧的stringList为" + stringList);
+        boolean isRemoved = stringList.removeAll(specList);
+        System.out.println("specList" + specList + "移除" + (isRemoved ? "成功" : "失败")
+                + "，新的stringList为" + stringList);
+    }
+
+    // 测试retainAll方法
+    @Test
+    public void testRetainAll() {
+        stringList = generateList2();
+        List<String> specList = generateList();
+        System.out.println("旧的stringList为" + stringList);
+        boolean isRetained = stringList.retainAll(specList);
+        System.out.println("specList" + specList + "保留" + (isRetained ? "成功" : "失败")
+                + "，新的stringList为" + stringList);
+    }
+
     private List<String> generateList() {
         List<String> strList = new ArrayList<>();
         strList.add("11");
