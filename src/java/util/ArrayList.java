@@ -312,13 +312,17 @@ public class ArrayList<E> extends AbstractList<E>
      * More formally, returns the lowest index <tt>i</tt> such that
      * <tt>(o==null&nbsp;?&nbsp;get(i)==null&nbsp;:&nbsp;o.equals(get(i)))</tt>,
      * or -1 if there is no such index.
+     *
+     * 查找数组中首次出现元素o的索引，如果没找到，则返回-1
      */
     public int indexOf(Object o) {
         if (o == null) {
+            // 元素为null
             for (int i = 0; i < size; i++)
                 if (elementData[i]==null)
                     return i;
         } else {
+            // 元素不为null
             for (int i = 0; i < size; i++)
                 if (o.equals(elementData[i]))
                     return i;
@@ -332,13 +336,17 @@ public class ArrayList<E> extends AbstractList<E>
      * More formally, returns the highest index <tt>i</tt> such that
      * <tt>(o==null&nbsp;?&nbsp;get(i)==null&nbsp;:&nbsp;o.equals(get(i)))</tt>,
      * or -1 if there is no such index.
+     *
+     * 查找数组中最后一次出现元素o的索引，如果没找到，则返回-1
      */
     public int lastIndexOf(Object o) {
         if (o == null) {
+            // 元素为null
             for (int i = size-1; i >= 0; i--)
                 if (elementData[i]==null)
                     return i;
         } else {
+            // 元素不为null
             for (int i = size-1; i >= 0; i--)
                 if (o.equals(elementData[i]))
                     return i;

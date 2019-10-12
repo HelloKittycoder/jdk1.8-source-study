@@ -47,11 +47,33 @@ public class ArrayListTest {
                             + "，当前list为" + stringList);
     }
 
+    @Test
+    public void testIndex() {
+        stringList = generateList2();
+        int index;
+        index = stringList.indexOf("11");
+        System.out.println("元素11首次出现的索引为：" + index); // 1
+        index = stringList.lastIndexOf("11");
+        System.out.println("元素11最后一次出现的索引为：" + index); // 5
+    }
+
     private List<String> generateList() {
         List<String> strList = new ArrayList<>();
         strList.add("11");
         strList.add("22");
         strList.add("33");
+        return strList;
+    }
+
+    private List<String> generateList2() {
+        List<String> strList = new ArrayList<>();
+        strList.add("22");
+        strList.add("11");
+        strList.add("33");
+        strList.add("11");
+        strList.add("44");
+        strList.add("11");
+        strList.add("55");
         return strList;
     }
 }
