@@ -1488,16 +1488,24 @@ public class ArrayList<E> extends AbstractList<E>
         }
     }
 
+    // 根据给定条件来移除list中的元素
     @Override
     public boolean removeIf(Predicate<? super E> filter) {
+        // 验证传入的条件不为null
         Objects.requireNonNull(filter);
         // figure out which elements are to be removed
         // any exception thrown from the filter predicate at this stage
         // will leave the collection unmodified
+        // 记录需要移除的元素个数
         int removeCount = 0;
+        // 记录需要移除的元素索引
         final BitSet removeSet = new BitSet(size);
+        // 记录当前size的变更次数
         final int expectedModCount = modCount;
+        // 记录当前list的size
         final int size = this.size;
+        // 遍历list元素，挨个判断是否符合要移除的条件，如果符合，则将元素索引存入removeSet中
+        // （同时遍历过程中保证不受并发的影响）
         for (int i=0; modCount == expectedModCount && i < size; i++) {
             @SuppressWarnings("unchecked")
             final E element = (E) elementData[i];
@@ -1506,28 +1514,42 @@ public class ArrayList<E> extends AbstractList<E>
                 removeCount++;
             }
         }
+        // 验证modCount是否在多线程操作时中途被修改了，如果是则直接抛出异常
         if (modCount != expectedModCount) {
             throw new ConcurrentModificationException();
         }
 
         // shift surviving elements left over the spaces left by removed elements
+        // 将不需要移除的元素统一左移
         final boolean anyToRemove = removeCount > 0;
+        // 如果有元素需要移除
         if (anyToRemove) {
+            // 新的list的size
             final int newSize = size - removeCount;
             for (int i=0, j=0; (i < size) && (j < newSize); i++, j++) {
+                // 前面在removeSet添加了需要移除的元素的索引，这里每次取到的是不需要移除的元素的索引
+                // 例：removeSet中放入的是{1,3,5}，而list的size=7
+                // 则依次取出的序列为：{0,2,4,6}
                 i = removeSet.nextClearBit(i);
                 elementData[j] = elementData[i];
             }
+            // 因为需要的元素统一左移了（索引范围为[0,newSize-1]），
+            // 剩下的都是不需要的元素了（索引范围为[newSize,size)）。
+            // 将剩余元素置为null，等待gc回收
             for (int k=newSize; k < size; k++) {
                 elementData[k] = null;  // Let gc do its work
             }
+            // 将list的size设置成newSize
             this.size = newSize;
+            // 再次验证modCount是否在多线程操作时中途被修改了，如果是则直接抛出异常
             if (modCount != expectedModCount) {
                 throw new ConcurrentModificationException();
             }
+            // 修改变更次数
             modCount++;
         }
 
+        // 返回是否有元素被移除。如果有，为true；否则为false
         return anyToRemove;
     }
 

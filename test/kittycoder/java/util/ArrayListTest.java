@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * Created by shucheng on 2019-10-8 下午 23:34
@@ -107,6 +108,23 @@ public class ArrayListTest {
         boolean isRetained = stringList.retainAll(specList);
         System.out.println("specList" + specList + "保留" + (isRetained ? "成功" : "失败")
                 + "，新的stringList为" + stringList);
+    }
+
+    // 测试removeIf方法
+    @Test
+    public void testRemoveIf() {
+        stringList = generateList2();
+        boolean isRemoved = stringList.removeIf(new Predicate<String>() {
+            @Override
+            public boolean test(String s) {
+                if (s.equals("11")) return true;
+                return false;
+            }
+        });
+        // 可以简写为：
+        // boolean isRemoved = stringList.removeIf(s->s.equals("11"));
+        System.out.println(stringList);
+        System.out.println("移除" + (isRemoved ? "成功" : "失败"));
     }
 
     private List<String> generateList() {
