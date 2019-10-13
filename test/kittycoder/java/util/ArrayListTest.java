@@ -151,6 +151,7 @@ public class ArrayListTest {
         System.out.println("新的stringList为" + stringList);
     }
 
+    // 测试sort方法
     @Test
     public void testSort() {
         stringList = generateList2();
@@ -172,6 +173,16 @@ public class ArrayListTest {
             return Integer.compare(b, a);
         });*/
         System.out.println("排序后，stringList为" + stringList);
+    }
+
+    // 测试subList方法
+    @Test
+    public void testSubList() {
+        stringList = generateList2();
+        System.out.println("stringList为" + stringList);
+        // 截取list中索引范围为[3,5)的元素
+        List<String> subList = stringList.subList(3, 5);
+        System.out.println("subList为" + subList);
     }
 
     private List<String> generateList() {

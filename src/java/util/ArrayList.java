@@ -1092,15 +1092,20 @@ public class ArrayList<E> extends AbstractList<E>
      * @throws IllegalArgumentException {@inheritDoc}
      */
     public List<E> subList(int fromIndex, int toIndex) {
+        // 检查传入的索引范围是否符合要求
         subListRangeCheck(fromIndex, toIndex, size);
+        // 返回一个SubList对象
         return new SubList(this, 0, fromIndex, toIndex);
     }
 
     static void subListRangeCheck(int fromIndex, int toIndex, int size) {
+        // 起始索引不能为负数
         if (fromIndex < 0)
             throw new IndexOutOfBoundsException("fromIndex = " + fromIndex);
+        // 截止索引不能超过size
         if (toIndex > size)
             throw new IndexOutOfBoundsException("toIndex = " + toIndex);
+        // 起始索引不能超过截止索引
         if (fromIndex > toIndex)
             throw new IllegalArgumentException("fromIndex(" + fromIndex +
                                                ") > toIndex(" + toIndex + ")");
