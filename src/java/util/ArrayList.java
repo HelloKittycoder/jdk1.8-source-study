@@ -1577,14 +1577,19 @@ public class ArrayList<E> extends AbstractList<E>
         modCount++;
     }
 
+    // 根据传入的排序规则对list进行排序
     @Override
     @SuppressWarnings("unchecked")
     public void sort(Comparator<? super E> c) {
+        // 记录当前size的变更次数
         final int expectedModCount = modCount;
+        // 将比较规则传入排序算法，进行排序
         Arrays.sort((E[]) elementData, 0, size, c);
+        // 验证modCount是否在中途被修改了，如果是则直接抛出异常
         if (modCount != expectedModCount) {
             throw new ConcurrentModificationException();
         }
+        // size变更次数加1
         modCount++;
     }
 }

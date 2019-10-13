@@ -3,6 +3,7 @@ package kittycoder.java.util;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
@@ -148,6 +149,29 @@ public class ArrayListTest {
             return s;
         });*/
         System.out.println("新的stringList为" + stringList);
+    }
+
+    @Test
+    public void testSort() {
+        stringList = generateList2();
+        System.out.println("排序前，stringList为" + stringList);
+        stringList.sort(new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                int a = Integer.parseInt(o1);
+                int b = Integer.parseInt(o2);
+                // 倒序排列
+                return Integer.compare(b, a);
+            }
+        });
+        // 可以简写为：
+        /*stringList.sort((o1, o2) -> {
+            int a = Integer.parseInt(o1);
+            int b = Integer.parseInt(o2);
+            // 倒序排列
+            return Integer.compare(b, a);
+        });*/
+        System.out.println("排序后，stringList为" + stringList);
     }
 
     private List<String> generateList() {
