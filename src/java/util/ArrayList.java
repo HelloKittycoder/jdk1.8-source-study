@@ -1545,7 +1545,7 @@ public class ArrayList<E> extends AbstractList<E>
             if (modCount != expectedModCount) {
                 throw new ConcurrentModificationException();
             }
-            // 修改变更次数
+            // size变更次数加1
             modCount++;
         }
 
@@ -1553,18 +1553,27 @@ public class ArrayList<E> extends AbstractList<E>
         return anyToRemove;
     }
 
+    // 根据传入的替换方法来替换list中的所有元素
     @Override
     @SuppressWarnings("unchecked")
     public void replaceAll(UnaryOperator<E> operator) {
+        // 验证传入的条件不为null
         Objects.requireNonNull(operator);
+        // 记录当前size的变更次数
         final int expectedModCount = modCount;
+        // 记录当前list的size
         final int size = this.size;
+        // 遍历list元素，挨个应用替换方法，并把替换后的结果赋值给对应位置的元素
+        // （同时遍历过程中保证不受并发的影响）
         for (int i=0; modCount == expectedModCount && i < size; i++) {
             elementData[i] = operator.apply((E) elementData[i]);
         }
+        // 验证modCount是否在多线程操作时中途被修改了
+        // 注意：如果在传入的operator修改了list中元素的数量（如：remove），则会抛出ConcurrentModificationException
         if (modCount != expectedModCount) {
             throw new ConcurrentModificationException();
         }
+        // size变更次数加1
         modCount++;
     }
 

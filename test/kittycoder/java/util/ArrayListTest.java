@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 
 /**
  * Created by shucheng on 2019-10-8 下午 23:34
@@ -114,17 +115,39 @@ public class ArrayListTest {
     @Test
     public void testRemoveIf() {
         stringList = generateList2();
+        System.out.println("旧的stringList为" + stringList);
         boolean isRemoved = stringList.removeIf(new Predicate<String>() {
             @Override
             public boolean test(String s) {
-                if (s.equals("11")) return true;
+                if ("11".equals(s)) return true;
                 return false;
             }
         });
         // 可以简写为：
-        // boolean isRemoved = stringList.removeIf(s->s.equals("11"));
-        System.out.println(stringList);
-        System.out.println("移除" + (isRemoved ? "成功" : "失败"));
+        // boolean isRemoved = stringList.removeIf(s->"11".equals(s));
+        System.out.println("有元素被移除" + isRemoved + "，新的stringList为" + stringList);
+    }
+
+    // 测试replaceAll方法
+    @Test
+    public void testReplaceAll() {
+        stringList = generateList2();
+        System.out.println("旧的stringList为" + stringList);
+        stringList.replaceAll(new UnaryOperator<String>() {
+            @Override
+            public String apply(String s) {
+                if ("11".equals(s)) return "hehe";
+                // 下面这行加上会报ConcurrentModificationException，因为中途修改了size
+                // if ("22".equals(s)) stringList.remove("22");
+                return s;
+            }
+        });
+        // 可以简写为：
+        /*stringList.replaceAll(s -> {
+            if ("11".equals(s)) return "hehe";
+            return s;
+        });*/
+        System.out.println("新的stringList为" + stringList);
     }
 
     private List<String> generateList() {
