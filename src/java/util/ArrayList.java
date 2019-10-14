@@ -923,6 +923,9 @@ public class ArrayList<E> extends AbstractList<E>
     /**
      * Returns an iterator over the elements in this list in proper sequence.
      *
+     * 返回list中的迭代器（按适当的顺序）
+     * 返回的列表迭代器是fail-fast
+     *
      * <p>The returned iterator is <a href="#fail-fast"><i>fail-fast</i></a>.
      *
      * @return an iterator over the elements in this list in proper sequence
@@ -942,19 +945,24 @@ public class ArrayList<E> extends AbstractList<E>
         Itr() {}
 
         public boolean hasNext() {
+            // 判断游标是否到达list的末尾
             return cursor != size;
         }
 
         @SuppressWarnings("unchecked")
         public E next() {
+            // 检查size变更次数是否中途被修改了，是则抛出异常
             checkForComodification();
             int i = cursor;
+            // 如果cursor大于等于size或elementData.length，直接抛出异常
             if (i >= size)
                 throw new NoSuchElementException();
             Object[] elementData = ArrayList.this.elementData;
             if (i >= elementData.length)
                 throw new ConcurrentModificationException();
+            // cursor向后移动一位
             cursor = i + 1;
+            // 用lastRet记录这次返回的元素的索引，同时将元素返回出去
             return (E) elementData[lastRet = i];
         }
 

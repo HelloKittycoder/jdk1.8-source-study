@@ -185,6 +185,17 @@ public class ArrayListTest {
         System.out.println("subList为" + subList);
     }
 
+    // 测试增强for循环
+    @Test
+    public void testEnhancedforloop() {
+        // ArrayList的增强for循环：ArrayList实现了Iterable接口，
+        // 内部定义了一个Itr用来返回当前list的迭代器
+        stringList = new ArrayList<>();
+        for (String str: stringList) {
+            System.out.println(str);
+        }
+    }
+
     private List<String> generateList() {
         List<String> strList = new ArrayList<>();
         strList.add("11");
