@@ -2,6 +2,7 @@ package kittycoder.java.util;
 
 import org.junit.Test;
 
+import java.io.*;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.Predicate;
@@ -226,7 +227,7 @@ public class ArrayListTest {
     // 测试trimToSize方法
     @Test
     public void testTrimToSize() throws Exception {
-        List<String> strList = (ArrayList<String>) generateList();
+        List<String> strList = generateList();
         Field elementDataField = ArrayList.class.getDeclaredField("elementData");
         elementDataField.setAccessible(true);
         Object[] elementData = (Object[]) elementDataField.get(strList);
@@ -236,6 +237,33 @@ public class ArrayListTest {
         elementData = (Object[]) elementDataField.get(strList);
         System.out.println("修改后====list的size为" + strList.size() +
                 "，elementData的length为" + elementData.length);
+    }
+
+    // 测试序列化方法（readObject、writeObject）
+    // 参考链接：https://www.cnblogs.com/leodaxin/p/9088741.html
+    @Test
+    public void testSerialize() throws Exception {
+        List<String> strList = generateList();
+
+        ByteArrayOutputStream bo = new ByteArrayOutputStream();
+
+        ObjectOutputStream os = new ObjectOutputStream(bo);
+        os.writeObject(strList);
+        byte[] bytesData = bo.toByteArray();
+
+        FileOutputStream fos = new FileOutputStream("data.dat");
+        fos.write(bytesData);
+        fos.close();
+
+        FileInputStream fis = new FileInputStream("data.dat");
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        List<String> newList = (List<String>) ois.readObject();
+        System.out.println("size为：" + newList.size());
+
+        for (int i = 0; i < newList.size(); i++) {
+            System.out.print(newList.get(i) + " ");
+        }
+        fis.close();
     }
 
     private List<String> generateList() {
