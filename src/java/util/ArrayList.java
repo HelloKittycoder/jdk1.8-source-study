@@ -227,7 +227,10 @@ public class ArrayList<E> extends AbstractList<E>
      * necessary, to ensure that it can hold at least the number of elements
      * specified by the minimum capacity argument.
      *
+     * 如有必要，增加此ArrayList实例的容量，以确保它至少能容纳元素的数量
+     *
      * @param   minCapacity   the desired minimum capacity
+     *                        所需的最小容量
      */
     public void ensureCapacity(int minCapacity) {
         int minExpand = (elementData != DEFAULTCAPACITY_EMPTY_ELEMENTDATA)
@@ -244,20 +247,26 @@ public class ArrayList<E> extends AbstractList<E>
 
     private static int calculateCapacity(Object[] elementData, int minCapacity) {
         if (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) {
+            // 获取默认的容量和传入参数的较大值
             return Math.max(DEFAULT_CAPACITY, minCapacity);
         }
         return minCapacity;
     }
 
+    // 得到最小扩容量
     private void ensureCapacityInternal(int minCapacity) {
         ensureExplicitCapacity(calculateCapacity(elementData, minCapacity));
     }
 
+    // 判断是否需要扩容，上面两个方法都要调用
     private void ensureExplicitCapacity(int minCapacity) {
         modCount++;
 
+        // 如果说minCapacity也就是所需的最小容量大于保存ArrayList数据的数组的长度的话，就需要调用grow(minCapacity)方法扩容。
+        // 这个minCapacity到底为多少呢？举个例子，在添加元素（add）方法中，这个minCapacity的大小就为现在数组的长度加1
         // overflow-conscious code
         if (minCapacity - elementData.length > 0)
+            // 调用grow方法进行扩容，调用此方法代表已经开始扩容了
             grow(minCapacity);
     }
 
@@ -270,17 +279,27 @@ public class ArrayList<E> extends AbstractList<E>
     private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
 
     /**
+     * ArrayList扩容的核心方法
      * Increases the capacity to ensure that it can hold at least the
      * number of elements specified by the minimum capacity argument.
      *
-     * @param minCapacity the desired minimum capacity
+     * @param minCapacity the desired minimum cap acity
      */
     private void grow(int minCapacity) {
         // overflow-conscious code
+        // elementData为保存ArrayList数据的数组
+        // elementData.length求数组长度
+        // oldCapacity为旧容量，newCapacity为新容量
         int oldCapacity = elementData.length;
+        // 将oldCapacity右移一位，其效果相当于oldCapacity/2
+        // 我们知道位运算的速度远远快于整除运算，整除运算式的结果就是将新容量更新为旧容量的1.5倍
         int newCapacity = oldCapacity + (oldCapacity >> 1);
+        // 然后检查新容量是否大于最小需要容量，若还是小于最小需要容量，那么就把最小需要容量当作数组的新容量，
         if (newCapacity - minCapacity < 0)
             newCapacity = minCapacity;
+        // 再检查新容量是否超出了ArrayList所定义的最大容量
+        // 若超出了，则调用hugeCapacity()来比较minCapacity和MAX_ARRAY_SIZE，
+        // 如果minCapacity大于MAX_ARRAY_SIZE，则新容量为Integer.MAX_VALUE；否则，新容量大小为MAX_ARRAY_SIZE
         if (newCapacity - MAX_ARRAY_SIZE > 0)
             newCapacity = hugeCapacity(minCapacity);
         // minCapacity is usually close to size, so this is a win:
