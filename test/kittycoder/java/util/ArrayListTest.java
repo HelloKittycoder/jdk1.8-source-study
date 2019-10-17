@@ -2,9 +2,7 @@ package kittycoder.java.util;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
@@ -196,6 +194,34 @@ public class ArrayListTest {
         }
     }
 
+    // 测试传入Collection的构造器
+    @Test
+    public void testConstructorWithCollection() {
+        List<String> strList = generateList();
+        // 通过List构造出一个list
+        List<String> cc1 = new ArrayList<>(strList);
+        System.out.println(cc1);
+
+        // 通过Set构造出一个list
+        Set<String> strSet = new HashSet<>();
+        strSet.add("s1");
+        strSet.add("s2");
+        strSet.add("s3");
+        List<String> cc2 = new ArrayList<>(strSet);
+        System.out.println(cc2);
+
+        Set<Student> stuSet = new HashSet<>();
+        Student s;
+        s = new Student(1, "s1");
+        stuSet.add(s);
+        s = new Student(2, "s2");
+        stuSet.add(s);
+        s = new Student(3, "s3");
+        stuSet.add(s);
+        List<Student> ccStu = new ArrayList<>(stuSet);
+        System.out.println(ccStu);
+    }
+
     private List<String> generateList() {
         List<String> strList = new ArrayList<>();
         strList.add("11");
@@ -214,5 +240,42 @@ public class ArrayListTest {
         strList.add("11");
         strList.add("55");
         return strList;
+    }
+
+    private static class Student {
+        private Integer id;
+        private String name;
+
+        public Student() {
+        }
+
+        public Student(Integer id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        public Integer getId() {
+            return id;
+        }
+
+        public void setId(Integer id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return "Student{" +
+                    "id=" + id +
+                    ", name='" + name + '\'' +
+                    '}';
+        }
     }
 }

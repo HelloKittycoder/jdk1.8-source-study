@@ -111,11 +111,13 @@ public class ArrayList<E> extends AbstractList<E>
 
     /**
      * Default initial capacity.
+     * 默认初始容量大小
      */
     private static final int DEFAULT_CAPACITY = 10;
 
     /**
      * Shared empty array instance used for empty instances.
+     * 空数组（用于空实例）
      */
     private static final Object[] EMPTY_ELEMENTDATA = {};
 
@@ -123,6 +125,8 @@ public class ArrayList<E> extends AbstractList<E>
      * Shared empty array instance used for default sized empty instances. We
      * distinguish this from EMPTY_ELEMENTDATA to know how much to inflate when
      * first element is added.
+     * 用于默认大小空实例的共享数组实例
+     * 我们把它从EMPTY_ELEMENTDATA数组中区分出来，以知道在添加第一个元素时容量需要增加多少
      */
     private static final Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {};
 
@@ -131,11 +135,13 @@ public class ArrayList<E> extends AbstractList<E>
      * The capacity of the ArrayList is the length of this array buffer. Any
      * empty ArrayList with elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA
      * will be expanded to DEFAULT_CAPACITY when the first element is added.
+     * 保存ArrayList数据的数组
      */
     transient Object[] elementData; // non-private to simplify nested class access
 
     /**
      * The size of the ArrayList (the number of elements it contains).
+     * ArrayList所包含的元素个数
      *
      * @serial
      */
@@ -143,6 +149,7 @@ public class ArrayList<E> extends AbstractList<E>
 
     /**
      * Constructs an empty list with the specified initial capacity.
+     * 带初始容量的构造函数（用户自己指定容量）
      *
      * @param  initialCapacity  the initial capacity of the list
      * @throws IllegalArgumentException if the specified initial capacity
@@ -150,8 +157,10 @@ public class ArrayList<E> extends AbstractList<E>
      */
     public ArrayList(int initialCapacity) {
         if (initialCapacity > 0) {
+            // 创建initialCapacity大小的数组
             this.elementData = new Object[initialCapacity];
         } else if (initialCapacity == 0) {
+            // 创建空数组
             this.elementData = EMPTY_ELEMENTDATA;
         } else {
             throw new IllegalArgumentException("Illegal Capacity: "+
@@ -173,17 +182,25 @@ public class ArrayList<E> extends AbstractList<E>
      * collection, in the order they are returned by the collection's
      * iterator.
      *
+     * 按照它们由集合的迭代器返回的顺序，构造一个包含指定集合的元素的列表
+     *
      * @param c the collection whose elements are to be placed into this list
      * @throws NullPointerException if the specified collection is null
      */
     public ArrayList(Collection<? extends E> c) {
+        // 将传入的集合c转换成数组
         elementData = c.toArray();
+        // 如果得到的数组元素数量不为0，也就是说集合c不是空的
         if ((size = elementData.length) != 0) {
             // c.toArray might (incorrectly) not return Object[] (see 6260652)
+            // 后续抽空看下 https://blog.csdn.net/gulu_gulu_jp/article/details/51457492
+            // c.toArray可能返回的不是Object类型的数组，所以加上下面的语句用于判断
             if (elementData.getClass() != Object[].class)
                 elementData = Arrays.copyOf(elementData, size, Object[].class);
         } else {
+            // 如果集合c是空的
             // replace with empty array.
+            // 使用EMPTY_ELEMENTDATA，对数组元素进行初始化
             this.elementData = EMPTY_ELEMENTDATA;
         }
     }
