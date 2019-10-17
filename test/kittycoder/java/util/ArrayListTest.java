@@ -2,6 +2,7 @@ package kittycoder.java.util;
 
 import org.junit.Test;
 
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
@@ -220,6 +221,21 @@ public class ArrayListTest {
         stuSet.add(s);
         List<Student> ccStu = new ArrayList<>(stuSet);
         System.out.println(ccStu);
+    }
+
+    // 测试trimToSize方法
+    @Test
+    public void testTrimToSize() throws Exception {
+        List<String> strList = (ArrayList<String>) generateList();
+        Field elementDataField = ArrayList.class.getDeclaredField("elementData");
+        elementDataField.setAccessible(true);
+        Object[] elementData = (Object[]) elementDataField.get(strList);
+        System.out.println("修改前====list的size为" + strList.size() +
+                "，elementData的length为" + elementData.length);
+        ((ArrayList<String>)strList).trimToSize();
+        elementData = (Object[]) elementDataField.get(strList);
+        System.out.println("修改后====list的size为" + strList.size() +
+                "，elementData的length为" + elementData.length);
     }
 
     private List<String> generateList() {
