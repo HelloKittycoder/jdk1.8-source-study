@@ -420,6 +420,7 @@ public class LinkedList<E>
      *              from the specified collection
      * @param c collection containing elements to be added to this list
      * @return {@code true} if this list changed as a result of the call
+     *      true表示调用addAll方法后list发生了变化
      * @throws IndexOutOfBoundsException {@inheritDoc}
      * @throws NullPointerException if the specified collection is null
      */
@@ -430,6 +431,7 @@ public class LinkedList<E>
         Object[] a = c.toArray();
         // 计算需要添加的元素数量
         int numNew = a.length;
+        // 如果集合c的元素数量为0，直接返回false
         if (numNew == 0)
             return false;
 
@@ -439,6 +441,7 @@ public class LinkedList<E>
             succ = null;
             pred = last;
         } else {
+            // 如果添加到链表中间
             succ = node(index);
             pred = succ.prev;
         }
@@ -461,8 +464,17 @@ public class LinkedList<E>
             // 如果是添加到链表末尾，则将last指向集合c里的最后一个元素
             last = pred;
         } else {
+            // 如果是添加到链表中间
+            // pred和succ相互引用；pred的后继为succ，succ前驱为pred
+            // 说明：下面两行可以调换顺序
             pred.next = succ;
             succ.prev = pred;
+            // 理由：首先逻辑层面，这两个肯定能互换；
+            // 那么在代码层面呢？主要看pred和succ是否有可能为空，其实这两个都不可能为空。
+            // 已经进到else，显然succ不为空；
+            // 能进到这个说明已经经历了前面的for循环。为什么能断定进了前面的for循环呢？
+            // 因为假如没进for循环，说明a里面没元素，那就会有numNew=0，这样就会提前退出。而这是不可能的，说明已经进了for循环。
+            // 从for循环里的代码可以看出，即使pred为null，中途也会指向新节点，所以pred不为空
         }
 
         size += numNew;
