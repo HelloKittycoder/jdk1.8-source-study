@@ -398,6 +398,8 @@ public class LinkedList<E>
      * progress.  (Note that this will occur if the specified collection is
      * this list, and it's nonempty.)
      *
+     * 将集合c中的所有元素添加到链表末尾
+     *
      * @param c collection containing elements to be added to this list
      * @return {@code true} if this list changed as a result of the call
      * @throws NullPointerException if the specified collection is null
@@ -424,13 +426,16 @@ public class LinkedList<E>
     public boolean addAll(int index, Collection<? extends E> c) {
         checkPositionIndex(index);
 
+        // 将传入的集合c转换为数组
         Object[] a = c.toArray();
+        // 计算需要添加的元素数量
         int numNew = a.length;
         if (numNew == 0)
             return false;
 
         Node<E> pred, succ;
         if (index == size) {
+            // 如果添加到链表末尾
             succ = null;
             pred = last;
         } else {
@@ -438,17 +443,22 @@ public class LinkedList<E>
             pred = succ.prev;
         }
 
+        // 遍历需要添加到链表中的集合c里的元素
         for (Object o : a) {
             @SuppressWarnings("unchecked") E e = (E) o;
+            // 新建节点
             Node<E> newNode = new Node<>(pred, e, null);
             if (pred == null)
                 first = newNode;
             else
+                // 将pred的next指向新节点
                 pred.next = newNode;
+            // 将pred指向新节点，然后再进入下一次循环
             pred = newNode;
         }
 
         if (succ == null) {
+            // 如果是添加到链表末尾，则将last指向集合c里的最后一个元素
             last = pred;
         } else {
             pred.next = succ;
