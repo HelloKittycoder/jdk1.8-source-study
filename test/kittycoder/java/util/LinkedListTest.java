@@ -10,12 +10,24 @@ import java.util.List;
  */
 public class LinkedListTest {
 
+    // 将指定元素添加到链表末尾
     @Test
     public void testAdd() {
         List<String> strList = new LinkedList<>();
         strList.add("11");
         strList.add("22");
         strList.add("33");
+        System.out.println(strList);
+    }
+
+    // 给指定位置添加元素
+    @Test
+    public void testAddIndex() {
+        List<String> strList = new LinkedList<>();
+        strList.add("11");
+        strList.add("22");
+        strList.add("33");
+        strList.add(1, "hehe");
         System.out.println(strList);
     }
 }

@@ -22,7 +22,7 @@ public class ArrayListTest {
         System.out.println(stringList);
     }
 
-    // 给指定位置添加index
+    // 给指定位置添加元素
     @Test
     public void addIndex() {
         stringList = generateList();

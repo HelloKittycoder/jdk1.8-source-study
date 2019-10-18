@@ -160,15 +160,23 @@ public class LinkedList<E>
 
     /**
      * Inserts element e before non-null Node succ.
+     * 将指定元素e插到节点succ之前
      */
     void linkBefore(E e, Node<E> succ) {
         // assert succ != null;
+        // 获取succ的前一个节点pred
         final Node<E> pred = succ.prev;
+        // 创建一个新节点，节点元素为e，该节点位于pred和succ之前
+        // node.item=e;
+        // node.next=succ;
+        // node.prev=pred;
         final Node<E> newNode = new Node<>(pred, e, succ);
+        // 将succ的prev指向新节点
         succ.prev = newNode;
         if (pred == null)
             first = newNode;
         else
+            // 将pred的next指向新节点
             pred.next = newNode;
         size++;
         modCount++;
@@ -510,6 +518,8 @@ public class LinkedList<E>
      * Shifts the element currently at that position (if any) and any
      * subsequent elements to the right (adds one to their indices).
      *
+     * 在指定位置插入元素
+     *
      * @param index index at which the specified element is to be inserted
      * @param element element to be inserted
      * @throws IndexOutOfBoundsException {@inheritDoc}
@@ -518,8 +528,10 @@ public class LinkedList<E>
         checkPositionIndex(index);
 
         if (index == size)
+            // 如果添加到链表末尾
             linkLast(element);
         else
+            // 如果添加到链表中间
             linkBefore(element, node(index));
     }
 
@@ -567,22 +579,29 @@ public class LinkedList<E>
     }
 
     private void checkPositionIndex(int index) {
+        // 检查要插入的位置是否符合要求（index范围：[0,size]）
         if (!isPositionIndex(index))
             throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
     }
 
     /**
      * Returns the (non-null) Node at the specified element index.
+     * 返回指定索引的节点
      */
     Node<E> node(int index) {
         // assert isElementIndex(index);
 
+        // size>>1相当于计算size/2（返回整数部分）
+        // 举例：size等于3时，index为1，会进到else（后半部分）；size为奇数时，处在中间的那个数会被归到后半部分
+        // size等于4时，index为1，会进到if（前半部分）；size为偶数时，刚好能平分
         if (index < (size >> 1)) {
+            // 如果index位于[0,size-1]的前半部分，则从first开始正序遍历
             Node<E> x = first;
             for (int i = 0; i < index; i++)
                 x = x.next;
             return x;
         } else {
+            // 如果index位于[0,size-1]的后半部分，则从last开始倒序遍历
             Node<E> x = last;
             for (int i = size - 1; i > index; i--)
                 x = x.prev;
