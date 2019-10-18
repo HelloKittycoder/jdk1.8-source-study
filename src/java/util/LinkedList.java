@@ -136,14 +136,23 @@ public class LinkedList<E>
 
     /**
      * Links e as last element.
+     * 链接使e作为最后一个元素
      */
     void linkLast(E e) {
+        // 获取原来最后一个元素的引用
         final Node<E> l = last;
+        // 新建节点
         final Node<E> newNode = new Node<>(l, e, null);
+        // 说明下：
+        // last = newNode;
+        // l.next = newNode;
+        // 这两步操作不能调换次序，一开始LinkedList中没数据时，last为null，l也为null，l.next会报错
+        // 将当前list的last节点指向新创建的节点
         last = newNode;
         if (l == null)
             first = newNode;
         else
+            // 将原有的最后一个元素的后继指向newNode
             l.next = newNode;
         size++;
         modCount++;
@@ -328,6 +337,8 @@ public class LinkedList<E>
 
     /**
      * Appends the specified element to the end of this list.
+     *
+     * 将指定元素追加到list的末尾
      *
      * <p>This method is equivalent to {@link #addLast}.
      *
