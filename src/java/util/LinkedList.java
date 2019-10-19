@@ -515,6 +515,7 @@ public class LinkedList<E>
 
     /**
      * Returns the element at the specified position in this list.
+     * 根据指定索引返回数据
      *
      * @param index index of the element to return
      * @return the element at the specified position in this list
@@ -522,6 +523,7 @@ public class LinkedList<E>
      */
     public E get(int index) {
         checkElementIndex(index);
+        // 调用node(int)方法找到index对应的node，然后返回它的值
         return node(index).item;
     }
 
@@ -603,6 +605,7 @@ public class LinkedList<E>
     }
 
     private void checkElementIndex(int index) {
+        // 检查需要获取的元素相应的index是否符合要求（index范围：[0,size)）
         if (!isElementIndex(index))
             throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
     }

@@ -74,6 +74,11 @@ public class LinkedListTest {
         System.out.println("新的stringList为" + stringList);
     }
 
+    // 获取头节点（index=0）数据方法：
+    // getFirst，element，peek，peekFirst
+    // 说明：getFirst和element一样，peek和peekFirst一样；
+    // 这四个获取头节点方法的区别在于对链表为空时的处理，是抛出异常还是返回null，其中getFirst()和element()方法会在链表为空时，抛出异常
+
     private List<String> generateList() {
         List<String> strList = new LinkedList<>();
         strList.add("11");
