@@ -88,11 +88,20 @@ public class LinkedListTest {
     // 获取头节点（index=0）数据方法：
     // getFirst，element，peek，peekFirst
     // 说明：getFirst和element一样，peek和peekFirst一样；
-    // 这四个获取头节点方法的区别在于对链表为空时的处理，是抛出异常还是返回null，其中getFirst()和element()方法会在链表为空时，抛出异常
+    // 这四个获取头节点方法的区别在于对链表为空时的处理，是抛出异常还是返回null，
+    // 其中getFirst()和element()方法会在链表为空时，抛出NoSuchElementException，
+    // peek()和peekFirst()只是会返回null
 
     // 获取尾节点（index=-1）数据方法：
     // getLast，peekLast
     // 说明：getLast()方法在链表为空时，会抛出NoSuchElementException，而peekLast()则不会，只是会返回null
+
+    // 删除头节点：
+    // remove,pop,removeFirst,poll,pollFirst
+    // 说明：remove，pop，removeFirst都是一样的
+    // 这五个删除头节点方法的区别在于对链表头节点为空时的处理，是抛出异常还是返回null，
+    // 其中remove()，pop()，removeFirst()在链表为空时，会抛出NoSuchElementException，
+    // 而poll()和pollFirst()则不会，只是会返回null
 
     private List<String> generateList() {
         List<String> strList = new LinkedList<>();
