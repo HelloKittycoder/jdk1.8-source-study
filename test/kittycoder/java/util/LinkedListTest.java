@@ -85,6 +85,18 @@ public class LinkedListTest {
         System.out.println("元素11最后一次出现的索引为：" + index); // 5
     }
 
+    // 测试remove(int)和remove(Object)方法
+    @Test
+    public void testRemove() {
+        stringList = generateList2();
+        System.out.println("stringList为" + stringList);
+        boolean isRemoved = stringList.remove("11");
+        System.out.println("元素11移除" + (isRemoved ? "成功" : "失败")
+                + "，当前list为" + stringList);
+        String removedStr = stringList.remove(1);
+        System.out.println("索引为1的元素" + removedStr + "被移除，当前list为" + stringList);
+    }
+
     // 获取头节点（index=0）数据方法：
     // getFirst，element，peek，peekFirst
     // 说明：getFirst和element一样，peek和peekFirst一样；

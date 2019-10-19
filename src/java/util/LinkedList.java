@@ -231,23 +231,34 @@ public class LinkedList<E>
     E unlink(Node<E> x) {
         // assert x != null;
         final E element = x.item;
-        final Node<E> next = x.next;
-        final Node<E> prev = x.prev;
+        final Node<E> next = x.next; // 得到后继节点
+        final Node<E> prev = x.prev; // 得到前驱节点
 
+        // 删除前驱指针
         if (prev == null) {
+            // 如果删除的节点是头节点，则令头节点指向该节点的后继节点
             first = next;
         } else {
+            // 说明：下面两行代码可以调换顺序
+            // 将前驱节点的后继节点指向后继节点
             prev.next = next;
+            // 断开当前节点与前驱节点的连接
             x.prev = null;
         }
 
+        // 删除后继指针
         if (next == null) {
+            // 如果删除的节点是尾节点，则令尾节点指向该节点的前驱节点
             last = prev;
         } else {
+            // 说明：下面两行代码可以调换顺序
+            // 将后继节点的前驱节点指向前驱节点
             next.prev = prev;
+            // 断开当前节点与后继节点的连接
             x.next = null;
         }
 
+        // 将当前节点的item设置为null
         x.item = null;
         size--;
         modCount++;
@@ -375,11 +386,14 @@ public class LinkedList<E>
      * contained the specified element (or equivalently, if this list
      * changed as a result of the call).
      *
+     * 移除链表中的指定元素（只会移除在list中第一次出现的位置对应的元素）
+     *
      * @param o element to be removed from this list, if present
      * @return {@code true} if this list contained the specified element
      */
     public boolean remove(Object o) {
         if (o == null) {
+            // 要移除的元素为null
             for (Node<E> x = first; x != null; x = x.next) {
                 if (x.item == null) {
                     unlink(x);
@@ -387,8 +401,10 @@ public class LinkedList<E>
                 }
             }
         } else {
+            // 要移除的元素不为null
             for (Node<E> x = first; x != null; x = x.next) {
                 if (o.equals(x.item)) {
+                    // 断开链表与节点x的连接
                     unlink(x);
                     return true;
                 }
@@ -571,12 +587,15 @@ public class LinkedList<E>
      * subsequent elements to the left (subtracts one from their indices).
      * Returns the element that was removed from the list.
      *
+     * 移除链表中指定位置的元素
+     *
      * @param index the index of the element to be removed
      * @return the element previously at the specified position
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     public E remove(int index) {
         checkElementIndex(index);
+        // 断开链表与索引为index的节点的连接
         return unlink(node(index));
     }
 
