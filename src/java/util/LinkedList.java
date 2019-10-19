@@ -123,12 +123,17 @@ public class LinkedList<E>
      * Links e as first element.
      */
     private void linkFirst(E e) {
+        // 通过f记录原有的first节点
         final Node<E> f = first;
+        // 新建节点（以first节点为后继节点，前驱指向null）
         final Node<E> newNode = new Node<>(null, e, f);
+        // 将链表的first指向新节点
         first = newNode;
         if (f == null)
+            // 如果链表为空，则last节点也指向该节点
             last = newNode;
         else
+            // 将原有的first节点前驱指向新节点
             f.prev = newNode;
         size++;
         modCount++;
@@ -303,6 +308,7 @@ public class LinkedList<E>
 
     /**
      * Inserts the specified element at the beginning of this list.
+     * 将元素添加到链表头部
      *
      * @param e the element to add
      */
@@ -312,6 +318,7 @@ public class LinkedList<E>
 
     /**
      * Appends the specified element to the end of this list.
+     * 将元素添加到链表尾部
      *
      * <p>This method is equivalent to {@link #add}.
      *

@@ -2,6 +2,7 @@ package kittycoder.java.util;
 
 import org.junit.Test;
 
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -53,6 +54,24 @@ public class LinkedListTest {
         boolean isAdded = stringList.addAll(1, strList2);
         System.out.println("strList2" + strList2 + "添加" + (isAdded ? "成功" : "失败")
                 + "，新的stringList为" + stringList);
+    }
+
+    // 测试addFirst方法
+    @Test
+    public void testAddFirst() {
+        List<String> stringList = generateList();
+        System.out.println("旧的stringList为" + stringList);
+        ((Deque<String>)stringList).addFirst("hehe");
+        System.out.println("新的stringList为" + stringList);
+    }
+
+    // 测试addLast方法
+    @Test
+    public void testAddLast() {
+        List<String> stringList = generateList();
+        System.out.println("旧的stringList为" + stringList);
+        ((Deque<String>)stringList).addLast("hehe");
+        System.out.println("新的stringList为" + stringList);
     }
 
     private List<String> generateList() {
