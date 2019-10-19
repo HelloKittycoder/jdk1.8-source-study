@@ -59,7 +59,7 @@ public class LinkedListTest {
     // 测试addFirst方法
     @Test
     public void testAddFirst() {
-        List<String> stringList = generateList();
+        stringList = generateList();
         System.out.println("旧的stringList为" + stringList);
         ((Deque<String>)stringList).addFirst("hehe");
         System.out.println("新的stringList为" + stringList);
@@ -68,10 +68,21 @@ public class LinkedListTest {
     // 测试addLast方法
     @Test
     public void testAddLast() {
-        List<String> stringList = generateList();
+        stringList = generateList();
         System.out.println("旧的stringList为" + stringList);
         ((Deque<String>)stringList).addLast("hehe");
         System.out.println("新的stringList为" + stringList);
+    }
+
+    // 测试indexOf和lastIndexOf方法
+    @Test
+    public void testIndex() {
+        stringList = generateList2();
+        int index;
+        index = stringList.indexOf("11");
+        System.out.println("元素11首次出现的索引为：" + index); // 1
+        index = stringList.lastIndexOf("11");
+        System.out.println("元素11最后一次出现的索引为：" + index); // 5
     }
 
     // 获取头节点（index=0）数据方法：
@@ -88,6 +99,18 @@ public class LinkedListTest {
         strList.add("11");
         strList.add("22");
         strList.add("33");
+        return strList;
+    }
+
+    private List<String> generateList2() {
+        List<String> strList = new LinkedList<>();
+        strList.add("22");
+        strList.add("11");
+        strList.add("33");
+        strList.add("11");
+        strList.add("44");
+        strList.add("11");
+        strList.add("55");
         return strList;
     }
 }

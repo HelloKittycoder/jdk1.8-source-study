@@ -650,6 +650,8 @@ public class LinkedList<E>
      * <tt>(o==null&nbsp;?&nbsp;get(i)==null&nbsp;:&nbsp;o.equals(get(i)))</tt>,
      * or -1 if there is no such index.
      *
+     * 查找链表中首次出现元素o的索引，如果没找到，则返回-1
+     *
      * @param o element to search for
      * @return the index of the first occurrence of the specified element in
      *         this list, or -1 if this list does not contain the element
@@ -657,12 +659,14 @@ public class LinkedList<E>
     public int indexOf(Object o) {
         int index = 0;
         if (o == null) {
+            // 元素为null
             for (Node<E> x = first; x != null; x = x.next) {
                 if (x.item == null)
                     return index;
                 index++;
             }
         } else {
+            // 元素不为null
             for (Node<E> x = first; x != null; x = x.next) {
                 if (o.equals(x.item))
                     return index;
@@ -679,6 +683,8 @@ public class LinkedList<E>
      * <tt>(o==null&nbsp;?&nbsp;get(i)==null&nbsp;:&nbsp;o.equals(get(i)))</tt>,
      * or -1 if there is no such index.
      *
+     * 查找链表中最后一次出现元素o的索引，如果没找到，则返回-1
+     *
      * @param o element to search for
      * @return the index of the last occurrence of the specified element in
      *         this list, or -1 if this list does not contain the element
@@ -686,12 +692,14 @@ public class LinkedList<E>
     public int lastIndexOf(Object o) {
         int index = size;
         if (o == null) {
+            // 元素为null
             for (Node<E> x = last; x != null; x = x.prev) {
                 index--;
                 if (x.item == null)
                     return index;
             }
         } else {
+            // 元素不为null
             for (Node<E> x = last; x != null; x = x.prev) {
                 index--;
                 if (o.equals(x.item))
