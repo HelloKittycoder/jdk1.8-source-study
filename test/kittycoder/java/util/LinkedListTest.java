@@ -79,6 +79,10 @@ public class LinkedListTest {
     // 说明：getFirst和element一样，peek和peekFirst一样；
     // 这四个获取头节点方法的区别在于对链表为空时的处理，是抛出异常还是返回null，其中getFirst()和element()方法会在链表为空时，抛出异常
 
+    // 获取尾节点（index=-1）数据方法：
+    // getLast，peekLast
+    // 说明：getLast()方法在链表为空时，会抛出NoSuchElementException，而peekLast()则不会，只是会返回null
+
     private List<String> generateList() {
         List<String> strList = new LinkedList<>();
         strList.add("11");
