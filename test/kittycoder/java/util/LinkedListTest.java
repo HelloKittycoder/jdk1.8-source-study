@@ -97,6 +97,26 @@ public class LinkedListTest {
         System.out.println("索引为1的元素" + removedStr + "被移除，当前list为" + stringList);
     }
 
+    // 测试removeFirst方法
+    @Test
+    public void testRemoveFirst() {
+        stringList = generateList();
+        System.out.println("旧的stringList为" + stringList);
+        String removedStr = ((Deque<String>)stringList).removeFirst();
+        System.out.println("元素" + removedStr + "被移除");
+        System.out.println("新的stringList为" + stringList);
+    }
+
+    // 测试removeLast方法
+    @Test
+    public void testRemoveLast() {
+        stringList = generateList();
+        System.out.println("旧的stringList为" + stringList);
+        String removedStr = ((Deque<String>)stringList).removeLast();
+        System.out.println("元素" + removedStr + "被移除");
+        System.out.println("新的stringList为" + stringList);
+    }
+
     // 获取头节点（index=0）数据方法：
     // getFirst，element，peek，peekFirst
     // 说明：getFirst和element一样，peek和peekFirst一样；

@@ -189,17 +189,26 @@ public class LinkedList<E>
 
     /**
      * Unlinks non-null first node f.
+     * 删除不为null的头节点
      */
     private E unlinkFirst(Node<E> f) {
         // assert f == first && f != null;
+        // 获取头节点的元素，用于返回
         final E element = f.item;
+        // 获取头节点的后继节点
         final Node<E> next = f.next;
+        // 将头节点的元素设置为null
         f.item = null;
+        // 将头节点的后继节点设置为null，断开头节点和后继节点的连接
         f.next = null; // help GC
+        // 将链表的头节点指向当前头节点的后继节点
         first = next;
+        // 删除之前头节点的后继节点的前驱指针
         if (next == null)
+            // 如果之前链表中只有一个节点f，则令尾节点为null（此时first和last同时指向null，变成了一个空链表）
             last = null;
         else
+            // 将之前头节点的后继节点的前驱指向null
             next.prev = null;
         size--;
         modCount++;
@@ -208,17 +217,26 @@ public class LinkedList<E>
 
     /**
      * Unlinks non-null last node l.
+     * 删除不为null的尾节点
      */
     private E unlinkLast(Node<E> l) {
         // assert l == last && l != null;
+        // 获取尾节点的元素，用于返回
         final E element = l.item;
+        // 获取尾节点的前驱节点
         final Node<E> prev = l.prev;
+        // 将尾节点的元素设置尾null
         l.item = null;
+        // 将尾节点的前驱节点设置为null，断开尾节点和前驱节点的连接
         l.prev = null; // help GC
+        // 将链表的尾节点指向当前尾节点的前驱节点
         last = prev;
+        // 删除之前尾节点的前驱节点的后继指针
         if (prev == null)
+            // 如果之前链表中只有一个节点l，则令头节点为null（此时first和last同时指向null，变成了一个空链表）
             first = null;
         else
+            // 将之前尾节点的前驱节点的后继指向null
             prev.next = null;
         size--;
         modCount++;
