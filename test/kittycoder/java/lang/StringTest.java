@@ -55,6 +55,36 @@ public class StringTest {
         // 通过已有的String来创建一个String对象
         String str = new String("test");
         System.out.println(str);
+
+        // 通过char数组来创建一个String对象
+        char[] ch1 = {'T', 'E', 'S', 'T'};
+        str = new String(ch1);
+        System.out.println(str);
+
+        // 截取char数组中的某一部分来创建一个String对象
+        str = new String(ch1, 1, 2);
+        System.out.println(str);
+    }
+
+    // 测试下Note: offset or count might be near -1>>>1.
+    // 这句话是在说溢出问题：
+    // 意思是说要注意offset或count都有可能接近 -1>>>1
+    // 需要写成：offset > value.length - count
+    // 而不能写成：offset + count > length
+    // http://www.hackerav.com/?post=25743
+    @Test
+    public void testOneNoteInStringOffsetCount() {
+
+        // int占32位，-1用二进制表示是32个1，无符号右移一位后，
+        // 高位补0，也就是0后面跟31个1，变成了2^31（就是Integer.MAX_VALUE）
+        // System.out.println(-1>>>1 == Integer.MAX_VALUE); // true
+
+        int cc = -1>>>1;
+        int offset = cc - 1;
+        int length = cc;
+        int count = 3;
+        System.out.println(offset > length - count);
+        System.out.println(offset + count > length);
     }
     /** =========================构造器=========================== **/
 }

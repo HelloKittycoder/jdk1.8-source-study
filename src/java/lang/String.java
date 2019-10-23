@@ -165,6 +165,8 @@ public final class String
      * contents of the character array are copied; subsequent modification of
      * the character array does not affect the newly created string.
      *
+     * 通过char数组来创建一个String对象
+     *
      * @param  value
      *         The initial value of the string
      */
@@ -180,14 +182,19 @@ public final class String
      * subarray are copied; subsequent modification of the character array does
      * not affect the newly created string.
      *
+     * 截取char数组中的某一部分来创建一个String对象
+     *
      * @param  value
      *         Array that is the source of characters
+     *         需要截取的char数组
      *
      * @param  offset
      *         The initial offset
+     *         截取的起始位置
      *
      * @param  count
      *         The length
+     *         需要截取的元素数量
      *
      * @throws  IndexOutOfBoundsException
      *          If the {@code offset} and {@code count} arguments index
@@ -207,9 +214,13 @@ public final class String
             }
         }
         // Note: offset or count might be near -1>>>1.
+        // 对于这个Note的解释，详见StringTest#testOneNoteInStringOffsetCount
+        // 判断offset是否符合要求（offset至多为value.length-count，也就是[0,value.length-count]）
         if (offset > value.length - count) {
             throw new StringIndexOutOfBoundsException(offset + count);
         }
+        // 从传入的value数组中，复制索引范围为[offset,offset+count)的所有元素
+        // 到String的属性value数组中
         this.value = Arrays.copyOfRange(value, offset, offset+count);
     }
 

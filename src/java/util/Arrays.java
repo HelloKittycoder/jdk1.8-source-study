@@ -3320,6 +3320,9 @@ public class Arrays {
      * will exist if and only if the specified length is greater than that of
      * the original array.
      *
+     * 将char数组（original）复制到一个长度为newLength的数组（copy）中
+     * （实际复制的元素个数=min(original.length, newLength)）
+     *
      * @param original the array to be copied
      * @param newLength the length of the copy to be returned
      * @return a copy of the original array, truncated or padded with null characters
@@ -3644,6 +3647,11 @@ public class Arrays {
      * <tt>'\\u000'</tt> is placed in all elements of the copy whose index is
      * greater than or equal to <tt>original.length - from</tt>.  The length
      * of the returned array will be <tt>to - from</tt>.
+     *
+     * 将char数组（original）复制到一个长度为newLength的数组（copy）中，
+     * 复制的索引范围为[from,to)，即[from,to-1]
+     * （实际复制的元素个数=min(original.length-from, newLength)
+     * =min(original.length-from, to-from)）
      *
      * @param original the array from which a range is to be copied
      * @param from the initial index of the range to be copied, inclusive
