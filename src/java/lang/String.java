@@ -392,12 +392,18 @@ public final class String
     /* Common private utility method used to bounds check the byte array
      * and requested offset & length values used by the String(byte[],..)
      * constructors.
+     *
+     * 对String(byte[],..)这一类（截取byte数组的某一部分来创建String）的构造器，
+     * 需要用到的共用检查方法（根据byte[]来检查offset和length）
      */
     private static void checkBounds(byte[] bytes, int offset, int length) {
+        // 如果length < 0
         if (length < 0)
             throw new StringIndexOutOfBoundsException(length);
+        // 如果offset < 0
         if (offset < 0)
             throw new StringIndexOutOfBoundsException(offset);
+        // 截取的起始位置范围[0, bytes.length-length]
         if (offset > bytes.length - length)
             throw new StringIndexOutOfBoundsException(offset + length);
     }
@@ -413,18 +419,24 @@ public final class String
      * java.nio.charset.CharsetDecoder} class should be used when more control
      * over the decoding process is required.
      *
+     * 截取byte数组中的某一部分来创建String，同时指定charsetName
+     *
      * @param  bytes
      *         The bytes to be decoded into characters
+     *         需要截取的byte数组
      *
      * @param  offset
      *         The index of the first byte to decode
+     *         截取的起始位置
      *
      * @param  length
      *         The number of bytes to decode
+     *         需要截取的元素数量
 
      * @param  charsetName
      *         The name of a supported {@linkplain java.nio.charset.Charset
      *         charset}
+     *         字符集名称
      *
      * @throws  UnsupportedEncodingException
      *          If the named charset is not supported
@@ -440,6 +452,7 @@ public final class String
         if (charsetName == null)
             throw new NullPointerException("charsetName");
         checkBounds(bytes, offset, length);
+        // 使用指定编码将byte数组中的元素转换至String的value属性中
         this.value = StringCoding.decode(charsetName, bytes, offset, length);
     }
 
@@ -490,6 +503,8 @@ public final class String
      * in the given charset is unspecified.  The {@link
      * java.nio.charset.CharsetDecoder} class should be used when more control
      * over the decoding process is required.
+     *
+     * 通过byte数组来创建String，同时指定charset
      *
      * @param  bytes
      *         The bytes to be decoded into characters
@@ -543,14 +558,19 @@ public final class String
      * java.nio.charset.CharsetDecoder} class should be used when more control
      * over the decoding process is required.
      *
+     * 截取byte数组中的某一部分来创建String
+     *
      * @param  bytes
      *         The bytes to be decoded into characters
+     *         需要截取的byte数组
      *
      * @param  offset
      *         The index of the first byte to decode
+     *         截取的起始位置
      *
      * @param  length
      *         The number of bytes to decode
+     *         需要截取的元素数量
      *
      * @throws  IndexOutOfBoundsException
      *          If the {@code offset} and the {@code length} arguments index
@@ -560,6 +580,7 @@ public final class String
      */
     public String(byte bytes[], int offset, int length) {
         checkBounds(bytes, offset, length);
+        // 使用默认编码（UTF-8）将byte数组中的元素转换至String的value属性中
         this.value = StringCoding.decode(bytes, offset, length);
     }
 
@@ -573,6 +594,8 @@ public final class String
      * in the default charset is unspecified.  The {@link
      * java.nio.charset.CharsetDecoder} class should be used when more control
      * over the decoding process is required.
+     *
+     * 通过byte数组来创建String
      *
      * @param  bytes
      *         The bytes to be decoded into characters

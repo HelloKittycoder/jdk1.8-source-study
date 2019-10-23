@@ -86,5 +86,25 @@ public class StringTest {
         System.out.println(offset > length - count);
         System.out.println(offset + count > length);
     }
+
+    @Test
+    public void testConstructor2() throws Exception {
+        // 通过byte数组来创建String
+        byte[] abyte = {72, 101, 108, 108, 111};
+        String str = new String(abyte);
+        System.out.println(str); // Hello
+
+        // 截取byte数组中的某一部分来创建String
+        str = new String(abyte, 1, 2);
+        System.out.println(str); // el
+
+        // 通过byte数组来创建String，同时指定charsetName
+        str = new String(abyte, "UTF-8");
+        System.out.println(str);
+
+        // 截取byte数组中的某一部分来创建String，同时指定charsetName
+        str = new String(abyte, 1, 2, "UTF-8");
+        System.out.println(str); // el
+    }
     /** =========================构造器=========================== **/
 }
