@@ -111,9 +111,11 @@ import java.util.regex.PatternSyntaxException;
 public final class String
     implements java.io.Serializable, Comparable<String>, CharSequence {
     /** The value is used for character storage. */
+    // 存储字符串对象
     private final char value[];
 
     /** Cache the hash code for the string */
+    // 字符串对象的哈希值，默认为0
     private int hash; // Default to 0
 
     /** use serialVersionUID from JDK 1.0.2 for interoperability */
@@ -1180,6 +1182,8 @@ public final class String
      *
      * @see     java.text.Collator#compare(String, String)
      * @since   1.2
+     *
+     * 提供排序的比较器
      */
     public static final Comparator<String> CASE_INSENSITIVE_ORDER
                                          = new CaseInsensitiveComparator();
@@ -1191,16 +1195,20 @@ public final class String
         public int compare(String s1, String s2) {
             int n1 = s1.length();
             int n2 = s2.length();
+            // 获取s1和s2两个字符串中较短的那个字符串的长度
             int min = Math.min(n1, n2);
             for (int i = 0; i < min; i++) {
                 char c1 = s1.charAt(i);
                 char c2 = s2.charAt(i);
+                // 如果两个字符本身不相同，则尝试转换成大写后再比较
                 if (c1 != c2) {
                     c1 = Character.toUpperCase(c1);
                     c2 = Character.toUpperCase(c2);
+                    // 如果两个字符转换成大写后再比较仍然不相等，则尝试转换成小写后再比较
                     if (c1 != c2) {
                         c1 = Character.toLowerCase(c1);
                         c2 = Character.toLowerCase(c2);
+                        // 如果转换成小写后再比较仍然不相等，则直接返回c1-c2
                         if (c1 != c2) {
                             // No overflow because of numeric promotion
                             return c1 - c2;
@@ -1208,6 +1216,7 @@ public final class String
                     }
                 }
             }
+            // 如果前面各个字符比较后都相等，则直接返回字符串长度之差
             return n1 - n2;
         }
 
