@@ -48,4 +48,13 @@ public class StringTest {
             }
         }
     }
+
+    /** =========================构造器=========================== **/
+    @Test
+    public void testConstructor1() {
+        // 通过已有的String来创建一个String对象
+        String str = new String("test");
+        System.out.println(str);
+    }
+    /** =========================构造器=========================== **/
 }

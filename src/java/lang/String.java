@@ -135,6 +135,8 @@ public final class String
      * Initializes a newly created {@code String} object so that it represents
      * an empty character sequence.  Note that use of this constructor is
      * unnecessary since Strings are immutable.
+     *
+     * 创建一个空的String，这个一般用不到
      */
     public String() {
         this.value = "".value;
@@ -146,6 +148,8 @@ public final class String
      * newly created string is a copy of the argument string. Unless an
      * explicit copy of {@code original} is needed, use of this constructor is
      * unnecessary since Strings are immutable.
+     *
+     * 通过已有的String来创建一个String对象
      *
      * @param  original
      *         A {@code String}
