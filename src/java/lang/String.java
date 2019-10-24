@@ -1782,6 +1782,8 @@ public final class String
      * Returns the index within this string of the first occurrence of the
      * specified substring.
      *
+     * 获取String中首次出现子串str的索引（从首个字符开始找）
+     *
      * <p>The returned index is the smallest value <i>k</i> for which:
      * <blockquote><pre>
      * this.startsWith(str, <i>k</i>)
@@ -1805,6 +1807,8 @@ public final class String
      * <i>k</i> &gt;= fromIndex {@code &&} this.startsWith(str, <i>k</i>)
      * </pre></blockquote>
      * If no such value of <i>k</i> exists, then {@code -1} is returned.
+     *
+     * 获取String中首次出现子串str的索引（从指定索引位置开始找）
      *
      * @param   str         the substring to search for.
      * @param   fromIndex   the index from which to start the search.
@@ -1862,21 +1866,29 @@ public final class String
         }
 
         char first = target[targetOffset];
+        // 找到需要遍历的最大位置
         int max = sourceOffset + (sourceCount - targetCount);
 
         for (int i = sourceOffset + fromIndex; i <= max; i++) {
             /* Look for first character. */
+            // 找到第一个相等字符的位置，不相等就一直加
             if (source[i] != first) {
                 while (++i <= max && source[i] != first);
             }
 
             /* Found first character, now look at the rest of v2 */
+            // 再次判断下边界，如果大于边界就可以直接返回-1了
             if (i <= max) {
                 int j = i + 1;
                 int end = j + targetCount - 1;
+                // 这个循环找到和目标字符串完全相等的长度
+                // 中途一直在判断 j<end && source[j]==target[k]
                 for (int k = targetOffset + 1; j < end && source[j]
                         == target[k]; j++, k++);
+                /*System.out.println("k=" + k + ";j=" + j
+                        + ";source[j]=" + source[j] + "target[k]=" + target[k]);*/
 
+                // 如果已经对比到匹配目标字符中片段（[j,end]）的end，那么就认为找到了
                 if (j == end) {
                     /* Found whole string. */
                     return i - sourceOffset;
