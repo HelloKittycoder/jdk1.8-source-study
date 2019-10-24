@@ -612,11 +612,14 @@ public final class String
      * string buffer are copied; subsequent modification of the string buffer
      * does not affect the newly created string.
      *
+     * 通过StringBuffer来创建String
+     *
      * @param  buffer
      *         A {@code StringBuffer}
      */
     public String(StringBuffer buffer) {
         synchronized(buffer) {
+            // 将StringBuffer中char数组中实际存放的所有元素复制到String的value属性中
             this.value = Arrays.copyOf(buffer.getValue(), buffer.length());
         }
     }
@@ -631,12 +634,15 @@ public final class String
      * StringBuilder}. Obtaining a string from a string builder via the {@code
      * toString} method is likely to run faster and is generally preferred.
      *
+     * 通过StringBuilder来创建String
+     *
      * @param   builder
      *          A {@code StringBuilder}
      *
      * @since  1.5
      */
     public String(StringBuilder builder) {
+        // 将StringBuilder中char数组中实际存放的所有元素复制到String的value属性中
         this.value = Arrays.copyOf(builder.getValue(), builder.length());
     }
 

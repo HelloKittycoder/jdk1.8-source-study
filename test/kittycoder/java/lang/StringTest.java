@@ -106,5 +106,18 @@ public class StringTest {
         str = new String(abyte, 1, 2, "UTF-8");
         System.out.println(str); // el
     }
+
+    @Test
+    public void testConstructor3() throws Exception {
+        // 通过StringBuffer来创建String
+        StringBuilder sbuilder = new StringBuilder("111");
+        String str = new String(sbuilder);
+        System.out.println(str);
+
+        // 通过StringBuilder来创建String
+        StringBuffer sbuffer = new StringBuffer("222");
+        str = new String(sbuffer);
+        System.out.println(str);
+    }
     /** =========================构造器=========================== **/
 }
