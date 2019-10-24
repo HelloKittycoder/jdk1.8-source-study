@@ -1449,6 +1449,9 @@ public final class String
      * Tests if the substring of this string beginning at the
      * specified index starts with the specified prefix.
      *
+     * 检查String是否以prefix开头
+     * （从索引为toffset的位置开始检查）
+     *
      * @param   prefix    the prefix.
      * @param   toffset   where to begin looking in this string.
      * @return  {@code true} if the character sequence represented by the
@@ -1463,15 +1466,19 @@ public final class String
      *          </pre>
      */
     public boolean startsWith(String prefix, int toffset) {
-        char ta[] = value;
+        char ta[] = value; // 当前String对应的char数组（ta）
         int to = toffset;
-        char pa[] = prefix.value;
+        char pa[] = prefix.value; // 前缀对应的char数组（pa）
         int po = 0;
         int pc = prefix.value.length;
         // Note: toffset might be near -1>>>1.
+        // toffset的取值范围为：[0, value.length-pc]
         if ((toffset < 0) || (toffset > value.length - pc)) {
             return false;
         }
+        // 逐个对比ta和pa两个数组的元素，比较次数最多为prefix的长度
+        // ta的起始位置为to，pa的起始位置为0
+        // 一旦遇到不相等的字符，直接返回false
         while (--pc >= 0) {
             if (ta[to++] != pa[po++]) {
                 return false;
@@ -1482,6 +1489,9 @@ public final class String
 
     /**
      * Tests if this string starts with the specified prefix.
+     *
+     * 检查String是否以prefix开头
+     * （从索引为0的位置开始检查）
      *
      * @param   prefix   the prefix.
      * @return  {@code true} if the character sequence represented by the
@@ -1499,6 +1509,9 @@ public final class String
 
     /**
      * Tests if this string ends with the specified suffix.
+     *
+     * 检查String是否以suffix结尾
+     * （从索引为value.length - suffix.value.length的位置开始检查）
      *
      * @param   suffix   the suffix.
      * @return  {@code true} if the character sequence represented by the

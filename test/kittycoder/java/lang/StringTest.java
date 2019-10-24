@@ -129,4 +129,11 @@ public class StringTest {
         System.out.println(str.charAt(1));
         System.out.println(str.codePointAt(2));
     }
+
+    @Test
+    public void test2() {
+        String str = "ABCabc321";
+        System.out.println(str + "是以A开头：" + str.startsWith("A"));
+        System.out.println(str + "是以1结尾：" + str.endsWith("1"));
+    }
 }
