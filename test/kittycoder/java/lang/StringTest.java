@@ -136,4 +136,11 @@ public class StringTest {
         System.out.println(str + "是以A开头：" + str.startsWith("A"));
         System.out.println(str + "是以1结尾：" + str.endsWith("1"));
     }
+
+    @Test
+    public void test3() {
+        String str = "ABC123abc321";
+        System.out.println(str + "中B第一次出现的位置的索引为：" + str.indexOf('B')); // str.indexOf(66)
+        System.out.println(str + "中2最后一次出现的位置的索引为：" + str.lastIndexOf('2')); // str.lastIndexOf(50)
+    }
 }
