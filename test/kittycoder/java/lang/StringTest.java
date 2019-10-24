@@ -120,4 +120,13 @@ public class StringTest {
         System.out.println(str);
     }
     /** =========================构造器=========================== **/
+
+    @Test
+    public void test1() {
+        String str = "ABCabc";
+        System.out.println(str.length());
+        System.out.println(str.isEmpty());
+        System.out.println(str.charAt(1));
+        System.out.println(str.codePointAt(2));
+    }
 }

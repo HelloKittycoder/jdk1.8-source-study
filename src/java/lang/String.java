@@ -662,6 +662,8 @@ public final class String
      * The length is equal to the number of <a href="Character.html#unicode">Unicode
      * code units</a> in the string.
      *
+     * 返回字符串的长度
+     *
      * @return  the length of the sequence of characters represented by this
      *          object.
      */
@@ -671,6 +673,8 @@ public final class String
 
     /**
      * Returns {@code true} if, and only if, {@link #length()} is {@code 0}.
+     *
+     * 判断是否为空字符串（""）
      *
      * @return {@code true} if {@link #length()} is {@code 0}, otherwise
      * {@code false}
@@ -692,6 +696,8 @@ public final class String
      * <a href="Character.html#unicode">surrogate</a>, the surrogate
      * value is returned.
      *
+     * 返回指定索引对应的字符
+     *
      * @param      index   the index of the {@code char} value.
      * @return     the {@code char} value at the specified index of this string.
      *             The first {@code char} value is at index {@code 0}.
@@ -700,6 +706,7 @@ public final class String
      *             string.
      */
     public char charAt(int index) {
+        // 索引范围为：[0, value.length)即[0, value.length-1]
         if ((index < 0) || (index >= value.length)) {
             throw new StringIndexOutOfBoundsException(index);
         }
@@ -720,6 +727,8 @@ public final class String
      * corresponding to this surrogate pair is returned. Otherwise,
      * the {@code char} value at the given index is returned.
      *
+     * 返回指定索引的字符对应的码点
+     *
      * @param      index the index to the {@code char} values
      * @return     the code point value of the character at the
      *             {@code index}
@@ -729,6 +738,7 @@ public final class String
      * @since      1.5
      */
     public int codePointAt(int index) {
+        // 索引范围为：[0, value.length)即[0, value.length-1]
         if ((index < 0) || (index >= value.length)) {
             throw new StringIndexOutOfBoundsException(index);
         }
