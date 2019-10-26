@@ -3035,6 +3035,8 @@ public final class String
      * This method may be used to trim whitespace (as defined above) from
      * the beginning and end of a string.
      *
+     * 去除字符串首尾的空格
+     *
      * @return  A string whose value is this string, with any leading and trailing white
      *          space removed, or this string if it has no leading or
      *          trailing white space.
@@ -3044,12 +3046,15 @@ public final class String
         int st = 0;
         char[] val = value;    /* avoid getfield opcode */
 
+        // 正序遍历，找到第一个非空白字符的索引位置（st）
         while ((st < len) && (val[st] <= ' ')) {
             st++;
         }
+        // 倒序遍历，直到找到索引(len-1)处为非空白字符
         while ((st < len) && (val[len - 1] <= ' ')) {
             len--;
         }
+        // 截取索引范围为[st,len)（即[st,len-1]）的字符，并返回
         return ((st > 0) || (len < value.length)) ? substring(st, len) : this;
     }
 

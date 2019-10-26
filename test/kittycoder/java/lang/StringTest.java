@@ -215,4 +215,9 @@ public class StringTest {
         System.out.println("teseT".replaceAll("t", "h")); // heseT
         System.out.println("teseT".replaceAll("(?i)t", "h")); // heseh
     }
+
+    @Test
+    public void testTrim() {
+        System.out.println("“  hehe  ”去掉空格为：" + "“" + "  hehe  ".trim() + "”");
+    }
 }
