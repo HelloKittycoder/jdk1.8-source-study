@@ -197,8 +197,22 @@ public class StringTest {
 
     @Test
     public void testReplace2() {
-        System.out.println("teset".replace("t", "h"));
-        System.out.println("teset".replace("k", "h"));
-        System.out.println("aaa".replace("a", "b"));
+        System.out.println("teset".replace("t", "h")); // heseh
+        System.out.println("teset".replace("k", "h")); // teset
+        System.out.println("aaa".replace("a", "b")); // bbb
+    }
+
+    @Test
+    public void testReplaceFirst() {
+        System.out.println("teset".replaceFirst("t", "h")); // heset
+        System.out.println("teset".replaceFirst("e", "h")); // thset
+        System.out.println("Teset".replaceFirst("(?i)t", "h")); // heset
+    }
+
+    @Test
+    public void testReplaceAll() {
+        System.out.println("teset".replaceAll("t", "h")); // heseh
+        System.out.println("teseT".replaceAll("t", "h")); // heseT
+        System.out.println("teseT".replaceAll("(?i)t", "h")); // heseh
     }
 }

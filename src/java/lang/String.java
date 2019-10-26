@@ -2316,6 +2316,8 @@ public final class String
      * Use {@link java.util.regex.Matcher#quoteReplacement} to suppress the special
      * meaning of these characters, if desired.
      *
+     * 将字符串里被regex匹配到的第一个子串替换为replacement
+     *
      * @param   regex
      *          the regular expression to which this string is to be matched
      * @param   replacement
@@ -2360,6 +2362,8 @@ public final class String
      * {@link java.util.regex.Matcher#replaceAll Matcher.replaceAll}.
      * Use {@link java.util.regex.Matcher#quoteReplacement} to suppress the special
      * meaning of these characters, if desired.
+     *
+     * 将字符串里被regex匹配到的所有子串替换为replacement
      *
      * @param   regex
      *          the regular expression to which this string is to be matched
