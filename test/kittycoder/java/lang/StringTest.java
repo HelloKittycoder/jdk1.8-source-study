@@ -164,6 +164,12 @@ public class StringTest {
     }
 
     @Test
+    public void testContains() {
+        String str = "ABC123abc321";
+        System.out.println(str + "中包含AB：" + str.contains("AB"));
+    }
+
+    @Test
     public void testConcat() {
         String str1 = "test1";
         String str2 = "test2";

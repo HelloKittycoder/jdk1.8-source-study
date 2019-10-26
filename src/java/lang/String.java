@@ -2261,11 +2261,14 @@ public final class String
      * Returns true if and only if this string contains the specified
      * sequence of char values.
      *
+     * 判断当前字符串中是否包含字符序列s
+     *
      * @param s the sequence to search for
      * @return true if this string contains {@code s}, false otherwise
      * @since 1.5
      */
     public boolean contains(CharSequence s) {
+        // 其实还是调用了indexOf(String)来找s.toString()
         return indexOf(s.toString()) > -1;
     }
 
