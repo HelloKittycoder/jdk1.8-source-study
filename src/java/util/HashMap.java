@@ -336,6 +336,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
      */
     static final int hash(Object key) {
         int h;
+        // 先得到key的hashCode（h），然后保留h的高16位，再用高16位和低16位做xor运算
         return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
     }
 
@@ -626,13 +627,20 @@ public class HashMap<K,V> extends AbstractMap<K,V>
                    boolean evict) {
         Node<K,V>[] tab; Node<K,V> p; int n, i;
         if ((tab = table) == null || (n = tab.length) == 0)
+            // 如果table没有被初始化，则初始化该table
             n = (tab = resize()).length;
         if ((p = tab[i = (n - 1) & hash]) == null)
+            // 如果table已经初始化了，但是指定索引处没有元素；
+            // 直接创建一个Node放入该索引处
             tab[i] = newNode(hash, key, value, null);
         else {
+            // 如果table已经初始化了，但是指定索引处有元素
             Node<K,V> e; K k;
             if (p.hash == hash &&
                 ((k = p.key) == key || (key != null && key.equals(k))))
+                // 当传入的key和已有的Node中的key，hash值相同且两个key相等（==或equals）
+                // 顺带说一句，从这里也可以看出来，为什么有时候需要去重写hashCode和equals方法了
+                // 就先把table中已有的Node先记录下来，放到变量e中，后面会用到
                 e = p;
             else if (p instanceof TreeNode)
                 e = ((TreeNode<K,V>)p).putTreeVal(this, tab, hash, key, value);
@@ -650,6 +658,8 @@ public class HashMap<K,V> extends AbstractMap<K,V>
                     p = e;
                 }
             }
+            // 如果e不为空，说明map中已经有相同的key了
+            // 然后直接用新的value把旧的value换掉，同时返回旧的value
             if (e != null) { // existing mapping for key
                 V oldValue = e.value;
                 if (!onlyIfAbsent || oldValue == null)
@@ -672,37 +682,53 @@ public class HashMap<K,V> extends AbstractMap<K,V>
      * elements from each bin must either stay at same index, or move
      * with a power of two offset in the new table.
      *
+     * 初始化table容量，或者将table的容量*2
+     *
      * @return the table
      */
     final Node<K,V>[] resize() {
         Node<K,V>[] oldTab = table;
+        // 获取原有table的容量
         int oldCap = (oldTab == null) ? 0 : oldTab.length;
+        // 获取原有扩容时的阈值（当table中的Node数量>threshold时，就需要扩容；见putVal方法）
         int oldThr = threshold;
         int newCap, newThr = 0;
         if (oldCap > 0) {
+            // 如果oldCap大于等于MAXIMUM_CAPACITY（2的30次方），
+            // 则不会进行扩容，同时将threshold设置为Integer.MAX_VALUE（2的31次方）
             if (oldCap >= MAXIMUM_CAPACITY) {
                 threshold = Integer.MAX_VALUE;
                 return oldTab;
             }
+            // 如果在oldCap*2<MAXIMUM_CAPACITY且table已经初始化了
+            // 则将threshold也变为原来的2倍
             else if ((newCap = oldCap << 1) < MAXIMUM_CAPACITY &&
                      oldCap >= DEFAULT_INITIAL_CAPACITY)
                 newThr = oldThr << 1; // double threshold
         }
         else if (oldThr > 0) // initial capacity was placed in threshold
+            // 如果原来table容量为0，但原来的阈值（oldThr）>0，则将newCap设置为oldThr
             newCap = oldThr;
         else {               // zero initial threshold signifies using defaults
+            // 如果原来table容量为0，原来的阈值也为0，说明当前table还没被初始化
+            // 将newCap设置为默认容量16
+            // 将newThr设置为12（0.75*16）
             newCap = DEFAULT_INITIAL_CAPACITY;
             newThr = (int)(DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);
         }
+        // 这段判断暂时没看懂
         if (newThr == 0) {
             float ft = (float)newCap * loadFactor;
             newThr = (newCap < MAXIMUM_CAPACITY && ft < (float)MAXIMUM_CAPACITY ?
                       (int)ft : Integer.MAX_VALUE);
         }
+        // 将threshold设置为newThr
         threshold = newThr;
         @SuppressWarnings({"rawtypes","unchecked"})
             Node<K,V>[] newTab = (Node<K,V>[])new Node[newCap];
+        // table设置为扩容后的table（newTab）
         table = newTab;
+        // 下面这段暂时看不懂
         if (oldTab != null) {
             for (int j = 0; j < oldCap; ++j) {
                 Node<K,V> e;
