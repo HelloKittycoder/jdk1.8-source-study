@@ -2571,6 +2571,8 @@ public final class String
      *
      * Note that if an element is null, then {@code "null"} is added.
      *
+     * 使用指定分隔符将CharSequence数组元素连接成一个字符串
+     *
      * @param  delimiter the delimiter that separates each element
      * @param  elements the elements to join together.
      *
@@ -2584,13 +2586,17 @@ public final class String
      * @since 1.8
      */
     public static String join(CharSequence delimiter, CharSequence... elements) {
+        // 检查delimiter和elements都不为null
         Objects.requireNonNull(delimiter);
         Objects.requireNonNull(elements);
         // Number of elements not likely worth Arrays.stream overhead.
+        // 创建一个StringJoiner对象
         StringJoiner joiner = new StringJoiner(delimiter);
+        // 依次将数组元素加到joiner中
         for (CharSequence cs: elements) {
             joiner.add(cs);
         }
+        // 返回拼接结果
         return joiner.toString();
     }
 
@@ -2614,6 +2620,8 @@ public final class String
      *     //message returned is: "Java-is-very-cool"
      * }</pre></blockquote>
      *
+     * 使用指定分隔符将Iterable<CharSequence>里的元素连接成一个字符串
+     *
      * Note that if an individual element is {@code null}, then {@code "null"} is added.
      *
      * @param  delimiter a sequence of characters that is used to separate each
@@ -2633,12 +2641,16 @@ public final class String
      */
     public static String join(CharSequence delimiter,
             Iterable<? extends CharSequence> elements) {
+        // 检查delimiter和elements都不为null
         Objects.requireNonNull(delimiter);
         Objects.requireNonNull(elements);
+        // 创建一个StringJoiner对象
         StringJoiner joiner = new StringJoiner(delimiter);
+        // 依次将数组元素加到joiner中
         for (CharSequence cs: elements) {
             joiner.add(cs);
         }
+        // 返回拼接结果
         return joiner.toString();
     }
 

@@ -2,6 +2,9 @@ package kittycoder.java.lang;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by shucheng on 2019-10-23 上午 8:51
  */
@@ -165,5 +168,16 @@ public class StringTest {
         String str1 = "test1";
         String str2 = "test2";
         System.out.println(str1 + "和" + str2 + "拼接后的结果为：" + str1.concat(str2));
+    }
+
+    @Test
+    public void testJoin() {
+        String[] strArr = {"aa", "bb", "cc"};
+        System.out.println("将strArr用|拼接：" + String.join("|", strArr));
+        List<String> strList = new ArrayList<>();
+        strList.add("s1");
+        strList.add("s2");
+        strList.add("s3");
+        System.out.println("将strList用|拼接：" + String.join("|", strList));
     }
 }
