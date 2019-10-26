@@ -834,6 +834,9 @@ public final class String
     /**
      * Copy characters from this string into dst starting at dstBegin.
      * This method doesn't perform any range checking.
+     *
+     * 将字符串（this）中的所有字符复制到dst中，从索引dstBegin开始放
+     * 该方法没有对dstBegin做任何范围检查（只是对System.arraycopy方法进行了二次封装，减少了参数个数）
      */
     void getChars(char dst[], int dstBegin) {
         System.arraycopy(value, 0, dst, dstBegin, value.length);
@@ -2143,19 +2146,27 @@ public final class String
      * "to".concat("get").concat("her") returns "together"
      * </pre></blockquote>
      *
+     * 将两个字符串拼接起来
+     *
      * @param   str   the {@code String} that is concatenated to the end
      *                of this {@code String}.
      * @return  a string that represents the concatenation of this object's
      *          characters followed by the string argument's characters.
      */
     public String concat(String str) {
+        // 获取str的长度
         int otherLen = str.length();
+        // 如果str的长度为0，那拼了和没拼无区别，直接返回原字符串
         if (otherLen == 0) {
             return this;
         }
+        // 获取原字符串的长度
         int len = value.length;
+        // 将value复制到一个长度为原字符串和str长度之和的char数组中（buf）
         char buf[] = Arrays.copyOf(value, len + otherLen);
+        // 把str复制到buf中（在buf的索引范围为[len,len+otherLen)的位置刚好能放下str）
         str.getChars(buf, len);
+        // 通过buf构建一个新的String进行返回
         return new String(buf, true);
     }
 

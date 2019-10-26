@@ -159,4 +159,11 @@ public class StringTest {
         System.out.println("截取" + str + "中索引大于等于3的所有字符：" + str.substring(3));
         System.out.println("截取" + str + "中索引大于等于3小于6的所有字符：" + str.substring(3, 6));
     }
+
+    @Test
+    public void testConcat() {
+        String str1 = "test1";
+        String str2 = "test2";
+        System.out.println(str1 + "和" + str2 + "拼接后的结果为：" + str1.concat(str2));
+    }
 }
