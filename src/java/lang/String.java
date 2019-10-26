@@ -2387,6 +2387,8 @@ public final class String
      * example, replacing "aa" with "b" in the string "aaa" will result in
      * "ba" rather than "ab".
      *
+     * 将字符串中所有找到的字符序列target都替换为replacement
+     *
      * @param  target The sequence of char values to be replaced
      * @param  replacement The replacement sequence of char values
      * @return  The resulting string

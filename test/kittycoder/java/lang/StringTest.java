@@ -194,4 +194,11 @@ public class StringTest {
         System.out.println(str.replace('k', 'h')); // teset（找不到要替换的char）
         System.out.println(str.replace('e', 'h')); // thsht（要替换的char在索引>0的位置）
     }
+
+    @Test
+    public void testReplace2() {
+        System.out.println("teset".replace("t", "h"));
+        System.out.println("teset".replace("k", "h"));
+        System.out.println("aaa".replace("a", "b"));
+    }
 }
