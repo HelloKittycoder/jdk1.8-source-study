@@ -152,4 +152,11 @@ public class StringTest {
         System.out.println(str.indexOf("BC")); // 1
         System.out.println(str.lastIndexOf("32")); // 9 lastIndexOf暂时没看懂，后面有时间再看
     }
+
+    @Test
+    public void test5() {
+        String str = "ABC123abc321";
+        System.out.println("截取" + str + "中索引大于等于3的所有字符：" + str.substring(3));
+        System.out.println("截取" + str + "中索引大于等于3小于6的所有字符：" + str.substring(3, 6));
+    }
 }

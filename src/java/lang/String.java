@@ -2026,6 +2026,9 @@ public final class String
      * "emptiness".substring(9) returns "" (an empty string)
      * </pre></blockquote>
      *
+     * 返回一个字符串的子串（从指定索引beginIndex截取到末尾，截取索引范围[beginIndex,value.length)，
+     * 即[beginIndex,value.length-1]）
+     *
      * @param      beginIndex   the beginning index, inclusive.
      * @return     the specified substring.
      * @exception  IndexOutOfBoundsException  if
@@ -2033,13 +2036,17 @@ public final class String
      *             length of this {@code String} object.
      */
     public String substring(int beginIndex) {
+        // 如果beginIndex<0，则抛出异常（字符串索引越界）
         if (beginIndex < 0) {
             throw new StringIndexOutOfBoundsException(beginIndex);
         }
+        // 计算子串的长度
         int subLen = value.length - beginIndex;
+        // 如果子串的长度<0，则抛出异常
         if (subLen < 0) {
             throw new StringIndexOutOfBoundsException(subLen);
         }
+        // 如果beginIndex为0，直接返回原字符串；否则就进行截取（实际调用了char数组的截取方法）
         return (beginIndex == 0) ? this : new String(value, beginIndex, subLen);
     }
 
@@ -2055,6 +2062,8 @@ public final class String
      * "smiles".substring(1, 5) returns "mile"
      * </pre></blockquote>
      *
+     * 返回一个字符串的子串（截取索引范围[beginIndex,endIndex)，即[beginIndex,endIndex-1]）
+     *
      * @param      beginIndex   the beginning index, inclusive.
      * @param      endIndex     the ending index, exclusive.
      * @return     the specified substring.
@@ -2066,16 +2075,22 @@ public final class String
      *             {@code endIndex}.
      */
     public String substring(int beginIndex, int endIndex) {
+        // 如果beginIndex<0，则抛出异常（字符串索引越界）
         if (beginIndex < 0) {
             throw new StringIndexOutOfBoundsException(beginIndex);
         }
+        // endIndex最多能到value.length，也就是截取至char数组的(value.length-1)索引处
         if (endIndex > value.length) {
             throw new StringIndexOutOfBoundsException(endIndex);
         }
+        // 计算子串的长度
         int subLen = endIndex - beginIndex;
+        // 如果子串的长度<0，则抛出异常
         if (subLen < 0) {
             throw new StringIndexOutOfBoundsException(subLen);
         }
+        // 如果beginIndex为0且endIndex == value.length（即截取char数组的索引范围为[0,value.length-1]），直接返回原字符串；
+        // 否则就进行截取（实际调用了char数组的截取方法）
         return ((beginIndex == 0) && (endIndex == value.length)) ? this
                 : new String(value, beginIndex, subLen);
     }
