@@ -186,4 +186,12 @@ public class StringTest {
         strList.add("s3");
         System.out.println("将strList用|拼接：" + String.join("|", strList));
     }
+
+    @Test
+    public void testReplece() {
+        String str = "teset";
+        System.out.println(str.replace('t', 'h')); // heseh（要替换的char在索引为0的位置）
+        System.out.println(str.replace('k', 'h')); // teset（找不到要替换的char）
+        System.out.println(str.replace('e', 'h')); // thsht（要替换的char在索引>0的位置）
+    }
 }

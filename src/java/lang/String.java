@@ -2194,32 +2194,50 @@ public final class String
      * "JonL".replace('q', 'x') returns "JonL" (no change)
      * </pre></blockquote>
      *
+     * 将字符串中出现的所有oldChar换成newChar
+     *
      * @param   oldChar   the old character.
      * @param   newChar   the new character.
      * @return  a string derived from this string by replacing every
      *          occurrence of {@code oldChar} with {@code newChar}.
      */
     public String replace(char oldChar, char newChar) {
+        // 如果oldChar和newChar不同，则需要进行替换；否则直接返回原字符串
         if (oldChar != newChar) {
+            // 获取原字符串长度
             int len = value.length;
             int i = -1;
+            // 把实例变量value放到局部变量val中
+            // 注意旁边这段英文注释（https://blog.csdn.net/gaopu12345/article/details/52084218）
+            // 简单说就是：在一个方法中需要大量引用实例域变量的时候，使用方法中的局部变量代替引用可以减少getfield操作的次数，提升性能
             char[] val = value; /* avoid getfield opcode */
 
+            // 寻找val中出现oldChar的索引
             while (++i < len) {
                 if (val[i] == oldChar) {
                     break;
                 }
             }
+            // 如果i<len，说明找到了，开始进行替换操作；否则（i==len），直接返回原字符串
             if (i < len) {
+                // 替换后的结果存到buf中，最后会通过buf来创建String并返回
                 char buf[] = new char[len];
+                // [0,i)即[0,i-1]是不需要替换的部分，依然保持原样；
+                // 如果i=0的话，这个for循环是不会运行的
                 for (int j = 0; j < i; j++) {
                     buf[j] = val[j];
                 }
+                // [i,len-1)是真正需要查找被替换字符的部分
                 while (i < len) {
                     char c = val[i];
+                    // 如果找到val在索引i处的字符（c）刚好是oldChar（需要被替换掉的），则在buf中放入新的字符newChar；
+                    // 否则放回c
+                    // 这里可以看到，替换过程中，并没有去修改原有String的char数组（val），
+                    // 而是通过判断原数组中指定索引的char是否和oldChar相同，把修改结果体现在buf中
                     buf[i] = (c == oldChar) ? newChar : c;
                     i++;
                 }
+                // 返回替换的结果
                 return new String(buf, true);
             }
         }
