@@ -2726,6 +2726,10 @@ public final class String
     }
 
     /**
+     * 使用给定Locale的大小写形式的转换规则将当前字符串对象的字符序列中包含的每个字符转成小写形式
+     * 由于大小写映射并不总是以1:1的形式进行字符映射，因此可能会导致转换后的字符串长度与原字符串的长度
+     * 不一致
+     *
      * Converts all of the characters in this {@code String} to lower
      * case using the rules of the given {@code Locale}.  Case mapping is based
      * on the Unicode Standard version specified by the {@link java.lang.Character Character}
@@ -2771,13 +2775,16 @@ public final class String
      * </table>
      *
      * @param locale use the case transformation rules for this locale
+     *          语言环境对象，不同的语言环境下的大小写字符转换规则不同
      * @return the {@code String}, converted to lowercase.
+     *          返回当前字符串对象的小写形式
      * @see     java.lang.String#toLowerCase()
      * @see     java.lang.String#toUpperCase()
      * @see     java.lang.String#toUpperCase(Locale)
      * @since   1.1
      */
     public String toLowerCase(Locale locale) {
+        // 若locale参数为null，则直接抛出NullPointerException异常
         if (locale == null) {
             throw new NullPointerException();
         }
@@ -2786,15 +2793,18 @@ public final class String
         final int len = value.length;
 
         /* Now check if there are any characters that need to be changed. */
+        // 先扫描出前面本身已经是小写形式的字符
         scan: {
             for (firstUpper = 0 ; firstUpper < len; ) {
                 char c = value[firstUpper];
+                // 若当前字符在HIGH SURROGATE的字符范围内
                 if ((c >= Character.MIN_HIGH_SURROGATE)
                         && (c <= Character.MAX_HIGH_SURROGATE)) {
                     int supplChar = codePointAt(firstUpper);
                     if (supplChar != Character.toLowerCase(supplChar)) {
                         break scan;
                     }
+                    // 通过Character.charCount计算实际字符的个数
                     firstUpper += Character.charCount(supplChar);
                 } else {
                     if (c != Character.toLowerCase(c)) {
@@ -2811,6 +2821,7 @@ public final class String
                                 * is the write location in result */
 
         /* Just copy the first few lowerCase characters. */
+        /* 复制第一次出现的一些小写字符 */
         System.arraycopy(value, 0, result, 0, firstUpper);
 
         String lang = locale.getLanguage();
@@ -2820,22 +2831,31 @@ public final class String
         int lowerChar;
         int srcChar;
         int srcCount;
+        // 从firstUpper索引位置开始，后面的字符都是需要进行小写处理的
         for (int i = firstUpper; i < len; i += srcCount) {
             srcChar = (int)value[i];
+            // 若当前字符是HIGH SURROGATE
             if ((char)srcChar >= Character.MIN_HIGH_SURROGATE
                     && (char)srcChar <= Character.MAX_HIGH_SURROGATE) {
+                // 获取实际的Unicode代码点
                 srcChar = codePointAt(i);
+                // 计算实际字符长度
                 srcCount = Character.charCount(srcChar);
             } else {
                 srcCount = 1;
             }
+            // 考虑特殊情况
             if (localeDependent ||
+                // 希腊大写字母σ
                 srcChar == '\u03A3' || // GREEK CAPITAL LETTER SIGMA
+                // 拉丁大写字母I
                 srcChar == '\u0130') { // LATIN CAPITAL LETTER I WITH DOT ABOVE
                 lowerChar = ConditionalSpecialCasing.toLowerCaseEx(this, i, locale);
             } else {
+                // 一般情况下，直接Character.toLowerCase()方式转换成小写
                 lowerChar = Character.toLowerCase(srcChar);
             }
+            // 若转换后得到的是错误字符，或者是一个Unicode补充代码点
             if ((lowerChar == Character.ERROR)
                     || (lowerChar >= Character.MIN_SUPPLEMENTARY_CODE_POINT)) {
                 if (lowerChar == Character.ERROR) {
@@ -2849,9 +2869,13 @@ public final class String
                 }
 
                 /* Grow result if needed */
+                // 得到最终小写字符数组的长度
                 int mapLen = lowerCharArray.length;
+                // 如果大于原字符串长度
                 if (mapLen > srcCount) {
+                    // 小写字符数组扩容
                     char[] result2 = new char[result.length + mapLen - srcCount];
+                    // result --> result2
                     System.arraycopy(result, 0, result2, 0, i + resultOffset);
                     result = result2;
                 }
@@ -2882,6 +2906,11 @@ public final class String
      * To obtain correct results for locale insensitive strings, use
      * {@code toLowerCase(Locale.ROOT)}.
      * <p>
+     *
+     * toLowerCase(Locale locale)方法的重载，
+     * Locale默认值为Locale.getDefault()，默认的Locale跟你
+     * 当前JVM实例运行的主机系统平台环境有关
+     *
      * @return  the {@code String}, converted to lowercase.
      * @see     java.lang.String#toLowerCase(Locale)
      */
@@ -2890,6 +2919,10 @@ public final class String
     }
 
     /**
+     * 使用给定Locale的大小写形式的转换规则将当前字符串对象的字符序列中包含的每个字符转成大写形式
+     * 由于大小写映射并不总是以1:1的形式进行字符映射，因此可能会导致转换后的字符串长度与原字符串的长度
+     * 不一致
+     *
      * Converts all of the characters in this {@code String} to upper
      * case using the rules of the given {@code Locale}. Case mapping is based
      * on the Unicode Standard version specified by the {@link java.lang.Character Character}
@@ -2931,7 +2964,9 @@ public final class String
      * </tr>
      * </table>
      * @param locale use the case transformation rules for this locale
+     *          语言环境对象，不同的语言环境下的大小写字符转换规则不同
      * @return the {@code String}, converted to uppercase.
+     *          返回当前字符串对象的大写形式
      * @see     java.lang.String#toUpperCase()
      * @see     java.lang.String#toLowerCase()
      * @see     java.lang.String#toLowerCase(Locale)
@@ -3045,6 +3080,11 @@ public final class String
      * To obtain correct results for locale insensitive strings, use
      * {@code toUpperCase(Locale.ROOT)}.
      * <p>
+     *
+     * toUpperCase(Locale locale)方法的重载，
+     * Locale默认值为Locale.getDefault()，默认的Locale跟你
+     * 当前JVM实例运行的主机系统平台环境有关
+     *
      * @return  the {@code String}, converted to uppercase.
      * @see     java.lang.String#toUpperCase(Locale)
      */

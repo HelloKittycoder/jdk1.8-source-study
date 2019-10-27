@@ -241,4 +241,21 @@ public class StringTest {
         System.out.println(Arrays.toString(strArr = str3.split(" "))
                 + "==分隔后的数组长度为：" + strArr.length); // "Hello" "world," "Java"
     }
+
+    // 参考链接：https://www.iteye.com/blog/iamyida-2344166
+    @Test
+    public void testToLowerCase() {
+        String str = "ABC123abc321";
+        System.out.println(str + "所有字符转换为小写：" + str.toLowerCase());
+        String str2 = "abc123ABC321";
+        System.out.println(str2 + "所有字符转换为小写：" + str2.toLowerCase());
+    }
+
+    @Test
+    public void testToUpperCase() {
+        String str = "ABC123abc321";
+        System.out.println(str + "所有字符转换为小写：" + str.toUpperCase());
+        String str2 = "abc123ABC321";
+        System.out.println(str2 + "所有字符转换为小写：" + str2.toUpperCase());
+    }
 }
