@@ -3265,10 +3265,14 @@ public final class String
     /**
      * Returns the string representation of the {@code Object} argument.
      *
+     * 将指定的obj对象转换成String对象
+     *
      * @param   obj   an {@code Object}.
+     *                任意的Object对象
      * @return  if the argument is {@code null}, then a string equal to
      *          {@code "null"}; otherwise, the value of
      *          {@code obj.toString()} is returned.
+     *          若ojb == null,则会返回字符串"null"，否则返回obj.toString()
      * @see     java.lang.Object#toString()
      */
     public static String valueOf(Object obj) {
@@ -3281,9 +3285,13 @@ public final class String
      * modification of the character array does not affect the returned
      * string.
      *
+     * 将指定的字符数组对象转换成String对象
+     *
      * @param   data     the character array.
+     *                   字符数组对象
      * @return  a {@code String} that contains the characters of the
      *          character array.
+     *          返回一个新的字符串对象
      */
     public static String valueOf(char data[]) {
         return new String(data);
@@ -3299,15 +3307,24 @@ public final class String
      * are copied; subsequent modification of the character array does not
      * affect the returned string.
      *
+     * 将指定的字符数组的[offset,offset+count)区间上的字符序列转换成一个字符串对象
+     * 内部实际是调用String(char[], int, int)来实现的
+     *
      * @param   data     the character array.
+     *                   字符数组
      * @param   offset   initial offset of the subarray.
+     *                   截取的起始位置
      * @param   count    length of the subarray.
+     *                   截取的字符个数
      * @return  a {@code String} that contains the characters of the
      *          specified subarray of the character array.
      * @exception IndexOutOfBoundsException if {@code offset} is
      *          negative, or {@code count} is negative, or
      *          {@code offset+count} is larger than
      *          {@code data.length}.
+     *          若offset为负数或count为负数，
+     *          或 offset+count>data.length()，
+     *          则会抛出IndexOutOfBoundsException异常
      */
     public static String valueOf(char data[], int offset, int count) {
         return new String(data, offset, count);
@@ -3344,10 +3361,15 @@ public final class String
     /**
      * Returns the string representation of the {@code boolean} argument.
      *
+     * 将boolean变量值转换成一个字符串对象
+     *
      * @param   b   a {@code boolean}.
+     *              一个boolean值
      * @return  if the argument is {@code true}, a string equal to
      *          {@code "true"} is returned; otherwise, a string equal to
      *          {@code "false"} is returned.
+     *          true --> "true"
+     *          false --> "false"
      */
     public static String valueOf(boolean b) {
         return b ? "true" : "false";
@@ -3357,9 +3379,13 @@ public final class String
      * Returns the string representation of the {@code char}
      * argument.
      *
+     * 将单个字符转换成一个字符串对象
+     *
      * @param   c   a {@code char}.
+     *              一个字符
      * @return  a string of length {@code 1} containing
      *          as its single character the argument {@code c}.
+     *          返回单个字符转换后得到的一个长度为1的字符串对象
      */
     public static String valueOf(char c) {
         char data[] = {c};
@@ -3372,8 +3398,13 @@ public final class String
      * The representation is exactly the one returned by the
      * {@code Integer.toString} method of one argument.
      *
+     * 将int数字转换成一个字符串对象
+     * 内部实际是调用Integer.toString()方法实现的
+     *
      * @param   i   an {@code int}.
+     *              int数字
      * @return  a string representation of the {@code int} argument.
+     *          返回一个int类型的数字的字符串表示形式
      * @see     java.lang.Integer#toString(int, int)
      */
     public static String valueOf(int i) {
@@ -3386,8 +3417,13 @@ public final class String
      * The representation is exactly the one returned by the
      * {@code Long.toString} method of one argument.
      *
+     * 将long数字转换成一个字符串对象
+     * 内部实际是调用Long.toString()方法实现的
+     *
      * @param   l   a {@code long}.
+     *              long类型的数字
      * @return  a string representation of the {@code long} argument.
+     *          返回一个long类型的数字的字符串表示形式
      * @see     java.lang.Long#toString(long)
      */
     public static String valueOf(long l) {
@@ -3400,8 +3436,13 @@ public final class String
      * The representation is exactly the one returned by the
      * {@code Float.toString} method of one argument.
      *
+     * 将float数字转换成一个字符串对象
+     * 内部实际是调用Float.toString()方法实现的
+     *
      * @param   f   a {@code float}.
+     *              float类型的数字
      * @return  a string representation of the {@code float} argument.
+     *          返回一个float类型的数字的字符串表示形式
      * @see     java.lang.Float#toString(float)
      */
     public static String valueOf(float f) {
@@ -3414,8 +3455,13 @@ public final class String
      * The representation is exactly the one returned by the
      * {@code Double.toString} method of one argument.
      *
+     * 将double数字转换成一个字符串对象
+     * 内部实际是调用Double.toString()方法实现的
+     *
      * @param   d   a {@code double}.
+     *              double类型的数字
      * @return  a  string representation of the {@code double} argument.
+     *          返回一个double类型的数字的字符串表示形式
      * @see     java.lang.Double#toString(double)
      */
     public static String valueOf(double d) {

@@ -265,4 +265,17 @@ public class StringTest {
         System.out.println(String.format("Hello，%s！你欠了%s【%d】元", "张三", "李四", 100));
         System.out.println(String.format(Locale.getDefault(), "Hello，%s！你欠了%s【%d】元", "张三", "李四", 100));
     }
+
+    @Test
+    public void testValueOf() {
+        System.out.println("获取true对应的字符串：" + String.valueOf(true)); // String.valueOf(boolean)
+        System.out.println("获取字符A对应的字符串：" + String.valueOf('A')); // String.valueOf(ch)
+        System.out.println("获取整数100对应的字符串："+ String.valueOf(100)); // String.valueOf(int)
+        System.out.println("获取1000L对应的字符串："+ String.valueOf(1000L)); // String.valueOf(long)
+        System.out.println("获取300.21f对应的字符串："+ String.valueOf(300.21f)); // String.valueOf(float)
+        System.out.println("获取300.21f对应的字符串："+ String.valueOf(300.21)); // String.valueOf(double)
+        char[] chArr = {'T', 'E', 'S', 'T'};
+        System.out.println("获取chArr对应的字符串：" + String.valueOf(chArr)); // String.valueOf(char[])
+        System.out.println("获取null对应的字符串：" + String.valueOf((Object) null)); // String.valueOf(Object)
+    }
 }
