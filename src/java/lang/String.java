@@ -1539,7 +1539,13 @@ public final class String
      * the string, and {@code ^} indicates exponentiation.
      * (The hash value of the empty string is zero.)
      *
+     * 计算当前字符串的hashcode值，计算公式为：
+     * s[0]*31^(n-1) + s[1]*31^(n-2) + ... + s[n-1]
+     * 上面的n表示字符串的长度，^表示求幂运算
+     * 空字符串""的hashcode值为0
+     *
      * @return  a hash code value for this object.
+     *          返回当前字符串对象的hashcode值
      */
     public int hashCode() {
         int h = hash;

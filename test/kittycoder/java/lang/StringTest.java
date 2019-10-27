@@ -278,4 +278,11 @@ public class StringTest {
         System.out.println("获取chArr对应的字符串：" + String.valueOf(chArr)); // String.valueOf(char[])
         System.out.println("获取null对应的字符串：" + String.valueOf((Object) null)); // String.valueOf(Object)
     }
+
+    @Test
+    public void testHashCode() {
+        System.out.println("1".hashCode()); // 49
+        System.out.println("12".hashCode()); // 31*49+50=1569
+        System.out.println("123".hashCode()); // 31^2*49+31*50+51=48690
+    }
 }
