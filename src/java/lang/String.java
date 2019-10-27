@@ -3169,11 +3169,14 @@ public final class String
      * Returns a formatted string using the specified format string and
      * arguments.
      *
+     * 使用指定的字符串格式和参数返回一个格式化后的字符串
+     *
      * <p> The locale always used is the one returned by {@link
      * java.util.Locale#getDefault() Locale.getDefault()}.
      *
      * @param  format
      *         A <a href="../util/Formatter.html#syntax">format string</a>
+     *         字符串格式参数
      *
      * @param  args
      *         Arguments referenced by the format specifiers in the format
@@ -3185,6 +3188,7 @@ public final class String
      *         The behaviour on a
      *         {@code null} argument depends on the <a
      *         href="../util/Formatter.html#syntax">conversion</a>.
+     *         字符串格式中需要替换的参数
      *
      * @throws  java.util.IllegalFormatException
      *          If a format string contains an illegal syntax, a format
@@ -3194,8 +3198,12 @@ public final class String
      *          formatting errors, see the <a
      *          href="../util/Formatter.html#detail">Details</a> section of the
      *          formatter class specification.
+     *          如果给定的字符串格式不合法或者给定的字符串格式与指定的参数不兼容，
+     *          或者给定的字符串格式需要的参数个数大于实际指定的参数个数，则会抛出
+     *          IllegalFormatException异常
      *
      * @return  A formatted string
+     *          返回格式化后的字符串
      *
      * @see  java.util.Formatter
      * @since  1.5
@@ -3208,13 +3216,17 @@ public final class String
      * Returns a formatted string using the specified locale, format string,
      * and arguments.
      *
+     * 使用指定的字符串格式和参数在指定的语言环境下返回一个格式化后的字符串
+     *
      * @param  l
      *         The {@linkplain java.util.Locale locale} to apply during
      *         formatting.  If {@code l} is {@code null} then no localization
      *         is applied.
+     *         本地语言环境
      *
      * @param  format
      *         A <a href="../util/Formatter.html#syntax">format string</a>
+     *         字符串格式参数
      *
      * @param  args
      *         Arguments referenced by the format specifiers in the format
@@ -3226,6 +3238,7 @@ public final class String
      *         The behaviour on a
      *         {@code null} argument depends on the
      *         <a href="../util/Formatter.html#syntax">conversion</a>.
+     *         字符串格式中需要替换的参数
      *
      * @throws  java.util.IllegalFormatException
      *          If a format string contains an illegal syntax, a format
@@ -3235,8 +3248,12 @@ public final class String
      *          formatting errors, see the <a
      *          href="../util/Formatter.html#detail">Details</a> section of the
      *          formatter class specification
+     *          如果给定的字符串格式不合法或者给定的字符串格式与指定的参数不兼容，
+     *          或者给定的字符串格式需要的参数个数大于实际指定的参数个数，则会抛出
+     *          IllegalFormatException异常
      *
      * @return  A formatted string
+     *          返回格式化后的字符串
      *
      * @see  java.util.Formatter
      * @since  1.5

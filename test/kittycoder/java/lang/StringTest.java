@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by shucheng on 2019-10-23 上午 8:51
@@ -257,5 +258,11 @@ public class StringTest {
         System.out.println(str + "所有字符转换为小写：" + str.toUpperCase());
         String str2 = "abc123ABC321";
         System.out.println(str2 + "所有字符转换为小写：" + str2.toUpperCase());
+    }
+
+    @Test
+    public void testFormat() {
+        System.out.println(String.format("Hello，%s！你欠了%s【%d】元", "张三", "李四", 100));
+        System.out.println(String.format(Locale.getDefault(), "Hello，%s！你欠了%s【%d】元", "张三", "李四", 100));
     }
 }
