@@ -3,6 +3,7 @@ package kittycoder.java.lang;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -219,5 +220,25 @@ public class StringTest {
     @Test
     public void testTrim() {
         System.out.println("“  hehe  ”去掉空格为：" + "“" + "  hehe  ".trim() + "”");
+    }
+
+    // 参考链接：https://www.iteye.com/blog/iamyida-2344166
+    @Test
+    public void testSplit() {
+        String[] strArr;
+        String str = "ABC123abc321";
+        System.out.println(str + "以B（忽略大小写）作为分隔符分割成数组：" + Arrays.toString(strArr = str.split("(?i)B"))
+                + "==分隔后的数组长度为：" + strArr.length);
+        String str2 = "Hello world, Java";
+        System.out.println(Arrays.toString(strArr = str2.split("k"))
+                + "==分隔后的数组长度为：" + strArr.length); // "Hello world, Java"
+        System.out.println(Arrays.toString(strArr = str2.split(" ", 2))
+                + "==分隔后的数组长度为：" + strArr.length); // "Hello" "world, Java"
+        System.out.println(Arrays.toString(strArr = str2.split(" ", 3))
+                + "==分隔后的数组长度为：" + strArr.length); // "Hello" "world," "Java"
+
+        String str3 = "Hello world, Java  ";
+        System.out.println(Arrays.toString(strArr = str3.split(" "))
+                + "==分隔后的数组长度为：" + strArr.length); // "Hello" "world," "Java"
     }
 }

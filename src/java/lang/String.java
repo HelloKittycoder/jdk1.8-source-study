@@ -2404,6 +2404,21 @@ public final class String
     }
 
     /**
+     * 根据给定的正则表达式来分割当前字符串并返回一个字符串数组
+     * 如果给定的正则表达式不匹配当前字符串，那么返回的字符串数组将只包含一个元素即
+     * 当前字符串对象。返回的字符串数组中的每个子字符串与它们在当前字符串中出现的顺序
+     * 保持一致。
+     * limit参数用于控制给定的正则表达式应用的次数，从而影响最终返回的字符串数组的长度。
+     * 若limit参数大于0，那么给定的正则表达式则会至多应用(limit-1)次，同时最终返回的
+     * 字符串数组的长度将不大于limit，并且该数组的最后一个元素为前一个子字符串匹配后剩余
+     * 的部分。比如：
+     * "Hello world, Java" ---> split(" ",2)
+     *      return: "Hello" "world, Java"
+     * 若limit参数是一个负数，那么给定的正则表达式将会尽可能多的应用多次并且返回的字符串
+     * 数组的长度将会没有显示；
+     * 若limit参数为0，那么给定的正则表达式将会尽可能多的应用多次并且返回的字符串
+     * 数组的长度将会没有限制，尾部的空字符串将会被丢弃
+     *
      * Splits this string around matches of the given
      * <a href="../util/regex/Pattern.html#sum">regular expression</a>.
      *
@@ -2474,15 +2489,19 @@ public final class String
      *
      * @param  regex
      *         the delimiting regular expression
+     *         表示分隔符的正则表达式
      *
      * @param  limit
      *         the result threshold, as described above
+     *         限制返回的字符串数组长度的阈值
      *
      * @return  the array of strings computed by splitting this string
      *          around matches of the given regular expression
+     *          返回当前字符串被分割后生成的字符串数组
      *
      * @throws  PatternSyntaxException
      *          if the regular expression's syntax is invalid
+     *          若给定的正则表达式语法错误会抛出此异常
      *
      * @see java.util.regex.Pattern
      *
@@ -2496,7 +2515,15 @@ public final class String
          (2)two-char String and the first char is the backslash and
             the second is not the ascii digit or ascii letter.
          */
+        /**
+         * 分3种情况处理：
+         * 1. regex参数只有一个字符且该字符串不是正则表达式中的特殊字符 .$|()[{^?*+\
+         * 2. regex参数为2个字符，第一个字符是反斜杠\，第二个字符为非ASCII码字母或非ASCII码数字
+         * 3. regex参数超过2个字符并且为合法的正则表达式
+         * 前2种情况采用fastpath方式进行处理，后面第3种情况采用Pattern.split(this, limit)方法实现
+         */
         char ch = 0;
+        // 判定regex参数是否为上面所描述的前两种情况
         if (((regex.value.length == 1 &&
              ".$|()[{^?*+\\".indexOf(ch = regex.charAt(0)) == -1) ||
              (regex.length() == 2 &&
@@ -2513,33 +2540,49 @@ public final class String
             ArrayList<String> list = new ArrayList<>();
             while ((next = indexOf(ch, off)) != -1) {
                 if (!limited || list.size() < limit - 1) {
+                    // 截取每一段子字符串存入list种
                     list.add(substring(off, next));
+                    // 修改截取的起始索引位置
                     off = next + 1;
                 } else {    // last one
                     //assert (list.size() == limit - 1);
+                    // 最后一个，只有设置的limit参数大于0，才会进入这个分支
                     list.add(substring(off, value.length));
                     off = value.length;
                     break;
                 }
             }
             // If no match was found, return this
+            // off为0，当前字符串与给定的regex参数不匹配，那么直接返回一个字符串数组
+            // 并且该字符串数组只包含一个元素且该元素为当前字符串对象
             if (off == 0)
                 return new String[]{this};
 
             // Add remaining segment
+            // 添加剩余的部分
             if (!limited || list.size() < limit)
                 list.add(substring(off, value.length));
 
             // Construct result
+            // 构造最终的返回结果
             int resultSize = list.size();
+            // 若limit参数设置为0
             if (limit == 0) {
+                // 从尾部开始遍历，排除尾部连续的空字符串
                 while (resultSize > 0 && list.get(resultSize - 1).length() == 0) {
                     resultSize--;
                 }
             }
             String[] result = new String[resultSize];
+            // 这里使用了list.subList方法，而该方法返回的SubList对象会在内部维护当前List对象，
+            // 对SubList对象种的元素的操作会直接反映到其内部维护的List对象中，若SubList对象没有
+            // 被回收，那么内部维护的List对象也不会被回收，内部维护的List中保存的对象也不会被回收，
+            // 若内部维护的List是一个超大的集合，那么就会很容易发生OOM异常
+            // 应该通过new ArrayList(list.subList(0, resultSize)).toArray(result);
             return list.subList(0, resultSize).toArray(result);
         }
+        // 若regex参数超过2个字符并且是合法的正则表达式，那么直接调用Pattern类的split(this, limit)
+        // 来完成实现
         return Pattern.compile(regex).split(this, limit);
     }
 
@@ -2566,6 +2609,7 @@ public final class String
      *     <td>{@code { "b", "", ":and:f" }}</td></tr>
      * </table></blockquote>
      *
+     * split(String regex, int limit)方法的重载，limit参数默认值为0
      *
      * @param  regex
      *         the delimiting regular expression
