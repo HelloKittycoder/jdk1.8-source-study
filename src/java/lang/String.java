@@ -1023,27 +1023,38 @@ public final class String
      * String} object that represents the same sequence of characters as this
      * object.
      *
+     * 比较两个对象是否相等，当且仅当anObject参数不为null且
+     * 它与当前字符串对象表示的是同一个字符序列，才会返回true
+     *
      * @param  anObject
      *         The object to compare this {@code String} against
+     *         与当前字符串对象进行比较的对象
      *
      * @return  {@code true} if the given object represents a {@code String}
      *          equivalent to this string, {@code false} otherwise
+     *          返回指定对象是否与当前字符串对象相等
      *
      * @see  #compareTo(String)
      * @see  #equalsIgnoreCase(String)
      */
     public boolean equals(Object anObject) {
+        // 如果两个对象相等，直接返回true
         if (this == anObject) {
             return true;
         }
+        // 若anObject对象是String类型
         if (anObject instanceof String) {
+            // 强制转换成String对象
             String anotherString = (String)anObject;
+            // 获取当前字符串对象的字符序列长度并缓存到变量n上
             int n = value.length;
+            // 若两者的字符序列长度一致，则接下来要比较字符序列的每个字符是否相等
             if (n == anotherString.value.length) {
                 char v1[] = value;
                 char v2[] = anotherString.value;
                 int i = 0;
                 while (n-- != 0) {
+                    // 只要字符序列中存在一个字符不相等，则返回false即两者不相等
                     if (v1[i] != v2[i])
                         return false;
                     i++;

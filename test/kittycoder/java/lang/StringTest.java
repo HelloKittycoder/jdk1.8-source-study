@@ -285,4 +285,12 @@ public class StringTest {
         System.out.println("12".hashCode()); // 31*49+50=1569
         System.out.println("123".hashCode()); // 31^2*49+31*50+51=48690
     }
+
+    @Test
+    public void testEquals() {
+        System.out.println("1a23".equals("1b23")); // false
+        System.out.println("111".equals(222)); // false
+        System.out.println("111".equals("111")); // true
+        System.out.println("111".equals(null)); // false
+    }
 }
