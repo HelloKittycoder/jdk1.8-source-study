@@ -47,11 +47,13 @@ import java.util.Arrays;
 abstract class AbstractStringBuilder implements Appendable, CharSequence {
     /**
      * The value is used for character storage.
+     * 用来存储字符
      */
     char[] value;
 
     /**
      * The count is the number of characters used.
+     * 用于记录char[]数组中实际放入的字符个数
      */
     int count;
 
@@ -63,6 +65,7 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
 
     /**
      * Creates an AbstractStringBuilder of the specified capacity.
+     * 创建一个指定容量的AbstractStringBuilder
      */
     AbstractStringBuilder(int capacity) {
         value = new char[capacity];
@@ -70,6 +73,7 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
 
     /**
      * Returns the length (character count).
+     * 返回实际的字符数（即count）
      *
      * @return  the length of the sequence of characters currently
      *          represented by this object
@@ -83,6 +87,8 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
      * Returns the current capacity. The capacity is the amount of storage
      * available for newly inserted characters, beyond which an allocation
      * will occur.
+     *
+     * 返回当前容量（实际就是char数组的长度）
      *
      * @return  the current capacity
      */
