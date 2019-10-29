@@ -84,6 +84,8 @@ public final class StringBuilder
     /**
      * Constructs a string builder with no characters in it and an
      * initial capacity of 16 characters.
+     *
+     * 创建一个空的StringBuilder，初始容量为16
      */
     public StringBuilder() {
         super(16);
@@ -92,6 +94,8 @@ public final class StringBuilder
     /**
      * Constructs a string builder with no characters in it and an
      * initial capacity specified by the {@code capacity} argument.
+     *
+     * 创建一个空的StringBuilder，带有指定容量capacity
      *
      * @param      capacity  the initial capacity.
      * @throws     NegativeArraySizeException  if the {@code capacity}
@@ -106,10 +110,14 @@ public final class StringBuilder
      * specified string. The initial capacity of the string builder is
      * {@code 16} plus the length of the string argument.
      *
+     * 创建一个初始内容为str的StringBuilder，初始容量为str.length()+16
+     *
      * @param   str   the initial contents of the buffer.
      */
     public StringBuilder(String str) {
+        // 设置初始容量
         super(str.length() + 16);
+        // 追加字符串
         append(str);
     }
 
