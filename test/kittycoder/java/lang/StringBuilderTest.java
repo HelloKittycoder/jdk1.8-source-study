@@ -81,6 +81,14 @@ public class StringBuilderTest {
         sbuilder.insert(0, "AAA");
         System.out.println(sbuilder); // AAAtest1
     }
+
+    @Test
+    public void testInsert2() {
+        StringBuilder sbuilder = new StringBuilder("test2");
+        char[] ch = {'A', 'A', 'A'};
+        sbuilder.insert(0, ch);
+        System.out.println(sbuilder);
+    }
     /** =========================insert方法end=========================== **/
 
     static class Student {

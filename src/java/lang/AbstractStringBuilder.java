@@ -1132,18 +1132,28 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
      * {@code 0}, and less than or equal to the {@linkplain #length() length}
      * of this sequence.
      *
+     * 在索引offset前插入char数组中的字符
+     *
      * @param      offset   the offset.
      * @param      str      a character array.
      * @return     a reference to this object.
      * @throws     StringIndexOutOfBoundsException  if the offset is invalid.
      */
     public AbstractStringBuilder insert(int offset, char[] str) {
+        // 插入字符的索引offset，所处范围为[0,count]（这里length()返回的结果就是count）
         if ((offset < 0) || (offset > length()))
             throw new StringIndexOutOfBoundsException(offset);
         int len = str.length;
+        // 确保内部数组至少能容纳的容量为count+len
         ensureCapacityInternal(count + len);
+        // 将value中索引从offset开始的元素（即[offset,count-1]），复制到value中（从索引offset+len开始放），
+        // 复制元素个数为：(count-1)-offset+1=count-offset
+        // 也就是：将value中索引范围为[offset,count-1]的元素，统一向后挪动len个位置，
+        // 空出来的位置（[offset,offset+len-1]）刚好用来放str
         System.arraycopy(value, offset, value, offset + len, count - offset);
+        // 将str放到char数组value中，从索引offset开始放
         System.arraycopy(str, 0, value, offset, len);
+        // 将count增加len
         count += len;
         return this;
     }

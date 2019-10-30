@@ -313,6 +313,7 @@ public final class StringBuilder
     }
 
     /**
+     * 在索引offset前插入char数组中的字符
      * @throws StringIndexOutOfBoundsException {@inheritDoc}
      */
     @Override
