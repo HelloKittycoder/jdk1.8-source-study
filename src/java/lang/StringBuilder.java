@@ -254,6 +254,7 @@ public final class StringBuilder
     }
 
     /**
+     * 删除StringBuilder中索引范围为[start,end}的字符
      * @throws StringIndexOutOfBoundsException {@inheritDoc}
      */
     @Override

@@ -28,15 +28,16 @@ public class StringBuilderTest {
     }
     /** =========================构造器=========================== **/
 
+    /** =========================append方法=========================== **/
     @Test
     public void testAppend1() {
         // append(Object)
         StringBuilder sbuilder = new StringBuilder();
         sbuilder.append((Object) null);
-        System.out.println(sbuilder);
+        System.out.println(sbuilder); // null
 
         sbuilder.append(new Student(1, "张三"));
-        System.out.println(sbuilder);
+        System.out.println(sbuilder); // nullStudent{id=1, name='张三'}
     }
 
     @Test
@@ -44,16 +45,25 @@ public class StringBuilderTest {
         // append(String)
         StringBuilder sbuilder = new StringBuilder();
         sbuilder.append((String) null);
-        System.out.println(sbuilder);
+        System.out.println(sbuilder); // null
 
         sbuilder.append("AA");
-        System.out.println(sbuilder);
+        System.out.println(sbuilder); // nullAA
 
         sbuilder.append("BB");
-        System.out.println(sbuilder);
+        System.out.println(sbuilder); // nullAABB
 
         sbuilder.append(new Student(1, "张三").toString());
-        System.out.println(sbuilder);
+        System.out.println(sbuilder); // nullAABBStudent{id=1, name='张三'}
+    }
+    /** =========================append方法=========================== **/
+
+    /** =========================delete方法=========================== **/
+    @Test
+    public void testDelete() {
+        StringBuilder sbuilder = new StringBuilder("ABC123");
+        sbuilder.delete(0, 3);
+        System.out.println(sbuilder); // 123
     }
 
     static class Student {

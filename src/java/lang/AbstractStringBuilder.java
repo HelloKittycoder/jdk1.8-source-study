@@ -781,6 +781,8 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
      * sequence if no such character exists. If
      * {@code start} is equal to {@code end}, no changes are made.
      *
+     * 删除AbstractStringBuilder中索引范围为[start,end}的字符
+     *
      * @param      start  The beginning index, inclusive.
      * @param      end    The ending index, exclusive.
      * @return     This object.
@@ -789,15 +791,31 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
      *             greater than {@code end}.
      */
     public AbstractStringBuilder delete(int start, int end) {
+        // 如果起始索引start为负数，则抛出异常
         if (start < 0)
             throw new StringIndexOutOfBoundsException(start);
+        // 如果截止索引end大于当前实际的字符个数count，则设置end=count
+        // 删除元素个数最多为count个
         if (end > count)
             end = count;
+        // 不允许出现start>end的情况
         if (start > end)
             throw new StringIndexOutOfBoundsException();
+        // 计算需要删除掉的字符个数
         int len = end - start;
         if (len > 0) {
+            // 将value中从(start+len)（即end）开始的元素，复制到value中（从索引start处开始放）
+            // 复制元素个数为(count-end)个
+            // 也就是将value中索引范围为[end,count)的元素，复制到value中，从索引start处开始放
+            // 复制元素个数为(count-end)个，实际做的是覆盖操作
+
+            // 举例：start=0,end=3,count=6,
+            // 就是把索引为[3,5]的元素复制到value的索引范围为[0,2]处，然后把count改成3了
+            // 这里可以看出，索引范围为[3,5]的元素没有被删掉，
+            // 但是为什么能造成最终查出的value对应的StringBuilder看到的效果是被删掉了？
+            // 原因：count改成3，toString方法
             System.arraycopy(value, start+len, value, start, count-end);
+            // 实际字符数（count）需要减少len个
             count -= len;
         }
         return this;
