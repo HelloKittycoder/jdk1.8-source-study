@@ -264,6 +264,7 @@ public final class StringBuilder
     }
 
     /**
+     * 删除指定索引的字符
      * @throws StringIndexOutOfBoundsException {@inheritDoc}
      */
     @Override

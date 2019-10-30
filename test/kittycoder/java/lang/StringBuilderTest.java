@@ -28,7 +28,7 @@ public class StringBuilderTest {
     }
     /** =========================构造器=========================== **/
 
-    /** =========================append方法=========================== **/
+    /** =========================append方法start=========================== **/
     @Test
     public void testAppend1() {
         // append(Object)
@@ -56,15 +56,23 @@ public class StringBuilderTest {
         sbuilder.append(new Student(1, "张三").toString());
         System.out.println(sbuilder); // nullAABBStudent{id=1, name='张三'}
     }
-    /** =========================append方法=========================== **/
+    /** =========================append方法end=========================== **/
 
-    /** =========================delete方法=========================== **/
+    /** =========================delete方法start=========================== **/
     @Test
     public void testDelete() {
         StringBuilder sbuilder = new StringBuilder("ABC123");
         sbuilder.delete(0, 3);
         System.out.println(sbuilder); // 123
     }
+
+    @Test
+    public void testDeleteCharAt() {
+        StringBuilder sbuilder = new StringBuilder("ABC123");
+        sbuilder.deleteCharAt(1);
+        System.out.println(sbuilder); // AC123
+    }
+    /** =========================delete方法end=========================== **/
 
     static class Student {
         private int id;

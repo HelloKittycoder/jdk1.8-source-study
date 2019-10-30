@@ -868,6 +868,8 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
      * {@code Character.charCount(thisSequence.codePointAt(index))},
      * where {@code thisSequence} is this sequence.
      *
+     * 删除指定索引的字符
+     *
      * @param       index  Index of {@code char} to remove
      * @return      This object.
      * @throws      StringIndexOutOfBoundsException  if the {@code index}
@@ -875,9 +877,14 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
      *              {@code length()}.
      */
     public AbstractStringBuilder deleteCharAt(int index) {
+        // 能删除的字符所处的索引范围为[0,count-1]，即[0,count)
         if ((index < 0) || (index >= count))
             throw new StringIndexOutOfBoundsException(index);
+        // 将value中索引从index+1开始的所有元素，复制到value中（从index开始放），
+        // 复制元素个数为：(count-1)-(index+1)+1=count-index-1
+        // 相当于把索引范围为[index+1,count-1]的元素，整体向前移动了一位
         System.arraycopy(value, index+1, value, index, count-index-1);
+        // 删掉了1个字符，count需要减1
         count--;
         return this;
     }
