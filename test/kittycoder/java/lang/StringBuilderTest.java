@@ -74,6 +74,15 @@ public class StringBuilderTest {
     }
     /** =========================delete方法end=========================== **/
 
+    /** =========================insert方法start=========================== **/
+    @Test
+    public void testInsert1() {
+        StringBuilder sbuilder = new StringBuilder("test1");
+        sbuilder.insert(0, "AAA");
+        System.out.println(sbuilder); // AAAtest1
+    }
+    /** =========================insert方法end=========================== **/
+
     static class Student {
         private int id;
         private String name;

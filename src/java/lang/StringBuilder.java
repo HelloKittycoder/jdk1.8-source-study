@@ -303,6 +303,7 @@ public final class StringBuilder
     }
 
     /**
+     * 在索引offset前插入字符串str
      * @throws StringIndexOutOfBoundsException {@inheritDoc}
      */
     @Override
