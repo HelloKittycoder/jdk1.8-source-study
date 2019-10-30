@@ -146,8 +146,10 @@ public final class StringBuilder
         return append(String.valueOf(obj));
     }
 
+    // 将str追加到StringBuilder中
     @Override
     public StringBuilder append(String str) {
+        // 调用AbstractStringBuilder的append(String str)方法
         super.append(str);
         return this;
     }

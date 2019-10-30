@@ -123,10 +123,15 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
      * synchronized.
      * If {@code minimumCapacity} is non positive due to numeric
      * overflow, this method throws {@code OutOfMemoryError}.
+     *
+     * 确保内部的char数组能存放至少minimumCapacity个元素
      */
     private void ensureCapacityInternal(int minimumCapacity) {
         // overflow-conscious code
+        // 如果minimumCapacity超过了当前容量，则进行扩容
         if (minimumCapacity - value.length > 0) {
+            // 扩容
+            // 将value扩容至新的容量newCapacity(minimumCapacity)
             value = Arrays.copyOf(value,
                     newCapacity(minimumCapacity));
         }
@@ -147,6 +152,8 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
      * Will not return a capacity greater than {@code MAX_ARRAY_SIZE}
      * unless the given minimum capacity is greater than that.
      *
+     * 通过minCapacity计算所需的新容量
+     *
      * @param  minCapacity the desired minimum capacity
      * @throws OutOfMemoryError if minCapacity is less than zero or
      *         greater than Integer.MAX_VALUE
@@ -154,18 +161,28 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
     private int newCapacity(int minCapacity) {
         // overflow-conscious code
         int newCapacity = (value.length << 1) + 2;
+        // 尝试将当前容量*2+2，放到newCapacity中
+        // 如果newCapacity>=minCapacity，说明newCapacity（扩容后的容量）能满足要求；
+        // 否则，直接使用minCapacity作为新的容量
         if (newCapacity - minCapacity < 0) {
             newCapacity = minCapacity;
         }
+        // 再次对newCapacity进行判断，这里是看（1）newCapacity是否出现溢出，或者（2）newCapacity是否>=MAX_ARRAY_SIZE
+        // 如果（1）、（2）中有一个满足，说明容量过大，调用hugeCapacity来计算所需的新容量
+        // 否则，直接返回newCapacity
         return (newCapacity <= 0 || MAX_ARRAY_SIZE - newCapacity < 0)
             ? hugeCapacity(minCapacity)
             : newCapacity;
     }
 
     private int hugeCapacity(int minCapacity) {
+        // 将minCapacity（其实就是newCapacity）和Integer.MAX_VALUE比较
+        // 如果minCapacity>Integer.MAX_VALUE，直接报内存溢出（个人认为这种情况不可能出现，暂时不知道这个if判断有什么作用）
         if (Integer.MAX_VALUE - minCapacity < 0) { // overflow
             throw new OutOfMemoryError();
         }
+        // 将minCapacity和MAX_ARRAY_SIZE（Integer.MAX_VALUE-8）进行比较，这两个数，谁更大，
+        // 就用谁作为最终的char数组容量
         return (minCapacity > MAX_ARRAY_SIZE)
             ? minCapacity : MAX_ARRAY_SIZE;
     }
@@ -450,11 +467,17 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
      * @return  a reference to this object.
      */
     public AbstractStringBuilder append(String str) {
+        // 如果str为null，调用appendNull()方法
         if (str == null)
             return appendNull();
+        // 如果str不为null，则获取str的长度
         int len = str.length();
+        // 确定AbstractStringBuilder的内部容量（这一步可能需要对内部的char数组进行扩容）
+        // 确保内部的char数组至少能存放(count+len)个元素（count是原来就有的元素个数，len是追加的str的字符个数）
         ensureCapacityInternal(count + len);
+        // 把str的所有字符复制到AbstractStringBuilder的char数组中
         str.getChars(0, len, value, count);
+        // 维护下count的值（实际存放的字符数量需要加上len）
         count += len;
         return this;
     }
@@ -496,14 +519,20 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
         return this.append(s, 0, s.length());
     }
 
+    // 给AbstractStringBuilder追加null
     private AbstractStringBuilder appendNull() {
+        // 用c临时记录下当前AbstractStringBuilder的实际字符数量
         int c = count;
+        // 确认内部char数组至少能存放(c+4)个元素
         ensureCapacityInternal(c + 4);
+        // 用变量value来存放this.value的引用，然后通过局部变量value来操作this.value里的数据
         final char[] value = this.value;
         value[c++] = 'n';
         value[c++] = 'u';
         value[c++] = 'l';
         value[c++] = 'l';
+        // 此时c就是加完"null"字符串后的实际字符数量，即count+4
+        // 再修改下当前AbstractStringBuilder的字符数量
         count = c;
         return this;
     }

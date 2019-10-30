@@ -34,7 +34,25 @@ public class StringBuilderTest {
         StringBuilder sbuilder = new StringBuilder();
         sbuilder.append((Object) null);
         System.out.println(sbuilder);
+
         sbuilder.append(new Student(1, "张三"));
+        System.out.println(sbuilder);
+    }
+
+    @Test
+    public void testAppend2() {
+        // append(String)
+        StringBuilder sbuilder = new StringBuilder();
+        sbuilder.append((String) null);
+        System.out.println(sbuilder);
+
+        sbuilder.append("AA");
+        System.out.println(sbuilder);
+
+        sbuilder.append("BB");
+        System.out.println(sbuilder);
+
+        sbuilder.append(new Student(1, "张三").toString());
         System.out.println(sbuilder);
     }
 
