@@ -127,10 +127,14 @@ public final class StringBuilder
      * the string builder is {@code 16} plus the length of the
      * {@code CharSequence} argument.
      *
+     * 创建一个与seq包含相同字符的StringBuilder，初始容量为seq.length()+16
+     *
      * @param      seq   the sequence to copy.
      */
     public StringBuilder(CharSequence seq) {
+        // 设置初始容量
         this(seq.length() + 16);
+        // 追加字符
         append(seq);
     }
 

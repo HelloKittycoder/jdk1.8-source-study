@@ -19,5 +19,12 @@ public class StringBuilderTest {
         StringBuilder sbuilder3 = new StringBuilder("张三");
         System.out.println("容量为：" + sbuilder3.capacity());
     }
+
+    @Test
+    public void testConstructor2() {
+        StringBuilder sbuilder = new StringBuilder("aaa");
+        StringBuilder sbuilder2 = new StringBuilder(sbuilder);
+        System.out.println(sbuilder2);
+    }
     /** =========================构造器=========================== **/
 }
