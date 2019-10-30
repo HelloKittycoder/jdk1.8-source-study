@@ -422,6 +422,8 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
      * and the characters of that string were then
      * {@link #append(String) appended} to this character sequence.
      *
+     * 将Object对应的String表示追加到StringBuilder中
+     *
      * @param   obj   an {@code Object}.
      * @return  a reference to this object.
      */

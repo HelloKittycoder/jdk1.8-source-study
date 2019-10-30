@@ -27,4 +27,35 @@ public class StringBuilderTest {
         System.out.println(sbuilder2);
     }
     /** =========================构造器=========================== **/
+
+    @Test
+    public void testAppend1() {
+        // append(Object)
+        StringBuilder sbuilder = new StringBuilder();
+        sbuilder.append((Object) null);
+        System.out.println(sbuilder);
+        sbuilder.append(new Student(1, "张三"));
+        System.out.println(sbuilder);
+    }
+
+    static class Student {
+        private int id;
+        private String name;
+
+        public Student() {
+        }
+
+        public Student(int id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return "Student{" +
+                    "id=" + id +
+                    ", name='" + name + '\'' +
+                    '}';
+        }
+    }
 }

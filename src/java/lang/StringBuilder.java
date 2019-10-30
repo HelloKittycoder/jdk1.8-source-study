@@ -138,8 +138,11 @@ public final class StringBuilder
         append(seq);
     }
 
+    // 将Object对应的String表示追加到StringBuilder中
+    // （子类StringBuilder覆盖了AbstractStringBuilder的append(Object)，但其实两边的具体实现完全一样）
     @Override
     public StringBuilder append(Object obj) {
+        // 先将Object转换成String，然后将该转换结果追加到StringBuilder中
         return append(String.valueOf(obj));
     }
 
