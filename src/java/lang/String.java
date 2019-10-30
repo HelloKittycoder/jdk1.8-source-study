@@ -856,6 +856,9 @@ public final class String
      *     dstBegin + (srcEnd-srcBegin) - 1
      * </pre></blockquote>
      *
+     * 将当前字符串中索引范围为[srcBegin,srcEnd)的所有字符，复制到新的char数组dst中，
+     * 从dst的索引dstBegin开始放元素
+     *
      * @param      srcBegin   index of the first character in the string
      *                        to copy.
      * @param      srcEnd     index after the last character in the string
@@ -873,15 +876,21 @@ public final class String
      *                {@code dst.length}</ul>
      */
     public void getChars(int srcBegin, int srcEnd, char dst[], int dstBegin) {
+        // 如果起始索引为负数
         if (srcBegin < 0) {
             throw new StringIndexOutOfBoundsException(srcBegin);
         }
+        // 如果截止索引超过value.length，比如为value.length+1，
+        // 说明从当前数组中会去取索引为value.length的元素，这个明显数组索引越界了
+        // 索引srcEnd最多只能到value.length，截取索引区间是不包含srcEnd的，也就是说截止索引最多到value.length-1
         if (srcEnd > value.length) {
             throw new StringIndexOutOfBoundsException(srcEnd);
         }
         if (srcBegin > srcEnd) {
             throw new StringIndexOutOfBoundsException(srcEnd - srcBegin);
         }
+        // 把当前字符串的char数组（value）中索引从srcBegin开始的元素，复制到dst中（从dstBegin开始放元素），
+        // 复制元素个数为srcEnd - srcBegin
         System.arraycopy(value, srcBegin, dst, dstBegin, srcEnd - srcBegin);
     }
 

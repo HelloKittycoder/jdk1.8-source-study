@@ -166,6 +166,14 @@ public class StringTest {
     }
 
     @Test
+    public void testGetChars() {
+        String str = "ABC123abc321";
+        char[] ch = new char[20];
+        str.getChars(0, str.length(), ch, 0);
+        System.out.println(ch);
+    }
+
+    @Test
     public void testContains() {
         String str = "ABC123abc321";
         System.out.println(str + "中包含AB：" + str.contains("AB"));
