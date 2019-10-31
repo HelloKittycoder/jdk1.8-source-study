@@ -900,15 +900,23 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
      * sequence will be lengthened to accommodate the
      * specified String if necessary.)
      *
+     * 将索引范围为[start,end)的字符替换成字符串str
+     *
      * @param      start    The beginning index, inclusive.
+     *                      起始索引（包含）
      * @param      end      The ending index, exclusive.
+     *                      截止索引（不包含）
      * @param      str   String that will replace previous contents.
+     *                   新字符串
      * @return     This object.
      * @throws     StringIndexOutOfBoundsException  if {@code start}
      *             is negative, greater than {@code length()}, or
      *             greater than {@code end}.
      */
     public AbstractStringBuilder replace(int start, int end, String str) {
+        // start的范围为：[0,count]
+        // start<=end
+        // end<=count
         if (start < 0)
             throw new StringIndexOutOfBoundsException(start);
         if (start > count)
@@ -919,11 +927,20 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
         if (end > count)
             end = count;
         int len = str.length();
+        // 计算替换后的字符长度
+        // 变化：多了字符串str，同时挪掉了索引范围为[start,end)的字符
         int newCount = count + len - (end - start);
+        // 确保至少能存放newCount个元素
         ensureCapacityInternal(newCount);
 
+        // 把char数组value中索引从end开始的元素，复制到value中，从索引(start+len)开始放，
+        // 复制的元素个数为：count-end
+        // 也就是复制了value中索引范围为[end, count)的元素，放到索引start之后的len个位置，为了腾出len个位置
+        // 来存放新字符串str
         System.arraycopy(value, end, value, start + len, count - end);
+        // 将新字符串str放到挪出来的len个位置中
         str.getChars(value, start);
+        // 将count的值更新为newCount
         count = newCount;
         return this;
     }

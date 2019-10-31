@@ -274,6 +274,7 @@ public final class StringBuilder
     }
 
     /**
+     * 将索引范围为[start,end)的字符替换成字符串str
      * @throws StringIndexOutOfBoundsException {@inheritDoc}
      */
     @Override

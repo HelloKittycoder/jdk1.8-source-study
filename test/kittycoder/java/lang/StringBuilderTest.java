@@ -91,6 +91,17 @@ public class StringBuilderTest {
     }
     /** =========================insert方法end=========================== **/
 
+    @Test
+    public void testReplace() {
+        StringBuilder sbuilder = new StringBuilder("test1");
+        sbuilder.replace(1, 3, "hh"); // thht1
+        System.out.println(sbuilder);
+
+        sbuilder = new StringBuilder("test1");
+        sbuilder.replace(1, 3, "h"); // tht1
+        System.out.println(sbuilder);
+    }
+
     static class Student {
         private int id;
         private String name;
