@@ -102,6 +102,17 @@ public class StringBuilderTest {
         System.out.println(sbuilder);
     }
 
+    @Test
+    public void testReverse() {
+        StringBuilder sbuilder = new StringBuilder("abcd");
+        sbuilder.reverse(); // dcba
+        System.out.println(sbuilder);
+
+        sbuilder = new StringBuilder("abcde");
+        sbuilder.reverse(); // edcba
+        System.out.println(sbuilder);
+    }
+
     static class Student {
         private int id;
         private String name;

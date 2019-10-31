@@ -417,6 +417,7 @@ public final class StringBuilder
         return super.lastIndexOf(str, fromIndex);
     }
 
+    // 将字符倒序排列
     @Override
     public StringBuilder reverse() {
         super.reverse();

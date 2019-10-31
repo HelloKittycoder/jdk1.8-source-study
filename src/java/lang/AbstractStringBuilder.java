@@ -1507,13 +1507,19 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
      * "\u005CuDC00\u005CuD800" produces "\u005CuD800\u005CuDC00" which is
      * a valid surrogate pair.
      *
+     * 将字符倒序排列
+     *
      * @return  a reference to this object.
      */
     public AbstractStringBuilder reverse() {
         boolean hasSurrogates = false;
         int n = count - 1;
+        // 字符的索引范围为：[0,count-1]，(count-2)>>1取到的是区间的中间数
+        // 举例：count=4，区间为[0,3]（所有数字为0,1,2,3）,(4-2)>>1=1
+        // count=5，区间为[0,4]（所有数字为0,1,2,3,4）,(5-2)>>1=1
         for (int j = (n-1) >> 1; j >= 0; j--) {
             int k = n - j;
+            // 将索引j和索引k的字符对调
             char cj = value[j];
             char ck = value[k];
             value[j] = ck;
