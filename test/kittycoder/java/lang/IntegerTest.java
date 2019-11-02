@@ -31,4 +31,15 @@ public class IntegerTest {
         int a4 = Integer.parseInt("FF", 16);
         System.out.println(a4); // 255
     }
+
+    @Test
+    public void testValueOf() {
+        System.out.println(sun.misc.VM.getSavedProperty("java.lang.Integer.IntegerCache.high"));
+        int a1 = Integer.valueOf(20);
+        System.out.println(a1);
+        int a2 = Integer.valueOf("20");
+        System.out.println(a2);
+        int a3 = Integer.valueOf("101", 2); // 5
+        System.out.println(a3);
+    }
 }

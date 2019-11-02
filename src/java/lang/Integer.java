@@ -781,6 +781,8 @@ public final class Integer extends Number implements Comparable<Integer> {
      *  {@code new Integer(Integer.parseInt(s, radix))}
      * </blockquote>
      *
+     * 将radix进制的数s（用String表示）转换成10进制表示的Integer
+     *
      * @param      s   the string to be parsed.
      * @param      radix the radix to be used in interpreting {@code s}
      * @return     an {@code Integer} object holding the value
@@ -808,6 +810,8 @@ public final class Integer extends Number implements Comparable<Integer> {
      * <blockquote>
      *  {@code new Integer(Integer.parseInt(s))}
      * </blockquote>
+     *
+     * 将String转化为Integer
      *
      * @param      s   the string to be parsed.
      * @return     an {@code Integer} object holding the value
@@ -837,21 +841,29 @@ public final class Integer extends Number implements Comparable<Integer> {
 
         static {
             // high value may be configured by property
+            // high的值可以通过VM Options来进行配置
+            // 比如：-Djava.lang.Integer.IntegerCache.high=128，就将high设置成128了
             int h = 127;
             String integerCacheHighPropValue =
                 sun.misc.VM.getSavedProperty("java.lang.Integer.IntegerCache.high");
+            // 如果java.lang.Integer.IntegerCache.high属性值不为空，且没有问题，则开始处理
             if (integerCacheHighPropValue != null) {
                 try {
+                    // integerCacheHighPropValue记为i
                     int i = parseInt(integerCacheHighPropValue);
                     i = Math.max(i, 127);
                     // Maximum array size is Integer.MAX_VALUE
+                    // 由于数组大小限制最多为Integer.MAX_VALUE，而[-128,0]占用了 (-low)+1 个位置
+                    // 所有h最多为 Integer.MAX_VALUE - (-low) -1
                     h = Math.min(i, Integer.MAX_VALUE - (-low) -1);
+                    // 如果i∈[127, Integer.MAX_VALUE - (-low) -1]，最终就采用i
                 } catch( NumberFormatException nfe) {
                     // If the property cannot be parsed into an int, ignore it.
                 }
             }
             high = h;
 
+            // 缓存的数组中整数范围为[low,high]
             cache = new Integer[(high - low) + 1];
             int j = low;
             for(int k = 0; k < cache.length; k++)
@@ -875,11 +887,16 @@ public final class Integer extends Number implements Comparable<Integer> {
      * This method will always cache values in the range -128 to 127,
      * inclusive, and may cache other values outside of this range.
      *
+     * 将int转化为Integer
+     * 如果i∈[-128,127]，则直接返回缓存的Integer对象；否则创建新的对象进行返回
+     *
      * @param  i an {@code int} value.
      * @return an {@code Integer} instance representing {@code i}.
      * @since  1.5
      */
     public static Integer valueOf(int i) {
+        // IntegerCache.low = -128
+        // IntegerCache.high默认值为127
         if (i >= IntegerCache.low && i <= IntegerCache.high)
             return IntegerCache.cache[i + (-IntegerCache.low)];
         return new Integer(i);
