@@ -526,6 +526,8 @@ public final class Integer extends Number implements Comparable<Integer> {
      * parseInt("Kona", 27) returns 411787
      * </pre></blockquote>
      *
+     * 将radix进制整数的字符串表示解析成带符号的十进制整数
+     *
      * @param      s   the {@code String} containing the integer
      *                  representation to be parsed
      * @param      radix   the radix to be used while parsing {@code s}.
@@ -543,10 +545,12 @@ public final class Integer extends Number implements Comparable<Integer> {
          * the valueOf method.
          */
 
+        // 输入为null报错
         if (s == null) {
             throw new NumberFormatException("null");
         }
 
+        // 判断基数是否处在[2,36]的范围
         if (radix < Character.MIN_RADIX) {
             throw new NumberFormatException("radix " + radix +
                                             " less than Character.MIN_RADIX");
@@ -557,18 +561,31 @@ public final class Integer extends Number implements Comparable<Integer> {
                                             " greater than Character.MAX_RADIX");
         }
 
+        /**
+         * result记录结果，在下面的计算中会一直是个负数
+         * 假如说，我们的字符串是一个整数"7"，那么在返回这个值之前result保存的是-7
+         * 这个其实是为了保持正数和负数在下面计算的时候，有一致的逻辑（不需要给正数和负数分别编写计算逻辑）
+         */
         int result = 0;
+        // 默认认为传入的是正数，后面会根据第一个字符来对negative做相应调整
         boolean negative = false;
         int i = 0, len = s.length();
+        /**
+         * limit默认初始化为最大正整数的相反数
+         * 加入字符串表示的是正数，那么result（在返回之前一直是负数形式）就必须和这个最大正整数的相反数来比较，判断是否溢出
+         */
         int limit = -Integer.MAX_VALUE;
         int multmin;
         int digit;
 
         if (len > 0) {
-            char firstChar = s.charAt(0);
+            char firstChar = s.charAt(0); // 首先是判断第一个字符是否含有正负号
             if (firstChar < '0') { // Possible leading "+" or "-"
+                // 如果开头是+或-，在进行数字转换的时候，就要把第一个字符排除在外
+                // 所以需要进行i++
                 if (firstChar == '-') {
                     negative = true;
+                    // 这里在负号的情况下，判断溢出的值就变成了负整数的最小值了
                     limit = Integer.MIN_VALUE;
                 } else if (firstChar != '+')
                     throw NumberFormatException.forInputString(s);
@@ -577,22 +594,51 @@ public final class Integer extends Number implements Comparable<Integer> {
                     throw NumberFormatException.forInputString(s);
                 i++;
             }
+            // 说下multimin：
+            // 假如radix进制下Integer.MAX_VALUE是用n位数字来表示的，
+            // 那么radix进制下(n-1)位数字所能表示的最大的十进制数就是multimin
             multmin = limit / radix;
             while (i < len) {
                 // Accumulating negatively avoids surprises near MAX_VALUE
+                // 将第i位的字符转换成radix进制下的表示的数
+                // 以二进制为例：0转换后是0，1转换后是1
+                // 以十进制为例：0-9各自转换后还是自身
+                // 以十六进制为例：0-9各自转换后还是自身，a-f转换后对应着10-15
                 digit = Character.digit(s.charAt(i++),radix);
                 if (digit < 0) {
                     throw NumberFormatException.forInputString(s);
                 }
+
+                /**
+                 * 说下接下来两个if判断的思路：以s表示的是正数进行说明（负数也是同样的道理），i是循环变量，
+                 * len是字符串s的长度
+                 * （1）当截取了(i-1)位时，最多能到radix进制里(n-1)位数字所能表示的最大的十进制数的相反数
+                 * 因为i最多能到n位
+                 * Integer(s(0,i-1)) <= multimin (i<=n)
+                 * （2）当截取了i位时，最多能到radix进制的n位数字所能表示的最大的十进制数的相反数，即-Integer.MAX
+                 * Integer(s(0,i)) <= limit，这里并没有直接去比较，而是做了转换
+                 * 即 Integer(s(0,i-1)) <= limit + digit
+                 * （为什么不写Integer(s(0,i-1)) - digit <= limit (i<=n)呢？因为Integer(s(0,i)) - digit可能会出现溢出）
+                 */
+
+                // 判断1
+                // 因为这里digit还没算到result里，也就是说少算了一位
+                // 此时result最多能到(n-1)位数字所能表示的最大的十进制数（当len=n的时候有可能）
+                // 这也就说明了为什么这里需要和multmin进行比较
                 if (result < multmin) {
                     throw NumberFormatException.forInputString(s);
                 }
                 result *= radix;
+                // 判断2
                 if (result < limit + digit) {
                     throw NumberFormatException.forInputString(s);
                 }
                 result -= digit;
             }
+            // 假如s表示的是正数，s里全都是数字
+            // 循环完成后的计算结果就是 -radix^(len-1)*s[0]-radix^(len-2)*s[1]-...-radix*s[len-2]-s[len-1]
+            // 以 s=a1a2a3（a1,a2,a3均为0或1），radix=2，len=3为例：
+            // result=-2^2*a1-2*a2-a3
         } else {
             throw NumberFormatException.forInputString(s);
         }
@@ -609,6 +655,8 @@ public final class Integer extends Number implements Comparable<Integer> {
      * returned, exactly as if the argument and the radix 10 were
      * given as arguments to the {@link #parseInt(java.lang.String,
      * int)} method.
+     *
+     * 将字符串解析成带符号的十进制整数
      *
      * @param s    a {@code String} containing the {@code int}
      *             representation to be parsed
