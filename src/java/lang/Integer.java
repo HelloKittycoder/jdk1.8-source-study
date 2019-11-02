@@ -848,6 +848,8 @@ public final class Integer extends Number implements Comparable<Integer> {
      * Constructs a newly allocated {@code Integer} object that
      * represents the specified {@code int} value.
      *
+     * 通过指定的int值创建一个Integer对象
+     *
      * @param   value   the value to be represented by the
      *                  {@code Integer} object.
      */
@@ -861,6 +863,8 @@ public final class Integer extends Number implements Comparable<Integer> {
      * {@code String} parameter. The string is converted to an
      * {@code int} value in exactly the manner used by the
      * {@code parseInt} method for radix 10.
+     *
+     * 通过指定的String值创建一个Integer对象（实际调用parseInt解析成十进制数）
      *
      * @param      s   the {@code String} to be converted to an
      *                 {@code Integer}.
