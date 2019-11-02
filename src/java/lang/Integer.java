@@ -53,18 +53,21 @@ public final class Integer extends Number implements Comparable<Integer> {
     /**
      * A constant holding the minimum value an {@code int} can
      * have, -2<sup>31</sup>.
+     * int类型的最小值(-2^31)
      */
     @Native public static final int   MIN_VALUE = 0x80000000;
 
     /**
      * A constant holding the maximum value an {@code int} can
      * have, 2<sup>31</sup>-1.
+     * int类型的最大值(2^31-1)
      */
     @Native public static final int   MAX_VALUE = 0x7fffffff;
 
     /**
      * The {@code Class} instance representing the primitive type
      * {@code int}.
+     * 存放int.class
      *
      * @since   JDK1.1
      */
@@ -73,6 +76,8 @@ public final class Integer extends Number implements Comparable<Integer> {
 
     /**
      * All possible chars for representing a number as a String
+     * 将数字转换成字符串表示可能用到的所有字符
+     * 因为jdk里至多实现到36进制（0-9对应0-9，a-z对应10-35），所以需要有下面这么多字符
      */
     final static char[] digits = {
         '0' , '1' , '2' , '3' , '4' , '5' ,
