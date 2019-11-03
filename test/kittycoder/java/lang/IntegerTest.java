@@ -91,4 +91,13 @@ public class IntegerTest {
         System.out.println(i); // -2147483648
     }
     // ===============Integer.toString()相关细节问题测试end===============
+
+    @Test
+    public void testToString2() {
+        // 返回指定整数的radix进制表示
+        String s1 = Integer.toString(10, 2);
+        System.out.println(s1); // 1010
+        String s2 = Integer.toString(-10, 2);
+        System.out.println(s2); // -1010
+    }
 }

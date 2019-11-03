@@ -126,6 +126,8 @@ public final class Integer extends Number implements Comparable<Integer> {
      *  {@code Integer.toString(n, 16).toUpperCase()}
      * </blockquote>
      *
+     * 返回指定整数的radix进制表示
+     *
      * @param   i       an integer to be converted to a string.
      * @param   radix   the radix to use in the string representation.
      * @return  a string representation of the argument in the specified radix.
@@ -133,28 +135,68 @@ public final class Integer extends Number implements Comparable<Integer> {
      * @see     java.lang.Character#MIN_RADIX
      */
     public static String toString(int i, int radix) {
+        // 如果radix<2或者radix>36，则将radix重置为10
         if (radix < Character.MIN_RADIX || radix > Character.MAX_RADIX)
             radix = 10;
 
         /* Use the faster version */
+        // 如果radix为10，直接调用Integer.toString(int)方法
         if (radix == 10) {
             return toString(i);
         }
 
+        // 这里为什么给33，而不是32呢？
+        // 因为二进制表示整数（最多要占掉32位），如果是负数的话，还多一个负号（这里转换得到的是原码，而非补码）
         char buf[] = new char[33];
         boolean negative = (i < 0);
-        int charPos = 32;
+        int charPos = 32; // 从最低位开始放数字
 
+        /**
+         * 为什么要统一转成负数，而非正数呢？
+         * 因为Integer.MAX_VALUE=2147483647，Integer.MIN_VALUE=-2147483648，
+         * 对MAX_VALUE取相反数可以，但是对MIN_VALUE不行
+         * 如果转成正数的话，就要单独考虑Integer.MIN_VALUE这种特殊情况，就像Integer.toString()方法里那样
+         */
+        // 如果传入的i不是负数，则转换成负数
         if (!negative) {
             i = -i;
         }
 
+        // 只要i比-radix还大，就需要进行转换
+        // -(-i) <= -radix，即 -i >= radix，|i| >= radix
         while (i <= -radix) {
+            // 将取模结果放入buf中
             buf[charPos--] = digits[-(i % radix)];
+            // 计算i整除radix后的结果，并赋值给i
             i = i / radix;
         }
         buf[charPos] = digits[-i];
 
+        /**
+         * while循环的思路：10进制整数转换成n进制数（n∈[2,36]）的短除法
+         * 以i=10，radix=2为例：
+         * i=-10<=-2，-10÷2=-5......0，r=0，q=-5，此时buf[32]=digits[0]=0，然后i=-5
+         * i=-5<=-2，-5÷2=-2......-1，r=-1，q=-2，此时buf[31]=digits[1]=1，然后i=-2
+         * i=-2<=-2，-2÷2=-1......0，r=0，q=-1，此时buf[30]=digits[0]=0，然后i=-1
+         *
+         * i=-1<=-2，不满足条件，跳出循环
+         * buf[29]=digits[1]=1，charPos=29
+         * 此时buf中，索引范围[29,31]上依次放的字符为：1,0,1,0
+         */
+        /*
+        // 模仿toString(int)里调用的getChars方法，稍微改写了下上面的while循环。只是加了几个中间变量
+        // 方便说明计算过程
+        int q, r;
+        while (i <= -radix) {
+            r = i % radix;
+            buf[charPos--] = digits[-r];
+            q = i / radix;
+            i = q;
+        }
+        buf[charPos] = digits[-i];
+        */
+
+        // 如果是负数的话，留一个位置存放负数的符号“-”
         if (negative) {
             buf[--charPos] = '-';
         }
@@ -485,7 +527,7 @@ public final class Integer extends Number implements Comparable<Integer> {
          * i<=65536，进入for循环
          * 655÷10=65......5（q=65，r=5），此时buf为[u0,u0,5,3,7]，然后i=65
          * 65÷10=6......5（q=6，r=5），此时buf为[u0,5,5,3,7]，然后i=6
-         * 6÷10=0......6（q=0，r=6），此时buf为[6,5,5,3,7]，然后i=0，此时退出循环
+         * 6÷10=0......6（q=0，r=6），此时buf为[6,5,5,3,7]，然后i=0，此时跳出循环
          */
         // Generate two digits per iteration
         // 如果i>=65536，就每次取两位数
