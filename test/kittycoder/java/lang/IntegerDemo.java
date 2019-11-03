@@ -138,6 +138,7 @@ public class IntegerDemo {
         System.out.println("=================静态方法end=================");
     }
 
+    // https://www.cnblogs.com/ysocean/p/8075676.html
     @Test
     public void test2() {
         Integer i01 = 59;

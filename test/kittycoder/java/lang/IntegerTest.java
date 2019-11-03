@@ -2,6 +2,8 @@ package kittycoder.java.lang;
 
 import org.junit.Test;
 
+import java.lang.reflect.Field;
+
 /**
  * Created by shucheng on 2019-11-1 下午 17:39
  */
@@ -42,4 +44,51 @@ public class IntegerTest {
         int a3 = Integer.valueOf("101", 2); // 5
         System.out.println(a3);
     }
+
+    // https://segmentfault.com/a/1190000007002125
+    @Test
+    public void testToString() {
+        Integer a1 = new Integer(20);
+        // 返回此对象的String表示
+        System.out.println(a1.toString());
+
+        // 返回指定整数的字符串表示
+        String s1 = Integer.toString(10);
+        System.out.println(s1); // 10
+    }
+
+    // ===============Integer.toString()相关细节问题测试start===============
+    // 测试Integer#getChars方法里为什么用52429这个数字？
+    // https://www.zhihu.com/question/34948884/answer/60497785
+    @Test
+    public void test1() {
+        System.out.println(Math.log10(52429*65536.0)/Math.log10(2)); // 32（右移19）
+        System.out.println(Math.log10(104858*65536.0)/Math.log10(2)); // 33（右移20）
+        System.out.println(Math.log10(209715*65536.0)/Math.log10(2)); // 34（右移21）
+    }
+
+    // 测试getChars方法里用到的DigitTens，DigitOnes变量
+    @Test
+    public void test2() throws Exception {
+        Field digitTensField = Integer.class.getDeclaredField("DigitTens");
+        Field digitOnesField = Integer.class.getDeclaredField("DigitOnes");
+        digitTensField.setAccessible(true);
+        digitOnesField.setAccessible(true);
+        char[] digitTens = (char[]) digitTensField.get(null);
+        char[] digitOnes = (char[]) digitOnesField.get(null);
+
+        System.out.println(digitTens[25] + "" +  digitOnes[25]);
+        System.out.println(digitTens[48] + "" +  digitOnes[48]);
+        System.out.println(digitTens[37] + "" +  digitOnes[37]);
+    }
+
+    // Integer.MIN_VALUE由于溢出的原因，无法取相反数
+    @Test
+    public void test3() {
+        int i = Integer.MIN_VALUE;
+        System.out.println(i); // -2147483648
+        i = -i;
+        System.out.println(i); // -2147483648
+    }
+    // ===============Integer.toString()相关细节问题测试end===============
 }

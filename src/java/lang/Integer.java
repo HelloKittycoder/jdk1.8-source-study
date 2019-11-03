@@ -396,15 +396,23 @@ public final class Integer extends Number implements Comparable<Integer> {
      * argument and radix 10 were given as arguments to the {@link
      * #toString(int, int)} method.
      *
+     * 返回指定整数的字符串表示
+     *
      * @param   i   an integer to be converted.
      * @return  a string representation of the argument in base&nbsp;10.
      */
     public static String toString(int i) {
+        // 如果i是负整数的最小值，直接返回结果
+        // （因为后面getChars方法是按照正整数来计算的，传入负数也给转成正数，
+        // 而Integer.MIN_VALUE由于溢出的原因，无法取相反数，见IntegerTest#test3()）
         if (i == Integer.MIN_VALUE)
             return "-2147483648";
+        // 计算i转成字符串需要占用多少个字符（正数返回的就是数字的个数，负数需要把负号“-”也算进去）
         int size = (i < 0) ? stringSize(-i) + 1 : stringSize(i);
         char[] buf = new char[size];
+        // 将i转换至char数组buf中
         getChars(i, size, buf);
+        // 通过buf创建一个String
         return new String(buf, true);
     }
 
@@ -436,34 +444,78 @@ public final class Integer extends Number implements Comparable<Integer> {
      * Will fail if i == Integer.MIN_VALUE
      */
     static void getChars(int i, int index, char[] buf) {
+        // i：需要做转换的数字
+        // index：这个数字的长度（包含了负数的符号“-”）
+        // buf：字符串的容器，一个char数组
         int q, r;
         int charPos = index;
         char sign = 0;
 
+        // 如果i<0，sign记下它的符号“-”，同时将i转成正整数
         if (i < 0) {
             sign = '-';
             i = -i;
         }
 
+        /**
+         * 说下以下两个循环的思路：
+         * while循环：用来处理大数字的
+         * 事先构造了两个char数组，DigitTens（用来获取r的十位数字的）和DigitOnes（用来获取r的个位数字的）
+         * r是用来每次循环截取的两位数字的
+         *
+         * 1.利用取模，循环从i的低位向高位截取，每次截取2位（保存在余数r里），q存放i截取完2位后的结果
+         * 2.将q存放在i中，提供给下次循环使用
+         * 3.根据DigitOnes、DigitTens找到r各个位对应的字符，从低位开始放起（buf的charPos是递减的，从后往前放），
+         * 每次循环放2位
+         * 4.如果i>=65536，继续1、2、3的操作；否则，进入后面的for循环
+         *
+         * for循环：是在while循环基础上进行的，用来处理小数字的
+         * 事先构造了一个char数组（digits），方便从中获取单个数字对应的字符
+         *
+         * 1.利用取模，循环从i的低位向高位截取，每次都截取1位（保存在余数r里），q存放截取完1位后的结果
+         * 2.根据digits找到r对应的字符，从低位开始放起（buf的charPos是递减的，从后往前放），每次循环放1位
+         * 3.将q存放在i中，提供给下次循环使用（对比while和for循环，可以知道2、3之间没有先后次序）
+         * 4.如果i=0，说明已经把最高位给截取完了，直接退出for循环；否则继续1、2、3的操作
+         *
+         * 举例：
+         * i = 65537，index=5
+         * 先进入while循环，
+         * 65537÷100=655......37（q=655，r=37），此时buf为[u0,u0,u0,3,7]，然后i=655
+         *
+         * i<=65536，进入for循环
+         * 655÷10=65......5（q=65，r=5），此时buf为[u0,u0,5,3,7]，然后i=65
+         * 65÷10=6......5（q=6，r=5），此时buf为[u0,5,5,3,7]，然后i=6
+         * 6÷10=0......6（q=0，r=6），此时buf为[6,5,5,3,7]，然后i=0，此时退出循环
+         */
         // Generate two digits per iteration
+        // 如果i>=65536，就每次取两位数
         while (i >= 65536) {
             q = i / 100;
         // really: r = i - (q * 100);
+            // 2^6+2^5+2^2=64+32+4=100
             r = i - ((q << 6) + (q << 5) + (q << 2));
             i = q;
+            // DigitOnes、DigitTens有啥用？见IntegerTest#test2()
             buf [--charPos] = DigitOnes[r];
             buf [--charPos] = DigitTens[r];
         }
 
         // Fall thru to fast mode for smaller numbers
         // assert(i <= 65536, i);
+        // 如果i<=65536，就每次取一位数
         for (;;) {
+            // 为什么采用位运算？这样做能增加运算速度
+            // 为什么不直接用除法？主要是因为乘法运算要比除法运算快
+            // 为什么用52429这个数字？见IntegerTest#test1()
+            // 近似等效于q=i/10
             q = (i * 52429) >>> (16+3);
+            // 2^3+2^1=10
             r = i - ((q << 3) + (q << 1));  // r = i-(q*10) ...
             buf [--charPos] = digits [r];
             i = q;
             if (i == 0) break;
         }
+        // 如果是负数的话，第一个字符用来存放负数的符号“-”
         if (sign != 0) {
             buf [--charPos] = sign;
         }
@@ -473,6 +525,8 @@ public final class Integer extends Number implements Comparable<Integer> {
                                       99999999, 999999999, Integer.MAX_VALUE };
 
     // Requires positive x
+    // 判断正整数value是几位数
+    // 这里用了sizeTable来比较并统计，很巧妙
     static int stringSize(int x) {
         for (int i=0; ; i++)
             if (x <= sizeTable[i])
@@ -1001,6 +1055,8 @@ public final class Integer extends Number implements Comparable<Integer> {
      * decimal representation and returned as a string, exactly as if
      * the integer value were given as an argument to the {@link
      * java.lang.Integer#toString(int)} method.
+     *
+     * 返回此对象的String表示（实际调用的是Integer.toString()方法）
      *
      * @return  a string representation of the value of this object in
      *          base&nbsp;10.
