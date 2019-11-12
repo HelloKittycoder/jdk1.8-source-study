@@ -145,7 +145,9 @@ class Thread implements Runnable {
         registerNatives();
     }
 
+    // 线程的名字
     private volatile String name;
+    // 线程的优先级
     private int            priority;
     private Thread         threadQ;
     private long           eetop;
@@ -154,24 +156,29 @@ class Thread implements Runnable {
     private boolean     single_step;
 
     /* Whether or not the thread is a daemon thread. */
+    // 该线程是否为后台线程（默认为否）
     private boolean     daemon = false;
 
     /* JVM state */
     private boolean     stillborn = false;
 
     /* What will be run. */
+    // 线程的执行体
     private Runnable target;
 
     /* The group of this thread */
+    // 该线程的所属的线程组
     private ThreadGroup group;
 
     /* The context ClassLoader for this thread */
+    // 该线程的contextClassLoader
     private ClassLoader contextClassLoader;
 
     /* The inherited AccessControlContext of this thread */
     private AccessControlContext inheritedAccessControlContext;
 
     /* For autonumbering anonymous threads. */
+    // 给匿名线程自动添加的编号
     private static int threadInitNumber;
     private static synchronized int nextThreadNum() {
         return threadInitNumber++;
@@ -179,12 +186,14 @@ class Thread implements Runnable {
 
     /* ThreadLocal values pertaining to this thread. This map is maintained
      * by the ThreadLocal class. */
+    // 对应于该线程的ThreadLocal值，其中map由ThreadLocal类来维护
     ThreadLocal.ThreadLocalMap threadLocals = null;
 
     /*
      * InheritableThreadLocal values pertaining to this thread. This map is
      * maintained by the InheritableThreadLocal class.
      */
+    // 对应于该线程的InheritableThreadLocal值，其中map由InheritableThreadLocal类来维护
     ThreadLocal.ThreadLocalMap inheritableThreadLocals = null;
 
     /*
@@ -201,16 +210,18 @@ class Thread implements Runnable {
 
     /*
      * Thread ID
+     * 线程id（用来标识一个线程）
      */
     private long tid;
 
     /* For generating thread ID */
+    // 该变量用来生成线程id
     private static long threadSeqNumber;
 
     /* Java thread status for tools,
      * initialized to indicate thread 'not yet started'
      */
-
+    // 线程状态(0对应NEW)
     private volatile int threadStatus = 0;
 
 
@@ -243,16 +254,19 @@ class Thread implements Runnable {
 
     /**
      * The minimum priority that a thread can have.
+     * 线程的最低优先级
      */
     public final static int MIN_PRIORITY = 1;
 
    /**
      * The default priority that is assigned to a thread.
+     * 线程的默认优先级
      */
     public final static int NORM_PRIORITY = 5;
 
     /**
      * The maximum priority that a thread can have.
+     * 线程的最高优先级
      */
     public final static int MAX_PRIORITY = 10;
 
