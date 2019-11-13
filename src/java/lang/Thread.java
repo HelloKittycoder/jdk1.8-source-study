@@ -457,6 +457,11 @@ class Thread implements Runnable {
      * {@code (null, null, gname)}, where {@code gname} is a newly generated
      * name. Automatically generated names are of the form
      * {@code "Thread-"+}<i>n</i>, where <i>n</i> is an integer.
+     *
+     * 创建一个线程对象
+     * 该构造方法等效于给Thread(ThreadGroup,Runnable,String)方法传入参数(null, null, gname)，
+     * 其中gname是自动生成的线程名称
+     * （线程名称默认生成规则："Thread-" + nextThreadNum()）
      */
     public Thread() {
         init(null, null, "Thread-" + nextThreadNum(), 0);
@@ -468,6 +473,10 @@ class Thread implements Runnable {
      * {@code (null, target, gname)}, where {@code gname} is a newly generated
      * name. Automatically generated names are of the form
      * {@code "Thread-"+}<i>n</i>, where <i>n</i> is an integer.
+     *
+     * 通过Runnable接口实现来创建一个线程对象
+     * 该构造方法等效于给Thread(ThreadGroup,Runnable,String)方法传入参数(null, target, gname)，
+     * 其中gname是自动生成的线程名称
      *
      * @param  target
      *         the object whose {@code run} method is invoked when this thread
@@ -493,6 +502,10 @@ class Thread implements Runnable {
      * name. Automatically generated names are of the form
      * {@code "Thread-"+}<i>n</i>, where <i>n</i> is an integer.
      *
+     * 通过指定ThreadGroup和Runnable接口实现来创建一个线程对象
+     * 该构造方法等效于给Thread(ThreadGroup,Runnable,String)方法传入参数(group, target, gname)，
+     * 其中gname是自动生成的线程名称
+     *
      * @param  group
      *         the thread group. If {@code null} and there is a security
      *         manager, the group is determined by {@linkplain
@@ -517,6 +530,9 @@ class Thread implements Runnable {
      * Allocates a new {@code Thread} object. This constructor has the same
      * effect as {@linkplain #Thread(ThreadGroup,Runnable,String) Thread}
      * {@code (null, null, name)}.
+     *
+     * 创建一个线程对象，同时指定线程的名称
+     * 该构造方法等效于给Thread(ThreadGroup,Runnable,String)方法传入参数(null, null, name)
      *
      * @param   name
      *          the name of the new thread
@@ -554,6 +570,9 @@ class Thread implements Runnable {
      * effect as {@linkplain #Thread(ThreadGroup,Runnable,String) Thread}
      * {@code (null, target, name)}.
      *
+     * 通过Runnable接口实现来创建一个线程对象，同时指定线程的名称
+     * 该构造方法等效于给Thread(ThreadGroup,Runnable,String)方法传入参数(null, target, name)
+     *
      * @param  target
      *         the object whose {@code run} method is invoked when this thread
      *         is started. If {@code null}, this thread's run method is invoked.
@@ -589,6 +608,8 @@ class Thread implements Runnable {
      * thread if and only if the thread creating it is currently marked
      * as a daemon thread. The method {@linkplain #setDaemon setDaemon}
      * may be used to change whether or not a thread is a daemon.
+     *
+     * 通过线程组和Runnable接口实现来创建一个线程对象，同时指定线程的名称
      *
      * @param  group
      *         the thread group. If {@code null} and there is a security
