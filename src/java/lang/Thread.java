@@ -365,12 +365,17 @@ class Thread implements Runnable {
 
     /**
      * Initializes a Thread.
+     * 初始化一个线程（其他初始化线程的构造器最终都是调用这个方法）
      *
      * @param g the Thread group
+     *          线程组
      * @param target the object whose run() method gets called
+     *          需要被调用run方法的Runnable接口实现类
      * @param name the name of the new Thread
+     *          线程名称
      * @param stackSize the desired stack size for the new thread, or
      *        zero to indicate that this parameter is to be ignored.
+     *          线程的栈的大小（如果为0，表示忽略该参数）
      * @param acc the AccessControlContext to inherit, or
      *            AccessController.getContext() if null
      * @param inheritThreadLocals if {@code true}, inherit initial values for
@@ -383,8 +388,10 @@ class Thread implements Runnable {
             throw new NullPointerException("name cannot be null");
         }
 
+        // 设置线程名
         this.name = name;
 
+        // 获取当前正在执行的线程
         Thread parent = currentThread();
         SecurityManager security = System.getSecurityManager();
         if (g == null) {
@@ -399,6 +406,7 @@ class Thread implements Runnable {
             /* If the security doesn't have a strong opinion of the matter
                use the parent thread group. */
             if (g == null) {
+                // 获取当前正在执行的线程的线程组
                 g = parent.getThreadGroup();
             }
         }
@@ -416,10 +424,20 @@ class Thread implements Runnable {
             }
         }
 
+        // 由于当前正在创建一个新的线程，还未启动该线程，需要在该线程所属的线程组里
+        // 记录下未启动线程的数量
         g.addUnstarted();
 
+        // 新创建的线程的线程组和parent的保持一致
+        // 举例：main方法（处在main线程中）里创建一个名为t1的线程，也就是在main线程（parent）执行的过程中
+        // 创建了一个t1线程，那么t1线程的线程组和main线程保持一致
         this.group = g;
+        // 设置当前线程是否为后台线程，默认和parent的设置相同（如果parent为后台线程，当前线程也会被设置成后台线程）
+        // 如果是后台线程的话，当前线程会随着主线程的退出而退出（就算当前线程没执行完）
+        // jvm退出的标志是，当前系统没有活跃的非后台线程（即前台线程）
         this.daemon = parent.isDaemon();
+        // 设置当前线程的优先级，默认和parent的设置相同
+        // 优先级越高，该线程被执行的机会就越高
         this.priority = parent.getPriority();
         if (security == null || isCCLOverridden(parent.getClass()))
             this.contextClassLoader = parent.getContextClassLoader();
@@ -427,12 +445,14 @@ class Thread implements Runnable {
             this.contextClassLoader = parent.contextClassLoader;
         this.inheritedAccessControlContext =
                 acc != null ? acc : AccessController.getContext();
+        // 设置需要执行run方法的目标对象
         this.target = target;
         setPriority(priority);
         if (inheritThreadLocals && parent.inheritableThreadLocals != null)
             this.inheritableThreadLocals =
                 ThreadLocal.createInheritedMap(parent.inheritableThreadLocals);
         /* Stash the specified stack size in case the VM cares */
+        // 设置栈的大小，如果未指定大小，将在jvm初始化参数中声明（Xss参数进行指定）
         this.stackSize = stackSize;
 
         /* Set thread ID */
