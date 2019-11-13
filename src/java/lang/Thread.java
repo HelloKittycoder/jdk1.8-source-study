@@ -746,6 +746,9 @@ class Thread implements Runnable {
      * In particular, a thread may not be restarted once it has completed
      * execution.
      *
+     * 该方法使得线程开始执行，JVM会调用这个线程的run方法
+     * 结果是两个线程会并发的运行：当前线程（调用start()方法的“主线程”）与另一个线程（执行其run方法）
+     *
      * @exception  IllegalThreadStateException  if the thread was already
      *               started.
      * @see        #run()
@@ -759,16 +762,25 @@ class Thread implements Runnable {
          *
          * A zero status value corresponds to state "NEW".
          */
+        /**
+         * 检查线程状态，如果不是NEW，说明已经运行过了；
+         * 不允许再次运行，直接抛出异常
+         */
         if (threadStatus != 0)
             throw new IllegalThreadStateException();
 
         /* Notify the group that this thread is about to be started
          * so that it can be added to the group's list of threads
          * and the group's unstarted count can be decremented. */
+        // 把当前即将运行的线程加到该线程所在的线程组
         group.add(this);
 
         boolean started = false;
         try {
+            /**
+             * 调用start0()方法（JVM）->通过JVM进行资源调度，系统分配
+             * ->回调run方法（Java方法）执行线程的具体操作任务
+             */
             start0();
             started = true;
         } finally {
