@@ -1288,6 +1288,13 @@ class Thread implements Runnable {
      * Waits at most {@code millis} milliseconds for this thread to
      * die. A timeout of {@code 0} means to wait forever.
      *
+     * 等待该线程执行millis毫秒后继续执行（如果millis为0，意味着一直等待该线程执行，
+     * 直到该线程已经处于死亡状态，就继续执行剩下的代码）
+     *
+     * 说明：
+     * 为方便说明，假如是main方法里，创建了threadA并调用threadA.start()，然后调用了threadA.join方法，然后再调用别的方法
+     * 上面所说的“该线程”指的是threadA，处于等待状态的线程是main线程
+     *
      * <p> This implementation uses a loop of {@code this.wait} calls
      * conditioned on {@code this.isAlive}. As a thread terminates the
      * {@code this.notifyAll} method is invoked. It is recommended that
@@ -1307,25 +1314,35 @@ class Thread implements Runnable {
      */
     public final synchronized void join(long millis)
     throws InterruptedException {
+        // 记录一个开始时间点
         long base = System.currentTimeMillis();
         long now = 0;
 
+        // millis为负数，直接抛出异常
         if (millis < 0) {
             throw new IllegalArgumentException("timeout value is negative");
         }
 
         if (millis == 0) {
+            // millis为0时，只要threadA还存在（threadA调用了start方法，并且没有处于死亡状态），
+            // 就一直让main线程处于等待状态
+            // 也就是说，从调用threadA.join()那一刻起，只有等threadA里的所有代码执行完，
+            // main线程里从thread.join()开始以后的代码才能执行
             while (isAlive()) {
                 wait(0);
             }
         } else {
+            // millis > 0，假设调用threadA.join方法是在base时点，那么当时点处在区间[base,base+millis]上，
+            // 就一直执行threadA的代码，从时点(base+millis)开始，继续执行main线程里从thread.join()以后的代码
             while (isAlive()) {
                 long delay = millis - now;
+                // 如果delay <= 0，即now>=mills，说明距离时点base早就过了millis毫秒，直接跳出循环
+                // main线程无需再等待下去了
                 if (delay <= 0) {
                     break;
                 }
-                wait(delay);
-                now = System.currentTimeMillis() - base;
+                wait(delay); // 让main线程再等待delay毫秒
+                now = System.currentTimeMillis() - base; // 计算当前距离时点base过去了now毫秒
             }
         }
     }
