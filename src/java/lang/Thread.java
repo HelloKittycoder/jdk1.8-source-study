@@ -301,6 +301,8 @@ class Thread implements Runnable {
      * the precision and accuracy of system timers and schedulers. The thread
      * does not lose ownership of any monitors.
      *
+     * 让当前执行线程暂停millis毫秒（暂停过程中不会释放锁）
+     *
      * @param  millis
      *         the length of time to sleep in milliseconds
      *
@@ -320,6 +322,10 @@ class Thread implements Runnable {
      * number of nanoseconds, subject to the precision and accuracy of system
      * timers and schedulers. The thread does not lose ownership of any
      * monitors.
+     *
+     * 设定线程睡眠时间为millis+nanos（从代码实现上看，并非如此）
+     * ms(millisecond 毫秒),μs(microsecond 微秒),ns(nanosecond 纳秒)
+     * 1ms=1000μs,1μs=1000ns
      *
      * @param  millis
      *         the length of time to sleep in milliseconds
@@ -347,6 +353,12 @@ class Thread implements Runnable {
                                 "nanosecond timeout value out of range");
         }
 
+        /**
+         * 当nanos大于等于500微秒时，millis就加1；当nanos小于500微秒时，不改变millis的值
+         * 当millis的值为0时，只要nanos不为0，就将millis设置为1
+         * 因此，从代码上看，睡眠的最小单位仍为millis，最小的睡眠时间为1millis
+         * https://blog.csdn.net/u011676300/article/details/79072362
+         */
         if (nanos >= 500000 || (nanos != 0 && millis == 0)) {
             millis++;
         }
