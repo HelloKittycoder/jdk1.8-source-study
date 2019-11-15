@@ -37,8 +37,18 @@ public class TestJoin2 {
         System.out.println("MainThread join before");
         try {
             threadA.join();
-            /*while (threadA.isAlive()) {
-                threadA.wait(0);
+            /*
+            //上面的join和下面的代码大致相同，为什么说大致呢：
+            //（1）执行后的效果是一样的
+            //（2）但是锁的对象不同，上面锁的是join方法，下面锁的是threadA整个对象
+            synchronized (threadA) {
+                // 另外再注意一点，不能直接去执行wait方法
+                // 执行wait方法的前提是当前执行线程获得了锁，比如这里就是获得了threadA对象的锁
+                while (threadA.isAlive()) { // 这里是判断threadA已经调用start方法，并且threadA不是处在死亡状态
+                    // 这里调用wait方法，虽然是用threadA来调用的，但是不要认为执行线程是threadA，
+                    // 这里的执行线程依然是main线程，所以这里暂停的是main线程
+                    threadA.wait(0);
+                }
             }*/
         } catch (InterruptedException e) {
             e.printStackTrace();
