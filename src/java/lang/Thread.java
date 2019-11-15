@@ -1847,12 +1847,17 @@ class Thread implements Runnable {
      * These states are virtual machine states which do not reflect
      * any operating system thread states.
      *
+     * JVM里线程的状态有：NEW,RUNNABLE,BLOCKED,WAITING,TIMED_WAITING,TERMINATED
+     * 一个线程在一个时点只有一个状态。这些状态都是虚拟机的状态，并未反映操作系统的线程状态
+     *
      * @since   1.5
      * @see #getState
      */
     public enum State {
         /**
          * Thread state for a thread which has not yet started.
+         *
+         * 未启动的线程状态
          */
         NEW,
 
@@ -1861,6 +1866,9 @@ class Thread implements Runnable {
          * state is executing in the Java virtual machine but it may
          * be waiting for other resources from the operating system
          * such as processor.
+         *
+         * 可运行的线程状态
+         * 此时线程在JVM执行，但是线程也可能在等待操作系统里的资源（如：处理器）
          */
         RUNNABLE,
 
@@ -1870,6 +1878,10 @@ class Thread implements Runnable {
          * to enter a synchronized block/method or
          * reenter a synchronized block/method after calling
          * {@link Object#wait() Object.wait}.
+         *
+         * 线程被阻塞，在等待监视器锁的状态
+         * 有两种情况会出现这种状态：（1）线程进入synchronized代码块或方法时正在等待监视器锁
+         * （2）线程被调用Object.wait后，重新进入synchronized代码块或方法时正在等待监视器锁
          */
         BLOCKED,
 
@@ -1891,6 +1903,12 @@ class Thread implements Runnable {
          * <tt>Object.notify()</tt> or <tt>Object.notifyAll()</tt> on
          * that object. A thread that has called <tt>Thread.join()</tt>
          * is waiting for a specified thread to terminate.
+         *
+         * 等待状态
+         * 当调用以下方法之一，将会使线程处于等待状态：
+         * （1）Object.wait()
+         * （2）Thread.join()
+         * （3）LockSupport.park()
          */
         WAITING,
 
@@ -1905,12 +1923,23 @@ class Thread implements Runnable {
          *   <li>{@link LockSupport#parkNanos LockSupport.parkNanos}</li>
          *   <li>{@link LockSupport#parkUntil LockSupport.parkUntil}</li>
          * </ul>
+         *
+         * 延时等待状态
+         * 当调用以下方法之一，将会使线程处于延时等待状态：
+         * （1）Thread.sleep(long)
+         * （2）Object.wait(long)
+         * （3）Thread.join(long)
+         * （4）LockSupport.parkNanos(Object, long)
+         * （5）LockSupport.parkUntil(Object , long)
          */
         TIMED_WAITING,
 
         /**
          * Thread state for a terminated thread.
          * The thread has completed execution.
+         *
+         * 终止状态
+         * 线程执行完成（不管是正常执行完成，还是出现异常线程结束）后就是这个状态
          */
         TERMINATED;
     }
