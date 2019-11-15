@@ -282,16 +282,31 @@ class Thread implements Runnable {
      * its current use of a processor. The scheduler is free to ignore this
      * hint.
      *
+     * 当前线程给cpu调度器一个暗示，暗示其想让出一次其拥有的cpu使用权，cpu调取器也可以忽略这次暗示。
+     * 简单解释下：调用yield后会有两种情况出现
+     * （1）当前线程t向调度器暗示愿意让出CPU，调度器收到并执行。
+     * t把cpu使用权（t变成就绪状态）让出来让其他线程争，然后t和其他线程一起参与争夺（此时t有可能获取到，也有可能没获取到）
+     * （2）当前线程t向调度器暗示愿意让出CPU，调度器收到但并没有执行，直接忽略掉了。
+     * t根本没有让出cpu使用权，t依然在运行
+     *
+     * 另外说明下：该方法不会释放锁
+     *
      * <p> Yield is a heuristic attempt to improve relative progression
      * between threads that would otherwise over-utilise a CPU. Its use
      * should be combined with detailed profiling and benchmarking to
      * ensure that it actually has the desired effect.
+     *
+     * yield是一种启发式的尝试，为了提升线程间的相对进度，避免出现某个线程过度使用CPU的情况
+     * 使用yield时应该结合详细的分析和测试，以确保能达到预期的效果
      *
      * <p> It is rarely appropriate to use this method. It may be useful
      * for debugging or testing purposes, where it may help to reproduce
      * bugs due to race conditions. It may also be useful when designing
      * concurrency control constructs such as the ones in the
      * {@link java.util.concurrent.locks} package.
+     *
+     * 很少有合适的场景会用到这个方法。有需要使用到的地方，一个是竞态条件下为了复现bug，使用yield用于调试；
+     * 另一个是并发控制的设计需要
      */
     public static native void yield();
 
