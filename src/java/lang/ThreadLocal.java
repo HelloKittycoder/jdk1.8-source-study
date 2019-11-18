@@ -193,15 +193,26 @@ public class ThreadLocal<T> {
      * override this method, relying solely on the {@link #initialValue}
      * method to set the values of thread-locals.
      *
+     * 将当前线程中ThreadLocal变量（比如是ti）对应的值（value）复制到
+     * 当前线程的ThreadLocalMap（threadLocals）中
+     * 实际上，是通过ti来操作线程的本地变量threadLocals
+     *
+     * （线程的本地变量：这个变量的范围是处于这个线程里的，从不同实例里取ti，只要是同一个线程，取到的值就是一样的；
+     * 实例变量是依附于已经创建好的实例）
+     *
      * @param value the value to be stored in the current thread's copy of
      *        this thread-local.
      */
     public void set(T value) {
+        // 获取当前线程
         Thread t = Thread.currentThread();
+        // 获取线程内部维护的ThreadLocalMap
         ThreadLocalMap map = getMap(t);
         if (map != null)
+            // 如果map已经有了，就直接向map里放（key是ThreadLocal，value就是传过来的值）
             map.set(this, value);
         else
+            // 如果map不存在，则根据t和value创建一个ThreadLocalMap
             createMap(t, value);
     }
 
@@ -241,6 +252,8 @@ public class ThreadLocal<T> {
      * @param firstValue value for the initial entry of the map
      */
     void createMap(Thread t, T firstValue) {
+        // 创建一个ThreadLocalMap（key为ThreadLocal，value为传过来的值）
+        // 同时把当前线程的threadLocals指向刚创建好的ThreadLocalMap
         t.threadLocals = new ThreadLocalMap(this, firstValue);
     }
 
