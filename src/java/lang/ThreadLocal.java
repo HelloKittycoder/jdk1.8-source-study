@@ -154,19 +154,28 @@ public class ThreadLocal<T> {
      * current thread, it is first initialized to the value returned
      * by an invocation of the {@link #initialValue} method.
      *
+     * 返回当前线程的ThreadLocal变量的值的copy
+     * （一开始调用set时放了什么值，返回的就是什么值；如果没放值，就会初始化为null，并返回null）
+     *
      * @return the current thread's value of this thread-local
      */
     public T get() {
+        // 获取当前线程
         Thread t = Thread.currentThread();
+        // 获取线程内部维护的ThreadLocalMap
         ThreadLocalMap map = getMap(t);
         if (map != null) {
+            // 如果map已经有了，则通过threadLocal来获取map里的Entry（key是ThreadLocal，
+            // value是调用set(T value)时传来的）
             ThreadLocalMap.Entry e = map.getEntry(this);
             if (e != null) {
                 @SuppressWarnings("unchecked")
                 T result = (T)e.value;
+                // 如果e不为空，则直接获取value并返回
                 return result;
             }
         }
+        // 如果map不存在，则进行初始化，并返回初始化的值
         return setInitialValue();
     }
 
