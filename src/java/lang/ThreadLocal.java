@@ -81,6 +81,20 @@ public class ThreadLocal<T> {
      * in the common case where consecutively constructed ThreadLocals
      * are used by the same threads, while remaining well-behaved in
      * less common cases.
+     *
+     * Thread内部维护了一个ThreadLocalMap（key是ThreadLocal，value是设置的值）
+     * threadLocalHashCode是用来解决Thread里ThreadLocal的哈希冲突（通过threadLocalHashCode得到哈希值）
+     *
+     * threadLocalHashCode是在创建一个ThreadLocal对象时，相应就会生成的（调用nextHashCode()方法），将HASH_INCREMENT记为hi，
+     * threadLocalHashCode就是依次从序列hi,2*hi,3*hi,4*hi,...中取值的
+     *
+     * 顺便来解释下ThreadLocal的结构：
+     * 以ThreadLocalDemo为例来说明：ti的hashcode为hi,ti2的hashcode为2*hi
+     * 1.main线程调用了ti.set方法，main线程内部维护的ThreadLocalMap存了Entry(ti,11)
+     * 2.接下来线程t1、t2启动了（调用不分先后），这里就按先t1后t2的方式来说，
+     * t1调用了ti.set（假设值为111）和ti2.set方法，此时t1线程内部维护的ThreadLocalMap存了Entry(ti,111)，Entry(ti2,5)
+     * 3.t2调用了ti.set(假设值为222)方法，此时t2线程内部维护的ThreadLocalMap存了Entry(ti,222)
+     *
      */
     private final int threadLocalHashCode = nextHashCode();
 
@@ -100,6 +114,7 @@ public class ThreadLocal<T> {
 
     /**
      * Returns the next hash code.
+     * 返回ThreadLocal的下一个hashcode
      */
     private static int nextHashCode() {
         return nextHashCode.getAndAdd(HASH_INCREMENT);
