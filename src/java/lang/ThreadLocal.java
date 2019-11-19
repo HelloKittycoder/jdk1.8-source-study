@@ -121,6 +121,10 @@ public class ThreadLocal<T> {
      * subclassed, and this method overridden.  Typically, an
      * anonymous inner class will be used.
      *
+     * 返回当前线程ThreadLocal变量的初始值
+     * 被调用的时机：ThreadLocal没有被当前线程赋值时或当前线程刚调用remove方法后调用get方法
+     * 使用方式：写一个ThreadLocal的匿名内部类，然后重写initialValue，用于返回初始值
+     *
      * @return the initial value for this thread-local
      */
     protected T initialValue() {
@@ -186,13 +190,16 @@ public class ThreadLocal<T> {
      * @return the initial value
      */
     private T setInitialValue() {
+        // 获取初始值
         T value = initialValue();
+        // 底下的几行代码（从Thread到createMap部分）就相当于调用set(value);
         Thread t = Thread.currentThread();
         ThreadLocalMap map = getMap(t);
         if (map != null)
             map.set(this, value);
         else
             createMap(t, value);
+        // 返回设置的初始值
         return value;
     }
 
