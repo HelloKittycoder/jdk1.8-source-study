@@ -759,9 +759,12 @@ public class ThreadLocal<T> {
          * scanning (fast but retains garbage) and a number of scans
          * proportional to number of elements, that would find all
          * garbage but would cause some insertions to take O(n) time.
+         * 启发式地清理slot
          *
          * @param i a position known NOT to hold a stale entry. The
          * scan starts at the element after i.
+         * i对应于一个已经知道没有放无效entry（entry本身不为空，但指向的ThreadLocal被回收）的位置
+         * 扫描将从i之后的位置进行
          *
          * @param n scan control: {@code log2(n)} cells are scanned,
          * unless a stale entry is found, in which case
@@ -772,19 +775,31 @@ public class ThreadLocal<T> {
          * more or less aggressive by weighting n instead of just
          * using straight log n. But this version is simple, fast, and
          * seems to work well.)
+         * n是用于控制扫描次数的
+         * 正常情况下如果log2(n)次扫描没有发现无效slot，函数就结束了
+         * 但是如果发现了无效的slot，则将n置为table的长度len，做一次连续段的清理
+         * 再从下一个空的slot开始继续扫描
+         *
+         * 这个函数有两处地方会被调用，一处是插入的时候（ThreadLocalMap.set）可能会被调用，
+         * 另外是在替换无效slot的时候（ThreadLocalMap.expungeStaleEntry）可能会被调用。
+         * 区别是前者传入的n为table的元素个数，后者为table的容量
          *
          * @return true if any stale entries have been removed.
+         * 是否有无效entry被移除，有则返回true
          */
         private boolean cleanSomeSlots(int i, int n) {
             boolean removed = false;
             Entry[] tab = table;
             int len = tab.length;
             do {
+                // 从参数定义上看，可以知道i不会是一个无效slot，所以从下一个开始判断
                 i = nextIndex(i, len);
                 Entry e = tab[i];
                 if (e != null && e.get() == null) {
+                    // 扩大扫描控制因子
                     n = len;
                     removed = true;
+                    // 清理一个连续段
                     i = expungeStaleEntry(i);
                 }
             } while ( (n >>>= 1) != 0);
