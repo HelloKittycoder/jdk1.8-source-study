@@ -21,6 +21,8 @@ package kittycoder.java.lang;
  *
  * 那么现在使用ThreadLocal，问题就简单了，对于不同的线程来设置ti的值，不需要加锁，因为针对每个Thread，都会维护一个
  * ThreadLocalMap，操作的是各自线程的ThreadLocalMap，不存在资源竞争问题
+ *
+ * 有关ThreadLocalMap的理解参考 https://www.cnblogs.com/micrari/p/6790229.html
  */
 public class ThreadLocalDemo {
 

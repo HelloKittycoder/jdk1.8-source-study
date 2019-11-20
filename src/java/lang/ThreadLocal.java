@@ -351,6 +351,7 @@ public class ThreadLocal<T> {
          */
         static class Entry extends WeakReference<ThreadLocal<?>> {
             /** The value associated with this ThreadLocal. */
+            // 和ThreadLocal进行关联的值
             Object value;
 
             Entry(ThreadLocal<?> k, Object v) {
@@ -361,27 +362,33 @@ public class ThreadLocal<T> {
 
         /**
          * The initial capacity -- MUST be a power of two.
+         * 初始容量，必须为2的幂
          */
         private static final int INITIAL_CAPACITY = 16;
 
         /**
          * The table, resized as necessary.
          * table.length MUST always be a power of two.
+         * Entry数组，大小必须为2的幂
          */
         private Entry[] table;
 
         /**
          * The number of entries in the table.
+         * 表里entry的个数
          */
         private int size = 0;
 
         /**
          * The next size value at which to resize.
+         * 重新分配表大小的阈值，默认为0（一般size>=threshold时，就会resize）
          */
         private int threshold; // Default to 0
 
         /**
          * Set the resize threshold to maintain at worst a 2/3 load factor.
+         * 用负载因子2/3来维护resize时所需的阈值
+         * （阈值=Entry数组容量*2/3）
          */
         private void setThreshold(int len) {
             threshold = len * 2 / 3;
@@ -389,6 +396,8 @@ public class ThreadLocal<T> {
 
         /**
          * Increment i modulo len.
+         * 环形意义的下一个索引（如果传入的i为len-1，已经到达数组的最后一个索引，
+         * 则返回的下一个索引为0，也就是从头开始找）
          */
         private static int nextIndex(int i, int len) {
             return ((i + 1 < len) ? i + 1 : 0);
@@ -396,6 +405,8 @@ public class ThreadLocal<T> {
 
         /**
          * Decrement i modulo len.
+         * 环形意义的上一个索引（如果传入的i为0，已经到达数组的第一个索引，
+         * 则返回的上一个索引为len-1，也就是从末尾开始找）
          */
         private static int prevIndex(int i, int len) {
             return ((i - 1 >= 0) ? i - 1 : len - 1);
