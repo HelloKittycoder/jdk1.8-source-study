@@ -679,6 +679,11 @@ public class ThreadLocal<T> {
          * any other stale entries encountered before the trailing null.  See
          * Knuth, Section 6.4
          *
+         * 这个函数是ThreadLocal中的核心清理函数，它做的事情很简单：
+         * 就是从staleSlot开始遍历，将无效（弱引用指向对象被回收）slot清理，即对应entry中的value置为null，
+         * 将指向这个entry的table[i]置为null，直到扫到空entry。另外，在此过程中还会对非空的entry做rehash
+         * 可以说这个函数的作用就是从staleSlot开始清理连续段中的slot（断开强引用，rehash slot）
+         *
          * @param staleSlot index of slot known to have null key
          * @return the index of the next null slot after staleSlot
          * (all between staleSlot and this slot will have been checked
@@ -689,7 +694,9 @@ public class ThreadLocal<T> {
             int len = tab.length;
 
             // expunge entry at staleSlot
+            // 因为entry对应的ThreadLocal已经被回收，value设为null，显式断开强引用
             tab[staleSlot].value = null;
+            // 显式设置该entry为null，以便垃圾回收
             tab[staleSlot] = null;
             size--;
 
@@ -700,11 +707,18 @@ public class ThreadLocal<T> {
                  (e = tab[i]) != null;
                  i = nextIndex(i, len)) {
                 ThreadLocal<?> k = e.get();
+                // 清理对应ThreadLocal已经被回收的entry
                 if (k == null) {
                     e.value = null;
                     tab[i] = null;
                     size--;
                 } else {
+                    /**
+                     * 对于还没有被回收的情况，需要做一次rehash
+                     *
+                     * 如果对应的ThreadLocal的ID对len取模出来的索引h不为当前位置i，
+                     * 则从h向后线性探测到第一个空的slot，把当前的entry给挪过去
+                     */
                     int h = k.threadLocalHashCode & (len - 1);
                     if (h != i) {
                         tab[i] = null;
