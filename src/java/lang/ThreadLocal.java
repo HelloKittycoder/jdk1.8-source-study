@@ -475,21 +475,29 @@ public class ThreadLocal<T> {
          * designed to maximize performance for direct hits, in part
          * by making this method readily inlinable.
          *
+         * 获取map中ThreadLocal对象关联的值
+         * （这个方法会被ThreadLocal的get方法直接调用）
+         *
          * @param  key the thread local object
          * @return the entry associated with key, or null if no such
          */
         private Entry getEntry(ThreadLocal<?> key) {
+            // 根据key这个ThreadLocal的ID来获取索引，也就是哈希值
             int i = key.threadLocalHashCode & (table.length - 1);
             Entry e = table[i];
+            // 对应的entry存在，且未失效，且弱引用指向的ThreadLocal就是key，则命中返回
             if (e != null && e.get() == key)
                 return e;
             else
+                // 因为用的是线性探测，所以往后找还是有可能能够找到目标Entry的
                 return getEntryAfterMiss(key, i, e);
         }
 
         /**
          * Version of getEntry method for use when key is not found in
          * its direct hash slot.
+         *
+         * 调用getEntry未直接命中的时候调用此方法
          *
          * @param  key the thread local object
          * @param  i the table index for key's hash code
@@ -500,13 +508,35 @@ public class ThreadLocal<T> {
             Entry[] tab = table;
             int len = tab.length;
 
+            // 基于线性探测法不断向后探测直到遇到空entry（其实就是直到遇到entry中ThreadLocal为null的）
+            /**
+             * 说明：比如len为16，从i=5开始向后找（为什么这里i=5还要再看一遍呢？
+             * 因为此时对应的e.get()有可能是null，说明被清理掉了，需要调用expungeStaleEntry做下清理操作）
+             * A.假设i=5不符合条件（且tab[i]!=null），接着向后找，找到i=6的位置
+             * 情况1：发现i=6对应的tab[i]不为null且刚好是想要的位置（k==key），直接将相应的tab[i]返回，循环结束
+             * 情况2：发现i=6对应的tab[i]为null（刚好对应ThreadLocal被回收了），则调用expungeStaleEntry(i)，
+             * 将tab[i]置为null，之后取到的e为null，循环结束，返回null（表示没找到）
+             * 情况3：发现i=6对应的tab[i]不为null，不是想要的位置（k!=key），那么继续向后找
+             * B.i=5不符合条件（且tab[i]=null），不用再找了（不会进while循环），直接返回null
+             *
+             * 为什么是这么找呢？因为线性探测法在确定放ThreadLocal的位置i（ThreadLocalMap.set()），是通过i=key.threadLocalHashCode&(len-1)得出初始位置，
+             * 记tab[i]=e，如果满足e==null（该索引上没有Entry）或者e!=null&&k=key（该索引上有Entry且Entry的key和传入的ThreadLocal一致），
+             * 就把含有ThreadLocal的Entry放到该索引；否则一直向后找，直到找到满足条件的为止
+             *
+             * 从这个放ThreadLocal的方式，可以看出：如果计算的位置i上为null，说明这个位置没放过Entry或者放了之后被回收了，没有必要再去找了；
+             * 如果计算的位置上有Entry，只是key对不上而已，那就向后找（线性探测法就是在基于算出来的哈希确定位置，如果没冲突，就放到该位置；如果冲突了就是该位置上已经有元素了，
+             * 就接着找没有放元素的位置）
+             */
             while (e != null) {
                 ThreadLocal<?> k = e.get();
+                // 找到目标
                 if (k == key)
                     return e;
                 if (k == null)
+                    // 该entry对应的ThreadLocal已经被回收，调用expungeStaleEntry来清理无效的entry
                     expungeStaleEntry(i);
                 else
+                    // 环形意义下获取下一个索引
                     i = nextIndex(i, len);
                 e = tab[i];
             }
