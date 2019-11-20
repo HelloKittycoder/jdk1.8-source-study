@@ -812,15 +812,22 @@ public class ThreadLocal<T> {
          * shrink the size of the table, double the table size.
          */
         private void rehash() {
+            // 做一次全量清理
             expungeStaleEntries();
 
             // Use lower threshold for doubling to avoid hysteresis
+            /**
+             * 因为做了一次清理，所以size很可能会变小
+             * ThreadLocalMap这里的实现是调低阈值来判断是否需要扩容
+             * threshold默认为len*2/3，所以这里的threshold-threshold/4相当于len/2
+             */
             if (size >= threshold - threshold / 4)
                 resize();
         }
 
         /**
          * Double the capacity of the table.
+         * 扩容，因为需要保证table的容量len为2的幂，所以扩容即扩大2倍
          */
         private void resize() {
             Entry[] oldTab = table;
@@ -836,6 +843,7 @@ public class ThreadLocal<T> {
                     if (k == null) {
                         e.value = null; // Help the GC
                     } else {
+                        // 线性探测来存放Entry
                         int h = k.threadLocalHashCode & (newLen - 1);
                         while (newTab[h] != null)
                             h = nextIndex(h, newLen);
@@ -852,6 +860,7 @@ public class ThreadLocal<T> {
 
         /**
          * Expunge all stale entries in the table.
+         * 做一次全量清理
          */
         private void expungeStaleEntries() {
             Entry[] tab = table;
@@ -859,6 +868,11 @@ public class ThreadLocal<T> {
             for (int j = 0; j < len; j++) {
                 Entry e = tab[j];
                 if (e != null && e.get() == null)
+                /**
+                 * 个人觉得这里可以取返回值，如果大于j的话取了用，这样也是可行的。即
+                 * j = expungeStaleEntry(j);
+                 * 因为expungeStaleEntry执行过程中是把连续段内所有无效slot都清理了一遍
+                 */
                     expungeStaleEntry(j);
             }
         }
