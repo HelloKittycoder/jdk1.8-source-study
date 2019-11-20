@@ -549,6 +549,13 @@ public class ThreadLocal<T> {
          *
          * @param key the thread local object
          * @param value the value to be set
+         *
+         * 简单总结下set方法可能会有的情况：
+         * （1）探测过程中slot都不无效，并且顺利找到key所在的slot，直接替换即可
+         * （2）探测过程中发现有无效slot，调用replaceStaleEntry，效果是最终一定会把key和value放在这个slot，并且会尽可能清理无效slot
+         *     a.在replaceStaleEntry过程中，找到了key，则做一个swap把它放到那个无效slot中，value置为新值
+         *     b.在replaceStaleEntry过程中，没有找到key，直接在无效slot原地放entry
+         * （3）探测过程中没有发现key，则在连续段末尾的后一个空位置放上entry，这也是线性探测法的一部分
          */
         private void set(ThreadLocal<?> key, Object value) {
 
@@ -580,8 +587,12 @@ public class ThreadLocal<T> {
                 }
             }
 
+            // 未发现key，则在找到的空位置上放上entry
             tab[i] = new Entry(key, value);
             int sz = ++size;
+            // 放完后，做一次启发式清理，如果没有清理出去key，且当前table大小已经超过阈值了，
+            // 则做一次rehash，rehash函数会调用一次全量清理slot方法（expungeStaleEntries），
+            // 如果完了之后table大小超过了threshold-threshold/4，则将table容量扩充至原来的2倍
             if (!cleanSomeSlots(i, sz) && sz >= threshold)
                 rehash();
         }
