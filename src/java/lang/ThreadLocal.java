@@ -599,6 +599,7 @@ public class ThreadLocal<T> {
 
         /**
          * Remove the entry for key.
+         * 从map中删除ThreadLocal
          */
         private void remove(ThreadLocal<?> key) {
             Entry[] tab = table;
@@ -608,7 +609,9 @@ public class ThreadLocal<T> {
                  e != null;
                  e = tab[i = nextIndex(i, len)]) {
                 if (e.get() == key) {
+                    // 显式断开弱引用
                     e.clear();
+                    // 进行段清理
                     expungeStaleEntry(i);
                     return;
                 }
