@@ -416,12 +416,25 @@ public class ThreadLocal<T> {
          * Construct a new map initially containing (firstKey, firstValue).
          * ThreadLocalMaps are constructed lazily, so we only create
          * one when we have at least one entry to put in it.
+         *
+         * 构造一个包含(firstKey,firstValue)的map
+         * ThreadLocalMap是惰性构造的，所以当我们向map中放入至少一个entry时，我们只会创建一个ThreadLocalMap
+         * （对于so这句话的理解：对于一个线程里维护的ThreadLocalMap来说，因为默认没有创建ThreadLocalMap的，只有当
+         * 我们开始向这个线程里存放(threadlocal1,1),(threadlocal2,2)时，才会触发创建ThreadLocalMap
+         * 你只调用threadlocal1.set(1)也是创建一个ThreadLocalMap，你连续调用threadlocal1.set(1)和threadlocal2.set(2)也是
+         * 创建一个ThreadLocalMap；
+         * 换句话说，就是该线程的ThreadLocalMap中放入一个元素时就会调用该构造方法，后续再向map里放元素时就不会调该构造方法了）
          */
         ThreadLocalMap(ThreadLocal<?> firstKey, Object firstValue) {
+            // 初始化table数组
             table = new Entry[INITIAL_CAPACITY];
+            // 用firstKey的threadLocalHashCode与初始大小16取模得到哈希值（这个算出来的在table中的存放位置就是哈希值）
             int i = firstKey.threadLocalHashCode & (INITIAL_CAPACITY - 1);
+            // 初始化该节点
             table[i] = new Entry(firstKey, firstValue);
+            // 设置节点表大小为1
             size = 1;
+            // 设定扩容阈值
             setThreshold(INITIAL_CAPACITY);
         }
 
