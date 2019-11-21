@@ -190,21 +190,28 @@ public final class Class<T> implements java.io.Serializable,
      * @return a string describing this {@code Class}, including
      * information about modifiers and type parameters
      *
+     * 返回描述此类的字符串，包括有关修饰符和类型参数的信息
+     *
      * @since 1.8
      */
     public String toGenericString() {
         if (isPrimitive()) {
+            // 如果是9种预定义类型之一，直接调用toString
+            // 8种基本数据类型（boolean,char,byte,short,int,long,float,double）和void
             return toString();
         } else {
             StringBuilder sb = new StringBuilder();
 
             // Class modifiers are a superset of interface modifiers
+            // 修饰符
             int modifiers = getModifiers() & Modifier.classModifiers();
             if (modifiers != 0) {
                 sb.append(Modifier.toString(modifiers));
                 sb.append(' ');
             }
 
+            // 类声明
+            // part1:@interface/enum/class
             if (isAnnotation()) {
                 sb.append('@');
             }
@@ -217,8 +224,10 @@ public final class Class<T> implements java.io.Serializable,
                     sb.append("class");
             }
             sb.append(' ');
+            // part2：名称
             sb.append(getName());
 
+            // part3：泛型声明时用的变量
             TypeVariable<?>[] typeparms = getTypeParameters();
             if (typeparms.length > 0) {
                 boolean first = true;
