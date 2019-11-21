@@ -256,8 +256,10 @@ public final class Class<T> implements java.io.Serializable,
      * {@code X} to be initialized.
      *
      * @param      className   the fully qualified name of the desired class.
+     *                         需要加载的类的全限定名
      * @return     the {@code Class} object for the class with the
      *             specified name.
+     *
      * @exception LinkageError if the linkage fails
      * @exception ExceptionInInitializerError if the initialization provoked
      *            by this method fails
@@ -266,7 +268,9 @@ public final class Class<T> implements java.io.Serializable,
     @CallerSensitive
     public static Class<?> forName(String className)
                 throws ClassNotFoundException {
+        // 获取调用者所在的类
         Class<?> caller = Reflection.getCallerClass();
+        // 加载className对应的类
         return forName0(className, true, ClassLoader.getClassLoader(caller), caller);
     }
 
