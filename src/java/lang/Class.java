@@ -257,6 +257,10 @@ public final class Class<T> implements java.io.Serializable,
      * where {@code currentLoader} denotes the defining class loader of
      * the current class.
      *
+     * 返回与给定字符串名称的类或接口相关联的类对象
+     * 调用Class.forName(className)等同于调用Class.forName(className, true, currentLoader)，
+     * 其中currentLoader为调用者所在类的类加载器
+     *
      * <p> For example, the following code fragment returns the
      * runtime {@code Class} descriptor for the class named
      * {@code java.lang.Thread}:
@@ -299,6 +303,9 @@ public final class Class<T> implements java.io.Serializable,
      * class loader.  The class is initialized only if the
      * {@code initialize} parameter is {@code true} and if it has
      * not been initialized earlier.
+     *
+     * 使用给定的类加载器返回与给定字符串名称的类或接口相关联的类对象。如果参数loader为空，
+     * 则通过引导类加载该类。只有当initialize参数为true并且尚未被初始化时，该类才被初始化。
      *
      * <p> If {@code name} denotes a primitive type or void, an attempt
      * will be made to locate a user-defined class in the unnamed package whose
