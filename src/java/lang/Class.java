@@ -155,6 +155,10 @@ public final class Class<T> implements java.io.Serializable,
      * this {@code Class} object represents void this method returns
      * "void".
      *
+     * 此方法将Class对象转换为字符串。它返回字符串表示形式，即字符串“class”或“interface”，
+     * 后跟空格，然后是类的含包名名称。如果Class对象表示基本类型，则此方法返回基本类型的名称，
+     * 如果它表示void，则返回“void”
+     *
      * @return a string representation of this class object.
      */
     public String toString() {
