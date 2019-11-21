@@ -120,10 +120,14 @@ public final class Class<T> implements java.io.Serializable,
                               GenericDeclaration,
                               Type,
                               AnnotatedElement {
+    // 注释类型
     private static final int ANNOTATION= 0x00002000;
+    // 枚举类型
     private static final int ENUM      = 0x00004000;
+    // 合成类型
     private static final int SYNTHETIC = 0x00001000;
 
+    // 注册本地方法
     private static native void registerNatives();
     static {
         registerNatives();
@@ -133,6 +137,8 @@ public final class Class<T> implements java.io.Serializable,
      * Private constructor. Only the Java Virtual Machine creates Class objects.
      * This constructor is not used and prevents the default constructor being
      * generated.
+     *
+     * 私有构造方法。只是提供给jvm创建Class对象用的
      */
     private Class(ClassLoader loader) {
         // Initialize final field for classLoader.  The initialization value of non-null
