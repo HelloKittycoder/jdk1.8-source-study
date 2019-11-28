@@ -390,6 +390,11 @@ public final class Class<T> implements java.io.Serializable,
      * expression with an empty argument list.  The class is initialized if it
      * has not already been initialized.
      *
+     * 该方法创建此Class对象表示的类的新实例
+     * 比如：String.class.newInstance()创建的就是String.class（String这个Class的对象）
+     * 所对应Class的实例
+     * （String.class是jvm创建好的，String.class可以理解为String这个类的信息，String对象可以交给我们来创建）
+     *
      * <p>Note that this method propagates any exception thrown by the
      * nullary constructor, including a checked exception.  Use of
      * this method effectively bypasses the compile-time exception
@@ -431,7 +436,9 @@ public final class Class<T> implements java.io.Serializable,
         // the current Java memory model.
 
         // Constructor lookup
+        // 如果缓存构造器为null，则去查找构造器
         if (cachedConstructor == null) {
+            // 如果试图通过newInstance来实例化Class类，则直接抛出异常
             if (this == Class.class) {
                 throw new IllegalAccessException(
                     "Can not call newInstance() on the Class for java.lang.Class"
@@ -439,6 +446,7 @@ public final class Class<T> implements java.io.Serializable,
             }
             try {
                 Class<?>[] empty = {};
+                // 获取所有声明的构造器（不管是private还是public）
                 final Constructor<T> c = getConstructor0(empty, Member.DECLARED);
                 // Disable accessibility checks on the constructor
                 // since we have to do the security check here anyway
@@ -451,6 +459,7 @@ public final class Class<T> implements java.io.Serializable,
                                 return null;
                             }
                         });
+                // 找到构造器后，放到缓存中
                 cachedConstructor = c;
             } catch (NoSuchMethodException e) {
                 throw (InstantiationException)
@@ -459,7 +468,9 @@ public final class Class<T> implements java.io.Serializable,
         }
         Constructor<T> tmpConstructor = cachedConstructor;
         // Security check (same as in java.lang.reflect.Constructor)
+        // 获取已经找到的无参构造器的修饰符
         int modifiers = tmpConstructor.getModifiers();
+        // 检查访问权限（里面没有再细看），如果没有权限的话，会抛出异常
         if (!Reflection.quickCheckMemberAccess(this, modifiers)) {
             Class<?> caller = Reflection.getCallerClass();
             if (newInstanceCallerCache != caller) {
@@ -468,6 +479,7 @@ public final class Class<T> implements java.io.Serializable,
             }
         }
         // Run constructor
+        // 前面检查没有问题，接着通过反射调用无参构造器对类进行实例化
         try {
             return tmpConstructor.newInstance((Object[])null);
         } catch (InvocationTargetException e) {
