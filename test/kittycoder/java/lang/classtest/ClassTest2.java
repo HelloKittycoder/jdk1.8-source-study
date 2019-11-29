@@ -44,4 +44,20 @@ public class ClassTest2 {
         System.out.println("Class represented by c7:" + c7.toGenericString()); // public abstract enum java.util.concurrent.TimeUnit
         System.out.println("Class represented by c8:" + c8.toGenericString()); // public abstract interface java.util.Map<K,V>
     }
+
+    // 判断指定对象是否为当前类的实例
+    @Test
+    public void testIsInstance() throws Exception {
+        Class c = Class.forName("java.lang.String");
+        String url = "http://www.baidu.com";
+        boolean b1 = c.isInstance(url);
+        System.out.println("is url instance of String:" + b1); // true
+
+        int i = 10;
+        boolean b2 = c.isInstance(i);
+        System.out.println("is i instance of String:" + b2); // false
+
+        System.out.println("aaa" instanceof String); // true
+        System.out.println(String.class.isInstance("aaa")); // true
+    }
 }

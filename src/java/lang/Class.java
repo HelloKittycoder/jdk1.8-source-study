@@ -502,6 +502,10 @@ public final class Class<T> implements java.io.Serializable,
      * raising a {@code ClassCastException.} It returns {@code false}
      * otherwise.
      *
+     * 判断指定的对象能否正常地赋值给当前Class所表示的的对象，它相当于java中的instanceof运算符
+     * 比如：String.class.isInstanceOf("aaa") 等价于 "aaa" instanceof String
+     * 其实就是：判断指定对象是否为当前类的实例
+     *
      * <p> Specifically, if this {@code Class} object represents a
      * declared class, this method returns {@code true} if the specified
      * {@code Object} argument is an instance of the represented class (or
