@@ -60,4 +60,23 @@ public class ClassTest2 {
         System.out.println("aaa" instanceof String); // true
         System.out.println(String.class.isInstance("aaa")); // true
     }
+
+    // 判断当前类是否为指定对象所表示的类或接口的父类或父接口
+    @Test
+    public void testIsAssignableFrom() throws Exception {
+        // c1是c2的父接口（c1是接口，c2是类）
+        Class c1 = Class.forName("java.lang.CharSequence");
+        Class c2 = Class.forName("java.lang.String");
+        System.out.println(c1.isAssignableFrom(c2)); // true
+
+        // c3是c4的父接口（c3、c4都是接口）
+        Class c3 = Class.forName("java.util.Collection");
+        Class c4 = Class.forName("java.util.List");
+        System.out.println(c3.isAssignableFrom(c4)); // true
+
+        // c5是c6的父类（c5是抽象类，c6是类）
+        Class c5 = Class.forName("java.util.AbstractList");
+        Class c6 = Class.forName("java.util.ArrayList");
+        System.out.println(c5.isAssignableFrom(c6)); // true
+    }
 }

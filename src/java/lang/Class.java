@@ -540,6 +540,15 @@ public final class Class<T> implements java.io.Serializable,
      * exactly this {@code Class} object; otherwise it returns
      * {@code false}.
      *
+     * 判断当前Class对象所表示的类或接口，是否与指定Class参数所表示的类或接口相同，
+     * 或者是它的父类或者父接口
+     * 比如：
+     * CharSequence.class.isAssignableFrom(String.class) // true（因为CharSequence是String的父接口）
+     * AbstractList.class.isAssignableFrom(ArrayList.class) // true（因为AbstractList是ArrayList的父类）
+     *
+     * isAssignableFrom可以理解为从...赋值，A.isAssignableFrom(B)就是说A可以从B那边赋值过来，
+     * 即A=B（将=理解为赋值，B可以赋值给A，所以说表达的其实就是“A是B的父类或者父接口”）
+     *
      * <p> Specifically, this method tests whether the type represented by the
      * specified {@code Class} parameter can be converted to the type
      * represented by this {@code Class} object via an identity conversion
