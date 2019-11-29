@@ -568,6 +568,7 @@ public final class Class<T> implements java.io.Serializable,
     /**
      * Determines if the specified {@code Class} object represents an
      * interface type.
+     * 判断指定的Class对象是否表示接口类型
      *
      * @return  {@code true} if this object represents an interface;
      *          {@code false} otherwise.

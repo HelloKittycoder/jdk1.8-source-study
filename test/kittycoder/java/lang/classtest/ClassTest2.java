@@ -79,4 +79,17 @@ public class ClassTest2 {
         Class c6 = Class.forName("java.util.ArrayList");
         System.out.println(c5.isAssignableFrom(c6)); // true
     }
+
+    // 判断指定的Class对象是否表示接口类型
+    @Test
+    public void testIsInterface() throws Exception {
+        Class c1 = Class.forName("java.lang.String"); // 普通类
+        System.out.println("is java.lang.String an interface:" + c1.isInterface()); // false
+
+        Class c2 = Class.forName("java.lang.Runnable"); // 接口
+        System.out.println("is java.lang.Runnable an interface:" + c2.isInterface()); // true
+
+        Class c3 = Class.forName("java.util.AbstractList"); // 抽象类
+        System.out.println("is java.util.AbstractList an interface:" + c3.isInterface()); // false
+    }
 }
