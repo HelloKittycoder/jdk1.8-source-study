@@ -3294,6 +3294,8 @@ public final class Class<T> implements java.io.Serializable,
      * Returns true if and only if this class was declared as an enum in the
      * source code.
      *
+     * 当且仅当此类在代码中声明为枚举（enum）时，此方法返回true
+     *
      * @return true if and only if this class was declared as an enum in the
      *     source code
      * @since 1.5

@@ -171,6 +171,13 @@ public class ClassTest2 {
         System.out.println(String.class.isMemberClass()); // false
     }
 
+    // 判断指定的Class对象是否为枚举（即声明为enum的）
+    @Test
+    public void testIsEnum() {
+        System.out.println(TimeUnit.class.isEnum()); // true
+        System.out.println(TestClassA.class.isEnum()); // false
+    }
+
     class TestClassA {}
     static class TestClassB {}
 }
