@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Created by shucheng on 2019-11-21 下午 21:35
+ * 参考链接：https://juejin.im/post/5c6547ee5188252f3048262b
  */
 public class ClassTest2 {
 
@@ -184,6 +185,14 @@ public class ClassTest2 {
         System.out.println(B.class.isAnnotation()); // true
         System.out.println(B.class.isInterface()); // true
         System.out.println(TestClassA.class.isAnnotation()); // false
+    }
+
+    // 判断该类是否为合成类
+    // 参考链接：https://www.javatpoint.com/java-class-issynthetic-method
+    @Test
+    public void testIsSynthetic() {
+        Runnable r = () -> System.out.println("111");
+        System.out.println(r.getClass().isSynthetic());
     }
 
     class TestClassA {}

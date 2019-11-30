@@ -644,6 +644,8 @@ public final class Class<T> implements java.io.Serializable,
      *         defined by the Java Language Specification.
      * @jls 13.1 The Form of a Binary
      * @since 1.5
+     *
+     * 判断该类是否为合成类（比如：jdk1.8开始出现的lambda表达式对应的class就是）
      */
     public boolean isSynthetic() {
         return (getModifiers() & SYNTHETIC) != 0;
