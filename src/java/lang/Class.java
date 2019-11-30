@@ -590,6 +590,9 @@ public final class Class<T> implements java.io.Serializable,
      * Determines if the specified {@code Class} object represents a
      * primitive type.
      *
+     * 判断指定的Class对象是否表示基本类型
+     * 基本类型指的是9种预定义类型：8种基本数据类型（boolean,char,byte,short,int,long,float,double）和void
+     *
      * <p> There are nine predefined {@code Class} objects to represent
      * the eight primitive types and void.  These are created by the Java
      * Virtual Machine, and have the same names as the primitive types that

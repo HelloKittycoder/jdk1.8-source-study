@@ -92,4 +92,25 @@ public class ClassTest2 {
         Class c3 = Class.forName("java.util.AbstractList"); // 抽象类
         System.out.println("is java.util.AbstractList an interface:" + c3.isInterface()); // false
     }
+
+    // 判断指定的Class对象是否表示基本类型
+    @Test
+    public void testIsPrimitive() {
+        System.out.println(boolean.class.isPrimitive()); // true
+        System.out.println(Boolean.class.isPrimitive()); // false
+
+        Class c = char.class;
+        System.out.println("is " + c.toString() + " primitive:" + char.class.isPrimitive()); // true
+        System.out.println(byte.class.isPrimitive()); // true
+        System.out.println(short.class.isPrimitive()); // true
+
+        System.out.println(int.class.isPrimitive()); // true
+        System.out.println(Integer.class.isPrimitive()); // false
+
+        System.out.println(long.class.isPrimitive()); // true
+        System.out.println(float.class.isPrimitive()); // true
+        System.out.println(double.class.isPrimitive()); // true
+
+        System.out.println(void.class.isPrimitive()); // true
+    }
 }
