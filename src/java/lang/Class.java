@@ -1491,6 +1491,8 @@ public final class Class<T> implements java.io.Serializable,
      * Returns {@code true} if and only if the underlying class
      * is a member class.
      *
+     * 当且仅当此类是成员类时，此方法返回true（其实就是看这个class对应的类是不是某个类的属性）
+     *
      * @return {@code true} if and only if this class is a member class.
      * @since 1.5
      */

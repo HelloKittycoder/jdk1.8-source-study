@@ -160,5 +160,17 @@ public class ClassTest2 {
         aClass.a = 1;
         System.out.println(aClass);
         System.out.println(AClass.class.isLocalClass()); // true
+        System.out.println(AClass.class.isMemberClass()); // false
     }
+
+    // 判断指定的Class对象是否为成员类（其实就是看这个class对应的类是不是某个类的属性）
+    @Test
+    public void testIsMemberClass() {
+        System.out.println(TestClassA.class.isMemberClass()); // true
+        System.out.println(TestClassB.class.isMemberClass()); // true
+        System.out.println(String.class.isMemberClass()); // false
+    }
+
+    class TestClassA {}
+    static class TestClassB {}
 }
