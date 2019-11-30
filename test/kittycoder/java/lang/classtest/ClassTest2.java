@@ -144,4 +144,21 @@ public class ClassTest2 {
         };
         System.out.println(r.getClass().isAnonymousClass()); // true
     }
+
+    // 判断指定的Class对象是否为局部类
+    @Test
+    public void testIsLocalClass() {
+        class AClass {
+            private int a;
+            @Override
+            public String toString() {
+                return "a的值为：" + a;
+            }
+        }
+
+        AClass aClass = new AClass();
+        aClass.a = 1;
+        System.out.println(aClass);
+        System.out.println(AClass.class.isLocalClass()); // true
+    }
 }

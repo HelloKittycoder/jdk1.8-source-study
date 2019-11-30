@@ -1478,6 +1478,8 @@ public final class Class<T> implements java.io.Serializable,
      * Returns {@code true} if and only if the underlying class
      * is a local class.
      *
+     * 当且仅当此类是局部类时，此方法返回true（局部类是在java代码块中声明的类，而不是类的成员）
+     *
      * @return {@code true} if and only if this class is a local class.
      * @since 1.5
      */
