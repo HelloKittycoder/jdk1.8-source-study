@@ -1465,6 +1465,8 @@ public final class Class<T> implements java.io.Serializable,
      * Returns {@code true} if and only if the underlying class
      * is an anonymous class.
      *
+     * 当且仅当此类是匿名类时，此方法返回true
+     *
      * @return {@code true} if and only if this class is an anonymous class.
      * @since 1.5
      */

@@ -132,4 +132,16 @@ public class ClassTest2 {
         System.out.println("is " + c2.toString() + " an array:" + b2); // false
         System.out.println("is " + c3.toString() + " an array:" + b3); // true
     }
+
+    // 判断指定的Class对象是否为匿名类
+    @Test
+    public void testIsAnonymousClass() {
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("111");
+            }
+        };
+        System.out.println(r.getClass().isAnonymousClass()); // true
+    }
 }
