@@ -178,6 +178,15 @@ public class ClassTest2 {
         System.out.println(TestClassA.class.isEnum()); // false
     }
 
+    // 判断指定的Class对象是否为注释类型
+    @Test
+    public void testIsAnnotation() {
+        System.out.println(B.class.isAnnotation()); // true
+        System.out.println(B.class.isInterface()); // true
+        System.out.println(TestClassA.class.isAnnotation()); // false
+    }
+
     class TestClassA {}
     static class TestClassB {}
+    @interface B {}
 }

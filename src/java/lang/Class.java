@@ -626,6 +626,9 @@ public final class Class<T> implements java.io.Serializable,
      * type.  Note that if this method returns true, {@link #isInterface()}
      * would also return true, as all annotation types are also interfaces.
      *
+     * 判断指定的Class对象是否为注释类型
+     * 注意：如果此方法放回true，则isInterface()方法也将返回true，因为所有注释类型也都是接口
+     *
      * @return {@code true} if this class object represents an annotation
      *      type; {@code false} otherwise
      * @since 1.5
