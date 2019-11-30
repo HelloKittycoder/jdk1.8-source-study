@@ -113,4 +113,23 @@ public class ClassTest2 {
 
         System.out.println(void.class.isPrimitive()); // true
     }
+
+    // 判断指定的Class对象是否表示数组类
+    @Test
+    public void testIsArray() {
+        int[] a = new int[2];
+        ClassTest2[] b = new ClassTest2[1];
+
+        Class c1 = a.getClass();
+        Class c2 = ClassTest2.class;
+        Class c3 = b.getClass();
+
+        boolean b1 = c1.isArray();
+        boolean b2 = c2.isArray();
+        boolean b3 = c3.isArray();
+
+        System.out.println("is " + c1.toString() + " an array:" + b1); // true
+        System.out.println("is " + c2.toString() + " an array:" + b2); // false
+        System.out.println("is " + c3.toString() + " an array:" + b3); // true
+    }
 }

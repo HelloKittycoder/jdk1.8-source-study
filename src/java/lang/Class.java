@@ -579,6 +579,8 @@ public final class Class<T> implements java.io.Serializable,
     /**
      * Determines if this {@code Class} object represents an array class.
      *
+     * 判断指定的Class对象是否表示数组类
+     *
      * @return  {@code true} if this object represents an array class;
      *          {@code false} otherwise.
      * @since   JDK1.1
