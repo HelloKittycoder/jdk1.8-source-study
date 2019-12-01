@@ -776,6 +776,9 @@ public final class Class<T> implements java.io.Serializable,
      * array of length 0 if the underlying generic declaration declares no type
      * variables.
      *
+     * 按声明顺序返回一个TypeVariable对象的数组，这些对象表示用GenericDeclaration对象所表示的泛型声明来声明的类型变量。
+     * 如果该类没有泛型声明，则返回长度为0的数组。
+     *
      * @return an array of {@code TypeVariable} objects that represent
      *     the type variables declared by this generic declaration
      * @throws java.lang.reflect.GenericSignatureFormatError if the generic
@@ -786,10 +789,13 @@ public final class Class<T> implements java.io.Serializable,
      */
     @SuppressWarnings("unchecked")
     public TypeVariable<Class<T>>[] getTypeParameters() {
+        // 获取泛型信息
         ClassRepository info = getGenericInfo();
         if (info != null)
+            // 获取泛型声明的类型变量构成的数组
             return (TypeVariable<Class<T>>[])info.getTypeParameters();
         else
+            // 返回空数组
             return (TypeVariable<Class<T>>[])new TypeVariable<?>[0];
     }
 
@@ -2622,15 +2628,20 @@ public final class Class<T> implements java.io.Serializable,
 
     // accessor for generic info repository;
     // generic info is lazily initialized
+    // 获取泛型信息（该信息是懒加载的，跟饿汉式单例一样）
     private ClassRepository getGenericInfo() {
         ClassRepository genericInfo = this.genericInfo;
+        // 首次进入该方法，会去加载泛型信息，后续都是直接返回信息了
         if (genericInfo == null) {
+            // 获取泛型签名
             String signature = getGenericSignature0();
             if (signature == null) {
                 genericInfo = ClassRepository.NONE;
             } else {
                 genericInfo = ClassRepository.make(signature, getFactory());
             }
+            // 把获取的泛型信息存到Class对象的缓存字段genericInfo里
+            // （第二次调用该方法时就不用重复查找泛型信息了）
             this.genericInfo = genericInfo;
         }
         return (genericInfo != ClassRepository.NONE) ? genericInfo : null;

@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Array;
+import java.lang.reflect.TypeVariable;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -253,6 +254,31 @@ public class ClassTest2 {
         System.out.println(c.getClassLoader()); // AppClassLoader
         System.out.println(String.class.getClassLoader()); // null
         System.out.println(int.class.getClassLoader()); // null
+    }
+
+    // 获取类的泛型声明的类型变量（如果没有泛型声明，返回一个空数组）
+    @Test
+    public void testGetTypeParameters() throws Exception {
+        Class c = Class.forName("java.util.List");
+        TypeVariable[] typeParameters = c.getTypeParameters();
+        System.out.println("TypeVariables in " + c.getName() + " class:");
+        // 打印E
+        for (TypeVariable typeVariable : typeParameters) {
+            System.out.println(typeVariable.getName());
+        }
+
+        Class c2 = Class.forName("java.util.Map");
+        TypeVariable[] typeParameters2 = c2.getTypeParameters();
+        System.out.println("TypeVariables in " + c2.getName() + " class:");
+        // 依次打印K，V
+        for (TypeVariable typeVariable : typeParameters2) {
+            System.out.println(typeVariable.getName());
+        }
+        System.out.println(c2.getTypeParameters()); // 验证genericInfo是否为懒加载
+
+        Class c3 = Class.forName("kittycoder.java.lang.classtest.ClassTest2");
+        TypeVariable[] typeParameters3 = c3.getTypeParameters(); // 得到一个长度为0的TypeVariable数组
+        System.out.println(typeParameters3.length);
     }
 
     class TestClassA {}
