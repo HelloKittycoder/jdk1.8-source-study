@@ -281,7 +281,7 @@ public class ClassTest2 {
         System.out.println(typeParameters3.length);
     }
 
-    // 获取该Class所表示的实体的父类的Class
+    // 获取该Class所表示的实体的父类的Class，返回的是Class
     @Test
     public void testGetSuperclass() throws Exception {
         Class c = Class.forName("java.util.ArrayList");
@@ -297,6 +297,24 @@ public class ClassTest2 {
         System.out.println("Map superclass:" + Map.class.getSuperclass()); // null
         System.out.println("int superclass:" + int.class.getSuperclass()); // null
         System.out.println("int[] superclass:" + int[].class.getSuperclass()); // java.lang.Object
+    }
+
+    // 获取该Class所表示的实体的父类的类型（如果有泛型的话，连带泛型参数也在里面），返回的是Type（Class实现了Type接口）
+    @Test
+    public void testGetGenericSuperclass() throws Exception {
+        Class c = Class.forName("java.util.ArrayList");
+        Class c2 = ClassTest2.class;
+        Class c3 = Class.forName("kittycoder.java.lang.classtest.ClassTest2$TestClassA");
+        Class c4 = Class.forName("kittycoder.java.lang.classtest.ClassTest2$TestClassC");
+        System.out.println("ArrayList superclass:" + c.getGenericSuperclass()); // java.util.AbstractList<E>
+        System.out.println("ClassTest2 superclass:" + c2.getGenericSuperclass()); // java.lang.Object
+        System.out.println("TestClassA superclass:" + c3.getGenericSuperclass()); // java.lang.Object
+        System.out.println("TestClassC superclass:" + c4.getGenericSuperclass()); // TestClassA
+
+        System.out.println("Object superclass:" + Object.class.getGenericSuperclass()); // null
+        System.out.println("Map superclass:" + Map.class.getGenericSuperclass()); // null
+        System.out.println("int superclass:" + int.class.getGenericSuperclass()); // null
+        System.out.println("int[] superclass:" + int[].class.getGenericSuperclass()); // java.lang.Object
     }
 
     class TestClassA {}

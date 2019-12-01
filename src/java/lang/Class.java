@@ -809,8 +809,8 @@ public final class Class<T> implements java.io.Serializable,
      * {@code Class} object representing the {@code Object} class is
      * returned.
      *
-     * 返回由该Class表示的实体（类，接口，基本类型或void）的超类的Class
-     * 如果此Class表示Object类，接口，基本类型或void，则返回null；如果表示数组类，则返回表示Object类的Class对象
+     * 返回由该Class表示的实体（类、接口、基本类型或void）的超类的Class
+     * 如果此Class表示Object类、接口、基本类型或void，则返回null；如果表示数组类，则返回表示Object类的Class对象
      *
      * @return the superclass of the class represented by this object.
      */
@@ -821,6 +821,8 @@ public final class Class<T> implements java.io.Serializable,
      * Returns the {@code Type} representing the direct superclass of
      * the entity (class, interface, primitive type or void) represented by
      * this {@code Class}.
+     *
+     * 返回由该Class表示的实体（类、接口、基本类型或void）的直接超类的类型
      *
      * <p>If the superclass is a parameterized type, the {@code Type}
      * object returned must accurately reflect the actual type
@@ -834,6 +836,11 @@ public final class Class<T> implements java.io.Serializable,
      * returned.  If this object represents an array class then the
      * {@code Class} object representing the {@code Object} class is
      * returned.
+     *
+     * 如果超类是参数化类型（ParameterizedType），则返回的Type对象必须准确反映源码中所使用的实际参数类型。
+     * （如果以前未曾创建表示超类的参数化类型，则创建这个类型）
+     * 如果此Class表示Object类、接口、基本类型或void，则返回null
+     * 如果此对象表示一个数组类，则返回表示Object类的Class对象
      *
      * @throws java.lang.reflect.GenericSignatureFormatError if the generic
      *     class signature does not conform to the format specified in
