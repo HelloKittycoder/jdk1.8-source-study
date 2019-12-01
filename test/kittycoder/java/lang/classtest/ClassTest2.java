@@ -281,7 +281,26 @@ public class ClassTest2 {
         System.out.println(typeParameters3.length);
     }
 
+    // 获取该Class所表示的实体的父类的Class
+    @Test
+    public void testGetSuperclass() throws Exception {
+        Class c = Class.forName("java.util.ArrayList");
+        Class c2 = ClassTest2.class;
+        Class c3 = Class.forName("kittycoder.java.lang.classtest.ClassTest2$TestClassA");
+        Class c4 = Class.forName("kittycoder.java.lang.classtest.ClassTest2$TestClassC");
+        System.out.println("ArrayList superclass:" + c.getSuperclass()); // java.util.AbstractList
+        System.out.println("ClassTest2 superclass:" + c2.getSuperclass()); // java.lang.Object
+        System.out.println("TestClassA superclass:" + c3.getSuperclass()); // java.lang.Object
+        System.out.println("TestClassC superclass:" + c4.getSuperclass()); // TestClassA
+
+        System.out.println("Object superclass:" + Object.class.getSuperclass()); // null
+        System.out.println("Map superclass:" + Map.class.getSuperclass()); // null
+        System.out.println("int superclass:" + int.class.getSuperclass()); // null
+        System.out.println("int[] superclass:" + int[].class.getSuperclass()); // java.lang.Object
+    }
+
     class TestClassA {}
     static class TestClassB {}
     @interface B {}
+    class TestClassC extends TestClassA {}
 }

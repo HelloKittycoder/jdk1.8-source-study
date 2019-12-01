@@ -809,6 +809,9 @@ public final class Class<T> implements java.io.Serializable,
      * {@code Class} object representing the {@code Object} class is
      * returned.
      *
+     * 返回由该Class表示的实体（类，接口，基本类型或void）的超类的Class
+     * 如果此Class表示Object类，接口，基本类型或void，则返回null；如果表示数组类，则返回表示Object类的Class对象
+     *
      * @return the superclass of the class represented by this object.
      */
     public native Class<? super T> getSuperclass();
