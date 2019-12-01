@@ -725,6 +725,8 @@ public final class Class<T> implements java.io.Serializable,
      * null to represent the bootstrap class loader. This method will return
      * null in such implementations if this class was loaded by the bootstrap
      * class loader.
+     * 返回该类的类加载器。如果类加载器是bootstrap类加载器，那么此方法返回null。
+     * （因为引导类加载器使用C，C++等本机语言实现的）
      *
      * <p> If a security manager is present, and the caller's class loader is
      * not null and the caller's class loader is not the same as or an ancestor of
@@ -735,6 +737,7 @@ public final class Class<T> implements java.io.Serializable,
      *
      * <p>If this object
      * represents a primitive type or void, null is returned.
+     * 如果此对象表示基本类型或void，则返回null
      *
      * @return  the class loader that loaded the class or interface
      *          represented by this object.

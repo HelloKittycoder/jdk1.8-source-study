@@ -246,6 +246,15 @@ public class ClassTest2 {
         System.out.println(rArr.getClass().getSimpleName());
     }
 
+    // 获取此类的类加载器
+    @Test
+    public void testGetClassLoader() throws Exception {
+        Class c = Class.forName("kittycoder.java.lang.classtest.ClassTest2");
+        System.out.println(c.getClassLoader()); // AppClassLoader
+        System.out.println(String.class.getClassLoader()); // null
+        System.out.println(int.class.getClassLoader()); // null
+    }
+
     class TestClassA {}
     static class TestClassB {}
     @interface B {}
