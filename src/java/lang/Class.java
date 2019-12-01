@@ -655,20 +655,26 @@ public final class Class<T> implements java.io.Serializable,
      * Returns the  name of the entity (class, interface, array class,
      * primitive type, or void) represented by this {@code Class} object,
      * as a {@code String}.
+     * 以String的形式返回此Class对象所表示的实体（类、接口、数组类、基本类型或void）名称（含包名）
      *
      * <p> If this class object represents a reference type that is not an
      * array type then the binary name of the class is returned, as specified
      * by
      * <cite>The Java&trade; Language Specification</cite>.
+     * 如果此类对象表示的是非数组类型的引用类型，则返回该类的二进制名称，JLS对此做了详细说明
      *
      * <p> If this class object represents a primitive type or void, then the
      * name returned is a {@code String} equal to the Java language
      * keyword corresponding to the primitive type or void.
+     * 如果此类对象表示一个基本类型或void，则返回的名字是一个与该基本类型或void所对应的java语言关键字
+     * 相同的String
      *
      * <p> If this class object represents a class of arrays, then the internal
      * form of the name consists of the name of the element type preceded by
      * one or more '{@code [}' characters representing the depth of the array
      * nesting.  The encoding of element type names is as follows:
+     * 如果此类对象表示一个数组类，则名字的内部形式为：表示该数组嵌套深度的一个或多个"["字符加元素类型名。
+     * 元素类型名的编码如下：
      *
      * <blockquote><table summary="Element types and encodings">
      * <tr><th> Element Type <th> &nbsp;&nbsp;&nbsp; <th> Encoding
@@ -686,6 +692,7 @@ public final class Class<T> implements java.io.Serializable,
      *
      * <p> The class or interface name <i>classname</i> is the binary name of
      * the class specified above.
+     * 类或接口名classname是上面指定类的二进制名称
      *
      * <p> Examples:
      * <blockquote><pre>
@@ -1360,10 +1367,12 @@ public final class Class<T> implements java.io.Serializable,
      * Returns the simple name of the underlying class as given in the
      * source code. Returns an empty string if the underlying class is
      * anonymous.
+     * 返回在源码中该类的简称，如果该类是匿名类则返回一个空字符串
      *
      * <p>The simple name of an array is the simple name of the
      * component type with "[]" appended.  In particular the simple
      * name of an array whose component type is anonymous is "[]".
+     * 数组的简称即元素类型附带[]。特别地，元素类型为匿名的数组的简称是“[]”
      *
      * @return the simple name of the underlying class
      * @since 1.5

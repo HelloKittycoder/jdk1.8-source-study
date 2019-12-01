@@ -3,12 +3,16 @@ package kittycoder.java.lang.classtest;
 import org.junit.Test;
 
 import javax.annotation.Resource;
+import java.lang.reflect.Array;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Created by shucheng on 2019-11-21 下午 21:35
  * 参考链接：https://juejin.im/post/5c6547ee5188252f3048262b
+ * https://blog.csdn.net/qq_35029061/article/details/100550584
+ * https://blog.csdn.net/a327369238/article/details/52577040
+ * https://www.jianshu.com/p/4ae6267caee5
  */
 public class ClassTest2 {
 
@@ -192,7 +196,54 @@ public class ClassTest2 {
     @Test
     public void testIsSynthetic() {
         Runnable r = () -> System.out.println("111");
-        System.out.println(r.getClass().isSynthetic());
+        System.out.println(r.getClass().isSynthetic()); // true
+    }
+
+    // 获取类的名称（含包名）
+    // toString里调用的就是getName方法
+    @Test
+    public void testGetName() {
+        System.out.println(int.class.getName()); // int
+        System.out.println(int[].class.getName()); // [I
+        System.out.println(String.class.getName()); // java.lang.String
+        System.out.println(TestClassA.class.getName()); // kittycoder.java.lang.classtest.ClassTest2$TestClassA
+        System.out.println(B.class.getName()); // kittycoder.java.lang.classtest.ClassTest2$B
+
+        // 匿名类
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("111");
+            }
+        };
+        System.out.println(r.getClass().getName());
+
+        // 匿名类数组
+        Runnable[] rArr = (Runnable[]) Array.newInstance(r.getClass(), 2);
+        System.out.println(rArr.getClass().getName());
+    }
+
+    // 获取类的名称（不含包名）
+    @Test
+    public void testGetSimpleName() {
+        System.out.println(int.class.getSimpleName()); // int
+        System.out.println(int[].class.getSimpleName()); // int[]
+        System.out.println(String.class.getSimpleName()); // String
+        System.out.println(TestClassA.class.getSimpleName()); // TestClassA
+        System.out.println(B.class.getSimpleName()); // B
+
+        // 匿名类
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("111");
+            }
+        };
+        System.out.println("".equals(r.getClass().getSimpleName()));
+
+        // 匿名类数组
+        Runnable[] rArr = (Runnable[]) Array.newInstance(r.getClass(), 2);
+        System.out.println(rArr.getClass().getSimpleName());
     }
 
     class TestClassA {}
