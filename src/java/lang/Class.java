@@ -892,6 +892,7 @@ public final class Class<T> implements java.io.Serializable,
     /**
      * Determines the interfaces implemented by the class or interface
      * represented by this object.
+     * 返回此对象所表示的类或接口实现的接口
      *
      * <p> If this object represents a class, the return value is an array
      * containing objects representing all interfaces implemented by the
@@ -914,22 +915,34 @@ public final class Class<T> implements java.io.Serializable,
      * </blockquote>
      * is the {@code Class} object that represents interface
      * {@code DessertTopping}.
+     * 如果此对象表示一个类，则返回值是一个数组，它包含了表示该类所实现的所有接口的对象。数组中接口对象顺序
+     * 与此对象所表示的类的声明的implements子句中接口名顺序一致。
+     * 例如，给定声明：
+     * class Shimmer implements FloorWax, DessertTopping { ... }
+     * 设s的值为Shimmer的一个实例，表达式：
+     * s.getClass().getInterfaces()[0]的值为表示FloorWax接口的Class对象；
+     * s.getClass().getInterfaces()[1]的值为表示DessertTopping接口的Class对象
      *
      * <p> If this object represents an interface, the array contains objects
      * representing all interfaces extended by the interface. The order of the
      * interface objects in the array corresponds to the order of the interface
      * names in the {@code extends} clause of the declaration of the
      * interface represented by this object.
+     * 如果此对象表示一个接口，则该数组包含表示该接口扩展的所有接口的对象。数组中接口对象顺序与此对象所表示的接口的
+     * 声明的extends子句中接口名顺序一致
      *
      * <p> If this object represents a class or interface that implements no
      * interfaces, the method returns an array of length 0.
+     * 如果此对象表示一个不实现任何接口的类或接口，则此方法返回一个长度为0的数组
      *
      * <p> If this object represents a primitive type or void, the method
      * returns an array of length 0.
+     * 如果此对象表示一个基本类型或void，则此方法返回一个长度为0的数组
      *
      * <p> If this {@code Class} object represents an array type, the
      * interfaces {@code Cloneable} and {@code java.io.Serializable} are
      * returned in that order.
+     * 如果此对象表示一个数组类型，则实现的接口中数组中为[Cloneable,Serializable]
      *
      * @return an array of interfaces implemented by this class.
      */

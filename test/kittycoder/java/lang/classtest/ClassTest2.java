@@ -5,6 +5,7 @@ import org.junit.Test;
 import javax.annotation.Resource;
 import java.lang.reflect.Array;
 import java.lang.reflect.TypeVariable;
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -317,8 +318,51 @@ public class ClassTest2 {
         System.out.println("int[] superclass:" + int[].class.getGenericSuperclass()); // java.lang.Object
     }
 
+    // 获取类或接口实现的所有接口，返回的是Class数组
+    @Test
+    public void testGetInterfaces() throws Exception {
+        // 1.已实现接口的类->返回数组里按声明顺序存放了implements后面跟的接口
+        Class c1 = Class.forName("java.util.ArrayList");
+        Class[] c1Interfaces = c1.getInterfaces();
+        System.out.println("interfaces implemented by ArrayList class:");
+        for (Class c : c1Interfaces) {
+            System.out.println(c);
+        }
+
+        // 2.已扩展接口的接口->返回数组里按声明顺序存放了extends后面跟的接口
+        Class c2 = Class.forName("kittycoder.java.lang.classtest.ClassTest2$CInterface");
+        Class[] c2Interfaces = c2.getInterfaces();
+        System.out.println("interfaces implemented by CInterface:");
+        for (Class c : c2Interfaces) {
+            System.out.println(c);
+        }
+
+        // 3.未实现接口的类或接口->返回数组的length为0
+        Class c3 = Class.forName("kittycoder.java.lang.classtest.ClassTest2");
+        Class[] c3Interfaces = c3.getInterfaces();
+        System.out.println("interfaces implemented by ClassTest2:");
+        System.out.println(c3Interfaces.length);
+
+        // 4.基本类型或void->返回数组的length为0
+        Class c4 = int.class;
+        Class[] c4Interfaces = c4.getInterfaces();
+        System.out.println("interfaces implemented by int:");
+        System.out.println(c4Interfaces.length);
+
+        // 5.数组类型->返回数组为：[Cloneable,Serializable]
+        Class c5 = int[].class;
+        Class[] c5Interfaces = c5.getInterfaces();
+        System.out.println("interfaces implemented by int[]:");
+        for (Class c : c5Interfaces) {
+            System.out.println(c);
+        }
+    }
+
     class TestClassA {}
     static class TestClassB {}
     @interface B {}
     class TestClassC extends TestClassA {}
+    interface AInterface {}
+    interface BInterface {}
+    interface CInterface extends AInterface, BInterface {}
 }
