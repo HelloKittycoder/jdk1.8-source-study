@@ -821,7 +821,6 @@ public final class Class<T> implements java.io.Serializable,
      * Returns the {@code Type} representing the direct superclass of
      * the entity (class, interface, primitive type or void) represented by
      * this {@code Class}.
-     *
      * 返回由该Class表示的实体（类、接口、基本类型或void）的直接超类的类型
      *
      * <p>If the superclass is a parameterized type, the {@code Type}
@@ -836,7 +835,6 @@ public final class Class<T> implements java.io.Serializable,
      * returned.  If this object represents an array class then the
      * {@code Class} object representing the {@code Object} class is
      * returned.
-     *
      * 如果超类是参数化类型（ParameterizedType），则返回的Type对象必须准确反映源码中所使用的实际参数类型。
      * （如果以前未曾创建表示超类的参数化类型，则创建这个类型）
      * 如果此Class表示Object类、接口、基本类型或void，则返回null
@@ -942,7 +940,7 @@ public final class Class<T> implements java.io.Serializable,
      * <p> If this {@code Class} object represents an array type, the
      * interfaces {@code Cloneable} and {@code java.io.Serializable} are
      * returned in that order.
-     * 如果此对象表示一个数组类型，则实现的接口中数组中为[Cloneable,Serializable]
+     * 如果此对象表示一个数组类型，则实现的接口的数组为[Cloneable,Serializable]
      *
      * @return an array of interfaces implemented by this class.
      */
@@ -968,6 +966,7 @@ public final class Class<T> implements java.io.Serializable,
      * Returns the {@code Type}s representing the interfaces
      * directly implemented by the class or interface represented by
      * this object.
+     * 返回由该对象表示的类或接口直接实现的接口的类型
      *
      * <p>If a superinterface is a parameterized type, the
      * {@code Type} object returned for it must accurately reflect
@@ -977,6 +976,8 @@ public final class Class<T> implements java.io.Serializable,
      * {@link java.lang.reflect.ParameterizedType ParameterizedType}
      * for the semantics of the creation process for parameterized
      * types.
+     * 如果超接口是参数化类型（ParameterizedType），则返回的Type对象必须准确反映源码中所使用的实际参数类型。
+     * （如果以前未曾创建表示每个超接口的参数化类型，则创建这个类型）
      *
      * <p> If this object represents a class, the return value is an
      * array containing objects representing all interfaces
@@ -986,6 +987,9 @@ public final class Class<T> implements java.io.Serializable,
      * represented by this object.  In the case of an array class, the
      * interfaces {@code Cloneable} and {@code Serializable} are
      * returned in that order.
+     * 如果此对象表示一个类，则返回一个对象数组，其中的对象表示该类实现的所有接口，
+     * 数组中接口对象顺序与此对象所表示的类的声明的implements子句中接口名顺序一致；
+     * 对于数组类，返回的数组为[Cloneable,Serializable]
      *
      * <p>If this object represents an interface, the array contains
      * objects representing all interfaces directly extended by the
@@ -993,13 +997,17 @@ public final class Class<T> implements java.io.Serializable,
      * corresponds to the order of the interface names in the
      * {@code extends} clause of the declaration of the interface
      * represented by this object.
+     * 如果此对象标识一个接口，则该数组包含表示该接口直接扩展的所有接口的对象，
+     * 数组中接口对象顺序与此对象所表示的接口的声明的extends子句中接口名顺序一致
      *
      * <p>If this object represents a class or interface that
      * implements no interfaces, the method returns an array of length
      * 0.
+     * 如果此对象表示一个不实现任何接口的类或接口，则此方法返回一个长度为0的数组
      *
      * <p>If this object represents a primitive type or void, the
      * method returns an array of length 0.
+     * 如果此对象表示一个基本类型或void，则此方法返回一个长度为0的数组
      *
      * @throws java.lang.reflect.GenericSignatureFormatError
      *     if the generic class signature does not conform to the format
