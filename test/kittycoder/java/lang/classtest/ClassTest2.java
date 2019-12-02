@@ -398,6 +398,15 @@ public class ClassTest2 {
         }
     }
 
+    // 返回此类所在的包
+    @Test
+    public void testGetPackage() throws Exception {
+        Class c1 = Class.forName("java.lang.String");
+        Class c2 = Class.forName("java.util.ArrayList");
+        System.out.println(c1.getPackage());
+        System.out.println(c2.getPackage());
+    }
+
     class TestClassA {}
     static class TestClassB {}
     @interface B {}

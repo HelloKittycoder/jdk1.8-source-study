@@ -868,6 +868,7 @@ public final class Class<T> implements java.io.Serializable,
     }
 
     /**
+     * 返回此类所在的包
      * Gets the package for this class.  The class loader of this class is used
      * to find the package.  If the class was loaded by the bootstrap class
      * loader the set of packages loaded from CLASSPATH is searched to find the
