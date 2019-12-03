@@ -1641,23 +1641,31 @@ public final class Class<T> implements java.io.Serializable,
      * Returns an array containing {@code Field} objects reflecting all
      * the accessible public fields of the class or interface represented by
      * this {@code Class} object.
+     * 返回一个Field数组，其中包含所有该Class对象所表示的类（及其所有超类）或接口（及其所有超类）中所有可访问的公共字段
+     * 换句话说：这里返回的字段，除了该Class对象本身的public字段，还有该Class对象所有继承的类（不管有多少层级）的public字段，
+     * 所有实现的接口（不管有多少层级）的public字段
      *
      * <p> If this {@code Class} object represents a class or interface with no
      * no accessible public fields, then this method returns an array of length
      * 0.
+     * 如果该Class表示的类或接口没有可访问的公共字段，则该方法返回一个长度为0的数组
      *
      * <p> If this {@code Class} object represents a class, then this method
      * returns the public fields of the class and of all its superclasses.
+     * 如果该Class表示一个类，那么该方法返回该类及其所有超类的公共字段
      *
      * <p> If this {@code Class} object represents an interface, then this
      * method returns the fields of the interface and of all its
      * superinterfaces.
+     * 如果该Class表示一个接口，那么该方法返回该接口及其所有超接口的公共字段
      *
      * <p> If this {@code Class} object represents an array type, a primitive
      * type, or void, then this method returns an array of length 0.
+     * 如果该Class表示一个数组类型、基本类型或void，那么该方法返回一个长度为0的数组
      *
      * <p> The elements in the returned array are not sorted and are not in any
      * particular order.
+     * 返回的数组中的元素未被排序，且没有特定的顺序
      *
      * @return the array of {@code Field} objects representing the
      *         public fields
@@ -1675,7 +1683,9 @@ public final class Class<T> implements java.io.Serializable,
      */
     @CallerSensitive
     public Field[] getFields() throws SecurityException {
+        // 检查访问权限
         checkMemberAccess(Member.PUBLIC, Reflection.getCallerClass(), true);
+        // 获取公共字段，并复制到一个新的数组中进行返回
         return copyFields(privateGetPublicFields(null));
     }
 
