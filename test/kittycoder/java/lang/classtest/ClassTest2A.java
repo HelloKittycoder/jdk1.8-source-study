@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
 public class ClassTest2A {
 
     /**
-     * 获取该Class对象所表示的类（及其所有超类）或接口（及其所有超类）中的所有public字段
+     * 获取该Class对象所表示的类（及其所有超类）或接口（及其所有超接口）中的所有public字段
      * @throws Exception
      */
     @Test
@@ -61,12 +61,26 @@ public class ClassTest2A {
         }
     }
 
+    /**
+     * 获取该Class对象所表示的类或接口中的指定public字段，
+     * （1）如果找不到，则一直向其超类或超接口向上找
+     * （2）如果该类直接继承某个类，同时直接实现某个接口，而父类和超接口有同名字段，最后会返回接口里的那个字段
+     * @throws Exception
+     */
+    @Test
+    public void testGetField() throws Exception {
+        Class c = Class.forName("kittycoder.java.lang.classtest.ClassTest2A$C");
+        System.out.println(c.getField("aname_pub"));
+        System.out.println(c.getField("cname_pub"));
+    }
+
     interface AInterface {
         String Aitf_str = "1";
     }
 
     interface BInterface extends AInterface {
         String Bitf_str = "1";
+        String aname_pub = "aa";
     }
 
     class A {

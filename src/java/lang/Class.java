@@ -1795,6 +1795,8 @@ public final class Class<T> implements java.io.Serializable,
      * field of the class or interface represented by this {@code Class}
      * object. The {@code name} parameter is a {@code String} specifying the
      * simple name of the desired field.
+     * 返回一个Field对象，它反映了该Class对象所表示的类或接口的指定公共成员字段。name参数是一个String，
+     * 用于指定所需字段的简称。
      *
      * <p> The field to be reflected is determined by the algorithm that
      * follows.  Let C be the class or interface represented by this object:
@@ -1810,6 +1812,12 @@ public final class Class<T> implements java.io.Serializable,
      *      If C has no superclass, then a {@code NoSuchFieldException}
      *      is thrown.</LI>
      * </OL>
+     * 要反射的字段由下面的算法确定。设C为此对象所表示的类：
+     * 1.如果C声明了一个带有指定名的公共字段，则它就是要被反射的字段
+     * 2.如果在第1步中没有找到任何字段，则该算法被递归地应用于C的每一个直接超接口。
+     * 直接超接口按其声明顺序进行搜索
+     * 3.如果在第1、2两步没有找到任何字段，且C有一个超类S，则在S上递归调用该算法。
+     * 如果C没有超类，则抛出NoSuchFieldException
      *
      * <p> If this {@code Class} object represents an array type, then this
      * method does not find the {@code length} field of the array type.
