@@ -2,6 +2,7 @@ package kittycoder.java.lang.classtest;
 
 import org.junit.Test;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
@@ -26,7 +27,7 @@ public class ClassTest2A {
     }
 
     /**
-     * 返回一个Method数组，其中包含所有该Class对象所表示的类（及其所有超类）或接口（及其所有超接口）中所有public方法
+     * 获取该Class对象所表示的类（及其所有超类）或接口（及其所有超接口）的所有public方法
      * @throws Exception
      */
     @Test
@@ -43,6 +44,20 @@ public class ClassTest2A {
         System.out.println("Below are the methods of java.util.List class:");
         for (Method m : methods2) {
             System.out.println(m);
+        }
+    }
+
+    /**
+     * 获取该Class对象所表示的类中的所有public构造器
+     * @throws Exception
+     */
+    @Test
+    public void testGetConstructors() throws Exception {
+        Class c1 = Class.forName("java.lang.Boolean");
+        Constructor[] constructors = c1.getConstructors();
+        System.out.println("Below are the constructors of Boolean class:");
+        for (Constructor c : constructors) {
+            System.out.println(c);
         }
     }
 

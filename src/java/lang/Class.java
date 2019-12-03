@@ -1752,6 +1752,7 @@ public final class Class<T> implements java.io.Serializable,
 
 
     /**
+     * 返回一个Constructor数组，其中包含该Class对象所表示的类中的所有公共构造函数
      * Returns an array containing {@code Constructor} objects reflecting
      * all the public constructors of the class represented by this
      * {@code Class} object.  An array of length 0 is returned if the
@@ -1782,7 +1783,9 @@ public final class Class<T> implements java.io.Serializable,
      */
     @CallerSensitive
     public Constructor<?>[] getConstructors() throws SecurityException {
+        // 检查访问权限
         checkMemberAccess(Member.PUBLIC, Reflection.getCallerClass(), true);
+        // 获取公共构造函数，并复制到一个新的数组中进行返回
         return copyConstructors(privateGetDeclaredConstructors(true));
     }
 
