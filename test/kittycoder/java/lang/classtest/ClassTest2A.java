@@ -9,6 +9,11 @@ import java.lang.reflect.Method;
 /**
  * Created by shucheng on 2019-12-2 下午 20:27
  * 参考链接：https://juejin.im/post/5c6547ee5188252f3048262b
+ *
+ * getxx和getDeclaredxx的区别（xx表示Field，Method或Constructor）：
+ * 1.getxx获取的是修饰符为public的；getDeclaredxx获取的是所有声明过的
+ * 2.除了Constructor，getxx和getDeclaredxx都是在当前类中查找以外，
+ * 对Field和Method来说，getxx如果在当前类中找不到，会向上递归查找类或接口；getDeclaredxx只会查找当前类或接口
  */
 public class ClassTest2A {
 
