@@ -88,6 +88,31 @@ public class ClassTest2A {
         System.out.println(c.getMethod("cmethod_pub", null));
     }
 
+    /**
+     * 获取该Class对象所表示的类的指定public构造器
+     * @throws Exception
+     */
+    @Test
+    public void testGetConstructor() throws Exception {
+        // 1.普通类的构造器
+        Class c1 = Class.forName("java.lang.Integer");
+        Class c2 = Class.forName("java.lang.String");
+        Constructor constructor = c1.getConstructor(c2);
+
+        System.out.println("Constructor in Integer class & String parameterType:");
+        System.out.println(constructor);
+
+        // 2.非静态内部类的构造器
+        Class innerClass = Class.forName("kittycoder.java.lang.classtest.ClassTest2A$C");
+        Class outerClass = Class.forName("kittycoder.java.lang.classtest.ClassTest2A");
+        System.out.println(innerClass.getConstructor(outerClass, String.class));
+
+        Constructor c = innerClass.getConstructor(outerClass, String.class);
+        ClassTest2A c2a = new ClassTest2A();
+        C cInstance = (C) c.newInstance(c2a, "111");
+        System.out.println(cInstance);
+    }
+
     interface AInterface {
         String Aitf_str = "1";
     }
@@ -126,6 +151,13 @@ public class ClassTest2A {
 
         public String cname_pub;
         public String cage_pub;
+
+        public C() {
+        }
+
+        public C(String cname_pri) {
+            this.cname_pri = cname_pri;
+        }
 
         public void cmethod_pub() {}
         private void cmethod_pri() {}
