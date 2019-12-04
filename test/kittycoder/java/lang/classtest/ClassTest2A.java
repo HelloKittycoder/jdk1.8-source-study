@@ -63,8 +63,8 @@ public class ClassTest2A {
 
     /**
      * 获取该Class对象所表示的类或接口中的指定public字段，
-     * （1）如果找不到，则一直向其超类或超接口向上找
-     * （2）如果该类直接继承某个类，同时直接实现某个接口，而父类和超接口有同名字段，最后会返回接口里的那个字段
+     * （1）如果找不到，则一直在其每一个直接超接口上递归查找，直接超接口按其声明顺序搜索
+     * （2）如果（1）中找不到字段，且Class有超类，则在其超类上递归搜索
      * @throws Exception
      */
     @Test
@@ -72,6 +72,20 @@ public class ClassTest2A {
         Class c = Class.forName("kittycoder.java.lang.classtest.ClassTest2A$C");
         System.out.println(c.getField("aname_pub"));
         System.out.println(c.getField("cname_pub"));
+    }
+
+    /**
+     * 获取该Class对象所表示的类或接口中的指定public方法，
+     * （1）如果找不到，则一直在其超类上递归查找
+     * （2）如果（1）中找不到任何方法，则在其超接口上递归查找
+     * @throws Exception
+     */
+    @Test
+    public void testGetMethod() throws Exception {
+        Class c = Class.forName("kittycoder.java.lang.classtest.ClassTest2A$C");
+        System.out.println(c.getMethod("amethod_pub", null));
+        System.out.println(c.getMethod("amethod_pub", String.class));
+        System.out.println(c.getMethod("cmethod_pub", null));
     }
 
     interface AInterface {
@@ -90,6 +104,7 @@ public class ClassTest2A {
         public String aname_pub;
         public String aage_pub;
 
+        public void amethod_pub(String a) {}
         public void amethod_pub() {}
         private void amethod_pri() {}
     }

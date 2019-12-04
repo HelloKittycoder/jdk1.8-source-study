@@ -1812,7 +1812,7 @@ public final class Class<T> implements java.io.Serializable,
      *      If C has no superclass, then a {@code NoSuchFieldException}
      *      is thrown.</LI>
      * </OL>
-     * 要反射的字段由下面的算法确定。设C为此对象所表示的类：
+     * 要反射的字段由下面的算法确定。设C为此对象所表示的类或接口：
      * 1.如果C声明了一个带有指定名的公共字段，则它就是要被反射的字段
      * 2.如果在第1步中没有找到任何字段，则该算法被递归地应用于C的每一个直接超接口。
      * 直接超接口按其声明顺序进行搜索
@@ -1861,6 +1861,8 @@ public final class Class<T> implements java.io.Serializable,
      * objects that identify the method's formal parameter types, in declared
      * order. If {@code parameterTypes} is {@code null}, it is
      * treated as if it were an empty array.
+     * 返回一个Method对象，它反映了该Class对象所表示的类或接口的指定公共成员方法。name参数是一个String，
+     * 用于指定所需方法的简称。
      *
      * <p> If the {@code name} is "{@code <init>}" or "{@code <clinit>}" a
      * {@code NoSuchMethodException} is raised. Otherwise, the method to
@@ -1878,6 +1880,10 @@ public final class Class<T> implements java.io.Serializable,
      *        method. If any such method is found, it is reflected.</LI>
      *   </OL></LI>
      * </OL>
+     * 如果name是“<init>”或“<clinit>”，则将引发NoSuchMethodException。
+     * 否则，要反射的方法由下面的算法确定。设C为此对象所表示的类或接口：
+     * 1.在C中搜索任一匹配的方法。如果找不到匹配的方法，则将在C的超类上（C本身不是Object类时）递归调用第1步算法
+     * 2.如果在第1步中没有找到任何方法，则在C的超接口中搜索匹配的方法。如果找到了这样的方法，则它就是要被反射的方法
      *
      * <p> To find a matching method in a class or interface C:&nbsp; If C
      * declares exactly one public method with the specified name and exactly
@@ -1885,6 +1891,9 @@ public final class Class<T> implements java.io.Serializable,
      * than one such method is found in C, and one of these methods has a
      * return type that is more specific than any of the others, that method is
      * reflected; otherwise one of the methods is chosen arbitrarily.
+     * 在C类中查找匹配的方法：如果C正好声明了一个具有指定名称的公共方法并且恰好有相同的形参类型，
+     * 则它就是要被反射的方法。如果在C中找到了多个这样的方法，并且其中有一个方法的返回类型比其他
+     * 方法的返回类型都特殊，则反射该方法；否则将从中任选一个方法
      *
      * <p>Note that there may be more than one matching method in a
      * class because while the Java language forbids a class to
@@ -1896,6 +1905,13 @@ public final class Class<T> implements java.io.Serializable,
      * java.lang.reflect.Method#isBridge bridge methods}; the bridge
      * method and the method being overridden would have the same
      * signature but different return types.
+     * 注意，类中可以有多个匹配方法，因为尽管java语言禁止类声明带有相同签名但不同返回类型的多个方法，但是java
+     * 虚拟机并不禁止。这增加了虚拟机的灵活性，可以用来实现各种语言特性。例如，可以使用桥接方法（bridge method）
+     * 实现协变返回；桥接方法以及将被重写的方法将具有相同的签名，不同的返回类型。
+     * （有关桥接方法，参考
+     * https://blog.csdn.net/mhmyqn/article/details/47342577
+     * https://blog.csdn.net/jiaobuchong/article/details/83722193
+     * 后续有时间再深入看下）
      *
      * <p> If this {@code Class} object represents an array type, then this
      * method does not find the {@code clone()} method.
