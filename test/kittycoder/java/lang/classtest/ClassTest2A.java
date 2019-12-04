@@ -125,6 +125,17 @@ public class ClassTest2A {
         System.out.println(c.getDeclaredField("cname_pri"));
     }
 
+    /**
+     * 获取该Class对象所表示的类或接口中的指定已声明方法
+     * @throws Exception
+     */
+    @Test
+    public void testGetDeclaredMethod() throws Exception {
+        Class c = Class.forName("kittycoder.java.lang.classtest.ClassTest2A$C");
+        // System.out.println(c.getDeclaredMethod("amethod_pub"));
+        System.out.println(c.getDeclaredMethod("cmethod_pri"));
+    }
+
     interface AInterface {
         String Aitf_str = "1";
     }

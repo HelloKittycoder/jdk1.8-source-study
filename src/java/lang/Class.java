@@ -1863,7 +1863,7 @@ public final class Class<T> implements java.io.Serializable,
      * order. If {@code parameterTypes} is {@code null}, it is
      * treated as if it were an empty array.
      * 返回一个Method对象，它反映了该Class对象所表示的类或接口的指定公共成员方法。name参数是一个String，
-     * 用于指定所需方法的简称。
+     * 用于指定所需方法的简称；parameterTypes参数是一个Class对象数组，它按声明顺序标识该方法的形参类型。
      *
      * <p> If the {@code name} is "{@code <init>}" or "{@code <clinit>}" a
      * {@code NoSuchMethodException} is raised. Otherwise, the method to
@@ -1916,6 +1916,7 @@ public final class Class<T> implements java.io.Serializable,
      *
      * <p> If this {@code Class} object represents an array type, then this
      * method does not find the {@code clone()} method.
+     * 该方法不会反射数组类的clone()方法
      *
      * <p> Static methods declared in superinterfaces of the class or interface
      * represented by this {@code Class} object are not considered members of
@@ -2256,9 +2257,15 @@ public final class Class<T> implements java.io.Serializable,
      * returned; otherwise one of the methods is chosen arbitrarily.  If the
      * name is "&lt;init&gt;"or "&lt;clinit&gt;" a {@code NoSuchMethodException}
      * is raised.
+     * 返回一个Method对象，它反映了该Class对象所表示的类或接口的指定已声明方法。
+     * name参数是一个String，用于指定所需方法的简称；parameterTypes参数是一个Class对象数组，它按声明顺序标识该方法的形参类型。
+     * 如果在某个类中声明了带有相同参数类型的多个方法，并且其中有一个方法的返回类型比其他方法的返回类型更特殊，
+     * 则返回该方法；否则将从中任选一个方法。（这里指的是有桥接方法的情况）
+     * 如果名称是“<init>”或“<clinit>”，则引发一个NoSuchMethodException
      *
      * <p> If this {@code Class} object represents an array type, then this
      * method does not find the {@code clone()} method.
+     * 该方法不会反射数组类的clone()方法
      *
      * @param name the name of the method
      * @param parameterTypes the parameter array
