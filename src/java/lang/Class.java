@@ -1821,6 +1821,7 @@ public final class Class<T> implements java.io.Serializable,
      *
      * <p> If this {@code Class} object represents an array type, then this
      * method does not find the {@code length} field of the array type.
+     * 该方法不会反射数组类的length字段
      *
      * @param name the field name
      * @return the {@code Field} object of this class specified by
@@ -2192,9 +2193,12 @@ public final class Class<T> implements java.io.Serializable,
      * field of the class or interface represented by this {@code Class}
      * object. The {@code name} parameter is a {@code String} that specifies
      * the simple name of the desired field.
+     * 返回一个Field对象，它反映了该Class对象所表示的类或接口的指定已声明字段。name参数是一个String，
+     * 用于指定所需字段的简称。
      *
      * <p> If this {@code Class} object represents an array type, then this
      * method does not find the {@code length} field of the array type.
+     * 注意，该方法不会反射数组类的length字段
      *
      * @param name the name of the field
      * @return  the {@code Field} object for the specified field in this

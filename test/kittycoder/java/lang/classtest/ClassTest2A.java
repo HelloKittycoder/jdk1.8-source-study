@@ -113,6 +113,18 @@ public class ClassTest2A {
         System.out.println(cInstance);
     }
 
+    /**
+     * 获取该Class对象所表示的类或接口中的指定已声明字段
+     * @throws Exception
+     */
+    @Test
+    public void testGetDeclaredField() throws Exception {
+        Class c = Class.forName("kittycoder.java.lang.classtest.ClassTest2A$C");
+        // System.out.println(c.getDeclaredField("aname_pub"));
+        // System.out.println(c.getDeclaredField("aname_pri"));
+        System.out.println(c.getDeclaredField("cname_pri"));
+    }
+
     interface AInterface {
         String Aitf_str = "1";
     }
