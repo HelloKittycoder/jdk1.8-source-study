@@ -2316,10 +2316,13 @@ public final class Class<T> implements java.io.Serializable,
      * {@code Class} object.  The {@code parameterTypes} parameter is
      * an array of {@code Class} objects that identify the constructor's
      * formal parameter types, in declared order.
+     * 获取该Class对象所表示的类的指定已声明构造方法。
+     * parameterTypes参数是一个Class对象数组，这些Class对象按声明顺序标识构造方法的形参类型
      *
      * If this {@code Class} object represents an inner class
      * declared in a non-static context, the formal parameter types
      * include the explicit enclosing instance as the first parameter.
+     * 如果此Class对象表示非静态上下文中声明的内部类，则显式地使用外部类的Class对象作为形参类型的第一个参数
      *
      * @param parameterTypes the parameter array
      * @return  The {@code Constructor} object for the constructor with the

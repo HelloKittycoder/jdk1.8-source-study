@@ -136,6 +136,23 @@ public class ClassTest2A {
         System.out.println(c.getDeclaredMethod("cmethod_pri"));
     }
 
+    /**
+     * 获取该Class对象所表示的类的指定已声明构造器
+     * @throws Exception
+     */
+    @Test
+    public void testGetDeclaredConstructor() throws Exception {
+        // 1.普通类的构造器
+        Class c = Class.forName("java.util.Optional");
+        System.out.println(c.getDeclaredConstructor());
+        // System.out.println(c.getDeclaredConstructor(null)); // 这个和上面是等价写法
+
+        // 2.非静态内部类的构造器
+        Class innerClass = Class.forName("kittycoder.java.lang.classtest.ClassTest2A$C");
+        Class outerClass = Class.forName("kittycoder.java.lang.classtest.ClassTest2A");
+        System.out.println(innerClass.getDeclaredConstructor(outerClass, String.class, String.class));
+    }
+
     interface AInterface {
         String Aitf_str = "1";
     }
@@ -180,6 +197,11 @@ public class ClassTest2A {
 
         public C(String cname_pri) {
             this.cname_pri = cname_pri;
+        }
+
+        private C(String cname_pri, String cage_pri) {
+            this.cname_pri = cname_pri;
+            this.cage_pri = cage_pri;
         }
 
         public void cmethod_pub() {}
