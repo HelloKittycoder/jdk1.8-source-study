@@ -3541,6 +3541,7 @@ public final class Class<T> implements java.io.Serializable,
     /**
      * Casts an object to the class or interface represented
      * by this {@code Class} object.
+     * 将对象强制转换为此Class对象表示的类或接口
      *
      * @param obj the object to be cast
      * @return the object after casting, or null if obj is null

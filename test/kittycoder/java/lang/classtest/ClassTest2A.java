@@ -158,6 +158,19 @@ public class ClassTest2A {
         System.out.println(innerClass.getDeclaredConstructor(outerClass, String.class, String.class));
     }
 
+    /**
+     * 将对象强制转换为此Class对象表示的类或接口
+     * @throws Exception
+     */
+    @Test
+    public void testCast() throws Exception {
+        A1 a = new A1();
+        System.out.println(a.getClass());
+        B1 b = new B1();
+        a = A1.class.cast(b);
+        System.out.println(a.getClass());
+    }
+
     interface AInterface {
         String Aitf_str = "1";
     }
@@ -213,3 +226,6 @@ public class ClassTest2A {
         private void cmethod_pri() {}
     }
 }
+
+class A1 {}
+class B1 extends A1 {}
