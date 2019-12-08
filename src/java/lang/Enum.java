@@ -64,12 +64,15 @@ public abstract class Enum<E extends Enum<E>>
     /**
      * Returns the name of this enum constant, exactly as declared in its
      * enum declaration.
+     * 返回此枚举实例的名称，这个名称就是定义枚举类时列出的所有枚举值之一。
      *
      * <b>Most programmers should use the {@link #toString} method in
      * preference to this one, as the toString method may return
      * a more user-friendly name.</b>  This method is designed primarily for
      * use in specialized situations where correctness depends on getting the
      * exact name, which will not vary from release to release.
+     * 与此方法相比，大多数程序员应该优先考虑使用toString()方法，因为toString()方法返回
+     * 对用户更加友好的名称（toString默认和name返回的是一样的，但是可以重写；而name不可以）
      *
      * @return the name of this enum constant
      */
@@ -92,6 +95,7 @@ public abstract class Enum<E extends Enum<E>>
      * Returns the ordinal of this enumeration constant (its position
      * in its enum declaration, where the initial constant is assigned
      * an ordinal of zero).
+     * 返回枚举值在枚举类中的索引值（就是枚举值在枚举声明中的位置，第一个枚举值的索引值为0）
      *
      * Most programmers will have no use for this method.  It is
      * designed for use by sophisticated enum-based data structures, such
@@ -124,6 +128,7 @@ public abstract class Enum<E extends Enum<E>>
      * declaration.  This method may be overridden, though it typically
      * isn't necessary or desirable.  An enum type should override this
      * method when a more "programmer-friendly" string form exists.
+     * 返回枚举常量的名称，与name方法相似，但toString()方法更常用
      *
      * @return the name of this enum constant
      */
@@ -164,6 +169,9 @@ public abstract class Enum<E extends Enum<E>>
     }
 
     /**
+     * 用于指定枚举对象的比较顺序，同一个枚举实例只能与相同类型的枚举实例进行比较。如果该枚举
+     * 对象位于指定枚举对象之后，则返回正整数；如果该枚举对象位于指定枚举对象之前，则返回负整数，
+     * 否则返回0
      * Compares this enum with the specified object for order.  Returns a
      * negative integer, zero, or a positive integer as this object is less
      * than, equal to, or greater than the specified object.
@@ -182,6 +190,7 @@ public abstract class Enum<E extends Enum<E>>
     }
 
     /**
+     * 返回枚举对象所在的枚举类
      * Returns the Class object corresponding to this enum constant's
      * enum type.  Two enum constants e1 and  e2 are of the
      * same enum type if and only if
@@ -205,6 +214,8 @@ public abstract class Enum<E extends Enum<E>>
      * specified name.  The name must match exactly an identifier used
      * to declare an enum constant in this type.  (Extraneous whitespace
      * characters are not permitted.)
+     * 用于返回指定枚举类中指定名称的枚举值。名称必须与在该枚举类中声明枚举值时所用的
+     * 标识符完全匹配，不允许使用额外的空白字符。
      *
      * <p>Note that for a particular enum type {@code T}, the
      * implicitly declared {@code public static T valueOf(String)}
